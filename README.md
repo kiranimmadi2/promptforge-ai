@@ -43,8 +43,6 @@ promptforge-ai/
 │   ├── tools/              # Assistant-specific manuals
 │   ├── mcp/                # Model Context Protocol safety guidelines
 │   └── templates/          # Standard templates for extensions
-├── .claude/                # Claude Code modular skill integration
-│   └── skills/             # (5 capability SKILL.md folders)
 ├── cli/                    # Smart Compiler CLIs
 │   ├── promptforge.sh      # Bash compiler/manager
 │   └── promptforge.ps1     # PowerShell compiler/manager
