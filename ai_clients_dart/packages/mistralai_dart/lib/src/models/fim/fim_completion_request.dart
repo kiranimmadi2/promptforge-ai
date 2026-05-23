@@ -1,0 +1,204 @@
+import 'package:meta/meta.dart';
+
+import '../common/copy_with_sentinel.dart';
+import '../common/equality_helpers.dart';
+import '../metadata/stop_sequence.dart';
+
+/// Request for a fill-in-the-middle (FIM) completion.
+///
+/// FIM allows you to define the starting point of code using a [prompt],
+/// and the ending point using an optional [suffix]. The model will generate
+/// the code that fits in between.
+@immutable
+class FimCompletionRequest {
+  /// The model to use for completion.
+  ///
+  /// Use 'codestral-latest' or a specific version like 'codestral-2405'.
+  final String model;
+
+  /// The starting point of the code (prefix).
+  ///
+  /// This is the code that appears before the generated content.
+  final String prompt;
+
+  /// The ending point of the code.
+  ///
+  /// This is the code that appears after the generated content.
+  /// If provided, the model will generate code that fits between
+  /// the [prompt] and [suffix].
+  final String? suffix;
+
+  /// What sampling temperature to use (0.0-1.5).
+  ///
+  /// Higher values make output more random, lower values more deterministic.
+  final double? temperature;
+
+  /// Nucleus sampling probability (0.0-1.0).
+  ///
+  /// The model considers tokens with top_p probability mass.
+  final double? topP;
+
+  /// Maximum number of tokens to generate.
+  final int? maxTokens;
+
+  /// Minimum number of tokens to generate.
+  ///
+  /// Useful for ensuring a minimum length of output.
+  final int? minTokens;
+
+  /// Whether to stream the response.
+  final bool? stream;
+
+  /// Stop sequences to stop generation.
+  ///
+  /// Use [StopSequence.single] for a single stop string or
+  /// [StopSequence.multiple] for multiple stop strings.
+  final StopSequence? stop;
+
+  /// Random seed for deterministic generation.
+  final int? randomSeed;
+
+  /// Custom request metadata.
+  ///
+  /// Allows attaching arbitrary key-value pairs to the request.
+  final Map<String, dynamic>? metadata;
+
+  /// Optional cache key used to enable Mistral's prompt cache.
+  ///
+  /// Requests sharing the same `promptCacheKey` and matching prefix tokens
+  /// will reuse a cached prefix; cached prefix tokens are billed at 10% of
+  /// the standard input token price.
+  final String? promptCacheKey;
+
+  /// Creates a [FimCompletionRequest].
+  const FimCompletionRequest({
+    required this.model,
+    required this.prompt,
+    this.suffix,
+    this.temperature,
+    this.topP,
+    this.maxTokens,
+    this.minTokens,
+    this.stream,
+    this.stop,
+    this.randomSeed,
+    this.metadata,
+    this.promptCacheKey,
+  });
+
+  /// Creates a [FimCompletionRequest] from JSON.
+  factory FimCompletionRequest.fromJson(Map<String, dynamic> json) =>
+      FimCompletionRequest(
+        model: json['model'] as String? ?? '',
+        prompt: json['prompt'] as String? ?? '',
+        suffix: json['suffix'] as String?,
+        temperature: (json['temperature'] as num?)?.toDouble(),
+        topP: (json['top_p'] as num?)?.toDouble(),
+        maxTokens: json['max_tokens'] as int?,
+        minTokens: json['min_tokens'] as int?,
+        stream: json['stream'] as bool?,
+        stop: json['stop'] != null
+            ? StopSequence.fromJson(json['stop'] as Object)
+            : null,
+        randomSeed: json['random_seed'] as int?,
+        metadata: json['metadata'] as Map<String, dynamic>?,
+        promptCacheKey: json['prompt_cache_key'] as String?,
+      );
+
+  /// Converts to JSON.
+  Map<String, dynamic> toJson() => {
+    'model': model,
+    'prompt': prompt,
+    if (suffix != null) 'suffix': suffix,
+    if (temperature != null) 'temperature': temperature,
+    if (topP != null) 'top_p': topP,
+    if (maxTokens != null) 'max_tokens': maxTokens,
+    if (minTokens != null) 'min_tokens': minTokens,
+    if (stream != null) 'stream': stream,
+    if (stop != null) 'stop': stop!.toJson(),
+    if (randomSeed != null) 'random_seed': randomSeed,
+    if (metadata != null) 'metadata': metadata,
+    if (promptCacheKey != null) 'prompt_cache_key': promptCacheKey,
+  };
+
+  /// Creates a copy with replaced values.
+  FimCompletionRequest copyWith({
+    String? model,
+    String? prompt,
+    Object? suffix = unsetCopyWithValue,
+    Object? temperature = unsetCopyWithValue,
+    Object? topP = unsetCopyWithValue,
+    Object? maxTokens = unsetCopyWithValue,
+    Object? minTokens = unsetCopyWithValue,
+    Object? stream = unsetCopyWithValue,
+    Object? stop = unsetCopyWithValue,
+    Object? randomSeed = unsetCopyWithValue,
+    Object? metadata = unsetCopyWithValue,
+    Object? promptCacheKey = unsetCopyWithValue,
+  }) {
+    return FimCompletionRequest(
+      model: model ?? this.model,
+      prompt: prompt ?? this.prompt,
+      suffix: suffix == unsetCopyWithValue ? this.suffix : suffix as String?,
+      temperature: temperature == unsetCopyWithValue
+          ? this.temperature
+          : temperature as double?,
+      topP: topP == unsetCopyWithValue ? this.topP : topP as double?,
+      maxTokens: maxTokens == unsetCopyWithValue
+          ? this.maxTokens
+          : maxTokens as int?,
+      minTokens: minTokens == unsetCopyWithValue
+          ? this.minTokens
+          : minTokens as int?,
+      stream: stream == unsetCopyWithValue ? this.stream : stream as bool?,
+      stop: stop == unsetCopyWithValue ? this.stop : stop as StopSequence?,
+      randomSeed: randomSeed == unsetCopyWithValue
+          ? this.randomSeed
+          : randomSeed as int?,
+      metadata: metadata == unsetCopyWithValue
+          ? this.metadata
+          : metadata as Map<String, dynamic>?,
+      promptCacheKey: promptCacheKey == unsetCopyWithValue
+          ? this.promptCacheKey
+          : promptCacheKey as String?,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is FimCompletionRequest &&
+          runtimeType == other.runtimeType &&
+          model == other.model &&
+          prompt == other.prompt &&
+          suffix == other.suffix &&
+          temperature == other.temperature &&
+          topP == other.topP &&
+          maxTokens == other.maxTokens &&
+          minTokens == other.minTokens &&
+          stream == other.stream &&
+          stop == other.stop &&
+          randomSeed == other.randomSeed &&
+          mapsEqual(metadata, other.metadata) &&
+          promptCacheKey == other.promptCacheKey;
+
+  @override
+  int get hashCode => Object.hash(
+    model,
+    prompt,
+    suffix,
+    temperature,
+    topP,
+    maxTokens,
+    minTokens,
+    stream,
+    stop,
+    randomSeed,
+    mapHash(metadata),
+    promptCacheKey,
+  );
+
+  @override
+  String toString() =>
+      'FimCompletionRequest(model: $model, prompt: ${prompt.length} chars)';
+}

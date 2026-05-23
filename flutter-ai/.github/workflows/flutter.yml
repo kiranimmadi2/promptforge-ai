@@ -1,0 +1,38 @@
+name: Flutter CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *" # Every day at midnight
+
+jobs:
+  lint-and-test:
+    name: Test Flutter ${{ matrix.flutter_version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        flutter_version: [stable, beta]
+    steps:
+      - uses: actions/checkout@v6
+      - name: Set up Flutter
+        uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2
+        with:
+          channel: ${{ matrix.flutter_version }}
+      - run: dart --version
+      - run: flutter --version
+      - run: flutter pub get
+      - name: Lint analysis
+        run: dart analyze --fatal-infos
+      - name: Dart format
+        run: dart format --output none --set-exit-if-changed .
+      - name: dart fix
+        run: dart fix --dry-run
+      - name: Run tests
+        run: flutter test
+      - name: Check API docs can generate
+        run: dart doc --dry-run

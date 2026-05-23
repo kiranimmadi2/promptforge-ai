@@ -1,0 +1,1208 @@
+{
+  "surface": "openapi",
+  "type_mappings": {
+    "string": "String",
+    "integer": "int",
+    "number": "double",
+    "boolean": "bool",
+    "array": "List",
+    "object": "Map"
+  },
+  "placement": {
+    "categories": {
+      "chat": {
+        "patterns": [
+          "chat",
+          "completion",
+          "message"
+        ],
+        "directory": "chat"
+      },
+      "completions": {
+        "patterns": [
+          "completion"
+        ],
+        "directory": "completions"
+      },
+      "embeddings": {
+        "patterns": [
+          "embed"
+        ],
+        "directory": "embeddings"
+      },
+      "audio": {
+        "patterns": [
+          "audio",
+          "speech",
+          "transcription",
+          "translation",
+          "whisper"
+        ],
+        "directory": "audio"
+      },
+      "images": {
+        "patterns": [
+          "image",
+          "dall"
+        ],
+        "directory": "images"
+      },
+      "files": {
+        "patterns": [
+          "file"
+        ],
+        "directory": "files"
+      },
+      "uploads": {
+        "patterns": [
+          "upload"
+        ],
+        "directory": "uploads"
+      },
+      "batches": {
+        "patterns": [
+          "batch"
+        ],
+        "directory": "batches"
+      },
+      "models": {
+        "patterns": [
+          "model"
+        ],
+        "directory": "models"
+      },
+      "moderations": {
+        "patterns": [
+          "moderation"
+        ],
+        "directory": "moderations"
+      },
+      "assistants": {
+        "patterns": [
+          "assistant"
+        ],
+        "directory": "assistants"
+      },
+      "threads": {
+        "patterns": [
+          "thread"
+        ],
+        "directory": "threads"
+      },
+      "messages": {
+        "patterns": [
+          "message"
+        ],
+        "directory": "messages"
+      },
+      "runs": {
+        "patterns": [
+          "run"
+        ],
+        "directory": "runs"
+      },
+      "run_steps": {
+        "patterns": [
+          "step"
+        ],
+        "directory": "run_steps"
+      },
+      "vector_stores": {
+        "patterns": [
+          "vector",
+          "store"
+        ],
+        "directory": "vector_stores"
+      },
+      "fine_tuning": {
+        "patterns": [
+          "fine",
+          "tuning",
+          "training"
+        ],
+        "directory": "fine_tuning"
+      },
+      "tools": {
+        "patterns": [
+          "tool",
+          "function"
+        ],
+        "directory": "tools"
+      },
+      "streaming": {
+        "patterns": [
+          "stream",
+          "delta",
+          "chunk"
+        ],
+        "directory": "streaming"
+      },
+      "realtime": {
+        "patterns": [
+          "realtime",
+          "session",
+          "conversation"
+        ],
+        "directory": "realtime"
+      }
+    },
+    "default_category": "common",
+    "parent_model_patterns": {
+      "ChatCompletionRequest": [
+        ".*Tool$",
+        ".*Message$",
+        ".*Choice$"
+      ],
+      "Message": [
+        ".*Content$",
+        ".*Part$",
+        ".*Block$"
+      ],
+      "Tool": [
+        ".*Function$",
+        ".*Call$"
+      ]
+    }
+  },
+  "coverage": {
+    "excluded_paths": [
+      "^/organization/.*",
+      "^/projects/.*"
+    ],
+    "excluded_tags": [
+      "Administration"
+    ],
+    "priority_resources": [
+      "responses",
+      "chat",
+      "embeddings",
+      "audio",
+      "images",
+      "files",
+      "models"
+    ],
+    "notes": {
+      "organization": "Admin APIs - not typically needed for client usage",
+      "projects": "Project management - admin feature"
+    },
+    "expected_properties": {
+      "ChatCompletionCreateRequest": [
+        "model",
+        "messages",
+        "temperature",
+        "topP",
+        "n",
+        "stop",
+        "maxTokens",
+        "maxCompletionTokens",
+        "presencePenalty",
+        "frequencyPenalty",
+        "logitBias",
+        "user",
+        "tools",
+        "toolChoice",
+        "responseFormat",
+        "seed",
+        "logprobs",
+        "topLogprobs",
+        "parallelToolCalls",
+        "streamOptions",
+        "serviceTier",
+        "metadata",
+        "store",
+        "reasoningEffort"
+      ],
+      "ChatCompletion": [
+        "id",
+        "object",
+        "created",
+        "model",
+        "choices",
+        "usage",
+        "systemFingerprint",
+        "serviceTier"
+      ],
+      "EmbeddingRequest": [
+        "model",
+        "input",
+        "encodingFormat",
+        "dimensions",
+        "user"
+      ],
+      "EmbeddingResponse": [
+        "object",
+        "data",
+        "model",
+        "usage"
+      ]
+    },
+    "excluded_properties": {
+      "global": []
+    },
+    "excluded_resources": []
+  },
+  "types": {
+    "CreateChatCompletionRequest": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "ChatCompletionCreateRequest",
+      "file": "lib/src/models/chat/chat_completion_request.dart",
+      "schema": "CreateChatCompletionRequest",
+      "tags": ["acknowledged"],
+      "note": "Spec uses allOf — verifier cannot extract top-level properties. Missing copyWith."
+    },
+    "CreateChatCompletionResponse": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "ChatCompletion",
+      "file": "lib/src/models/chat/chat_completion.dart",
+      "schema": "CreateChatCompletionResponse",
+      "tags": ["acknowledged"],
+      "note": "Missing copyWith. Has extra non-spec field (provider) for OpenRouter compat."
+    },
+    "ChatCompletionRequestMessage": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "ChatMessage",
+      "file": "lib/src/models/chat/chat_message.dart",
+      "schema": "ChatCompletionRequestMessage",
+      "tags": ["acknowledged"],
+      "note": "Spec schema is a oneOf discriminated union, not a verifiable object. Already tracked as sealed_parent via ChatMessage entry."
+    },
+    "CreateEmbeddingRequest": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "EmbeddingRequest",
+      "file": "lib/src/models/embeddings/embedding_request.dart",
+      "schema": "CreateEmbeddingRequest",
+      "tags": [
+        "critical"
+      ]
+    },
+    "CreateEmbeddingResponse": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "EmbeddingResponse",
+      "file": "lib/src/models/embeddings/embedding_response.dart",
+      "schema": "CreateEmbeddingResponse",
+      "tags": [],
+      "excluded_properties": ["usage"]
+    },
+    "CreateImageRequest": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "ImageGenerateRequest",
+      "file": "lib/src/models/images/image_request.dart",
+      "schema": "CreateImageRequest",
+      "tags": ["acknowledged"],
+      "note": "Missing copyWith. Spec has many new fields (output_format, stream, moderation, background) not yet in Dart."
+    },
+    "CreateSpeechRequest": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "SpeechRequest",
+      "file": "lib/src/models/audio/speech_request.dart",
+      "schema": "CreateSpeechRequest",
+      "tags": ["acknowledged"],
+      "note": "Missing copyWith. Spec has new fields (instructions, stream_format) not yet in Dart."
+    },
+    "CreateTranscriptionRequest": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "TranscriptionRequest",
+      "file": "lib/src/models/audio/transcription.dart",
+      "schema": "CreateTranscriptionRequest",
+      "tags": ["acknowledged"],
+      "note": "Missing copyWith. Spec has many new fields (include, stream, chunking_strategy, etc.) not yet in Dart."
+    },
+    "AssistantObject": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "Assistant",
+      "file": "lib/src/models/assistants/assistant.dart",
+      "schema": "AssistantObject",
+      "tags": []
+    },
+    "ThreadObject": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "Thread",
+      "file": "lib/src/models/threads/thread.dart",
+      "schema": "ThreadObject",
+      "tags": []
+    },
+    "RunObject": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "Run",
+      "file": "lib/src/models/runs/run.dart",
+      "schema": "RunObject",
+      "tags": ["acknowledged"],
+      "note": "Many spec-required fields are intentionally nullable in Dart (required_action, last_error, expires_at, started_at, etc.) because the API returns null for these depending on run state."
+    },
+    "CompletionUsage": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "Usage",
+      "file": "lib/src/models/common/usage.dart",
+      "schema": "CompletionUsage",
+      "tags": ["acknowledged"],
+      "note": "completionTokens is nullable for provider compat but spec requires non-null. toString missing promptTokensDetails/completionTokensDetails."
+    },
+    "ChatCompletionTool": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "Tool",
+      "file": "lib/src/models/tools/tool.dart",
+      "schema": "ChatCompletionTool"
+    },
+    "FunctionObject": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "FunctionDefinition",
+      "file": "lib/src/models/tools/tool.dart",
+      "schema": "FunctionObject"
+    },
+    "ChatMessage": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "ChatMessage",
+      "file": "lib/src/models/chat/chat_message.dart",
+      "schema": null,
+      "discriminator": {
+        "field": "role",
+        "mapping": {
+          "ChatCompletionRequestSystemMessage": "system",
+          "ChatCompletionRequestUserMessage": "user",
+          "ChatCompletionRequestAssistantMessage": "assistant",
+          "ChatCompletionRequestToolMessage": "tool",
+          "ChatCompletionRequestDeveloperMessage": "developer",
+          "ChatCompletionRequestFunctionMessage": "function"
+        }
+      },
+      "note": null,
+      "excluded_properties": [
+        "content"
+      ]
+    },
+    "ChatCompletionRequestSystemMessage": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "SystemMessage",
+      "file": "lib/src/models/chat/chat_message.dart",
+      "schema": "ChatCompletionRequestSystemMessage",
+      "parent": "ChatMessage"
+    },
+    "ChatCompletionRequestUserMessage": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "UserMessage",
+      "file": "lib/src/models/chat/chat_message.dart",
+      "schema": "ChatCompletionRequestUserMessage",
+      "parent": "ChatMessage"
+    },
+    "ChatCompletionRequestAssistantMessage": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "AssistantMessage",
+      "file": "lib/src/models/chat/chat_message.dart",
+      "schema": "ChatCompletionRequestAssistantMessage",
+      "parent": "ChatMessage",
+      "excluded_properties": ["audio", "function_call"]
+    },
+    "ChatCompletionRequestToolMessage": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ToolMessage",
+      "file": "lib/src/models/chat/chat_message.dart",
+      "schema": "ChatCompletionRequestToolMessage",
+      "parent": "ChatMessage"
+    },
+    "ChatCompletionRequestDeveloperMessage": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "DeveloperMessage",
+      "file": "lib/src/models/chat/chat_message.dart",
+      "schema": "ChatCompletionRequestDeveloperMessage",
+      "parent": "ChatMessage"
+    },
+    "ChatCompletionRequestFunctionMessage": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "ChatCompletionRequestFunctionMessage",
+      "tags": ["acknowledged"],
+      "note": "Deprecated in spec. The 'function' role is superseded by 'tool' messages. Not implemented in Dart."
+    },
+    "ContentPart": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "ContentPart",
+      "file": "lib/src/models/chat/content_part.dart",
+      "schema": null,
+      "discriminator": {
+        "field": "type",
+        "mapping": {
+          "ChatCompletionRequestMessageContentPartText": "text",
+          "ChatCompletionRequestMessageContentPartImage": "image_url",
+          "ChatCompletionRequestMessageContentPartAudio": "input_audio",
+          "ChatCompletionRequestMessageContentPartFile": "file",
+          "ChatCompletionRequestMessageContentPartRefusal": "refusal"
+        }
+      },
+      "note": null
+    },
+    "ChatCompletionRequestMessageContentPartText": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "TextContentPart",
+      "file": "lib/src/models/chat/content_part.dart",
+      "schema": "ChatCompletionRequestMessageContentPartText",
+      "parent": "ContentPart"
+    },
+    "ChatCompletionRequestMessageContentPartImage": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ImageContentPart",
+      "file": "lib/src/models/chat/content_part.dart",
+      "schema": "ChatCompletionRequestMessageContentPartImage",
+      "parent": "ContentPart",
+      "excluded_properties": ["image_url"]
+    },
+    "ChatCompletionRequestMessageContentPartAudio": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "AudioContentPart",
+      "file": "lib/src/models/chat/content_part.dart",
+      "schema": "ChatCompletionRequestMessageContentPartAudio",
+      "parent": "ContentPart",
+      "excluded_properties": ["input_audio"]
+    },
+    "ChatCompletionRequestMessageContentPartFile": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "FileContentPart",
+      "file": "lib/src/models/chat/content_part.dart",
+      "schema": "ChatCompletionRequestMessageContentPartFile",
+      "parent": "ContentPart",
+      "excluded_properties": ["file"]
+    },
+    "ChatCompletionRequestMessageContentPartRefusal": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "RefusalContentPart",
+      "file": "lib/src/models/chat/content_part.dart",
+      "schema": "ChatCompletionRequestMessageContentPartRefusal",
+      "parent": "ContentPart"
+    },
+    "ChatStreamEvent": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "ChatStreamEvent",
+      "file": "lib/src/models/streaming/chat_stream_event.dart",
+      "schema": null,
+      "discriminator": {
+        "field": "object",
+        "mapping": {
+          "CreateChatCompletionStreamResponse": "chat.completion.chunk"
+        }
+      },
+      "tags": ["acknowledged"],
+      "note": "Not a sealed class in Dart (plain class). No spec schema. All required spec fields are nullable for provider compat. Has extra provider field for OpenRouter."
+    },
+    "CreateChatCompletionStreamResponse": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "ChatStreamChunk",
+      "file": "lib/src/models/streaming/chat_stream_event.dart",
+      "schema": "CreateChatCompletionStreamResponse",
+      "parent": "ChatStreamEvent",
+      "tags": ["acknowledged"],
+      "note": "Dart uses ChatStreamEvent (plain class) instead of separate ChatStreamChunk subclass. Required spec fields (id, choices, created, model, object) are nullable for provider compat."
+    },
+    "ResponseFormat": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "ResponseFormat",
+      "file": "lib/src/models/common/response_format.dart",
+      "schema": null,
+      "discriminator": {
+        "field": "type",
+        "mapping": {
+          "ResponseFormatText": "text",
+          "ResponseFormatJsonObject": "json_object",
+          "ResponseFormatJsonSchema": "json_schema",
+          "TextResponseFormatJsonSchema": "json_schema"
+        }
+      },
+      "note": null
+    },
+    "ResponseFormatText": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "TextResponseFormat",
+      "file": "lib/src/models/common/response_format.dart",
+      "schema": "ResponseFormatText",
+      "parent": "ResponseFormat"
+    },
+    "ResponseFormatJsonObject": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "JsonObjectResponseFormat",
+      "file": "lib/src/models/common/response_format.dart",
+      "schema": "ResponseFormatJsonObject",
+      "parent": "ResponseFormat"
+    },
+    "ResponseFormatJsonSchema": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "JsonSchemaResponseFormat",
+      "file": "lib/src/models/common/response_format.dart",
+      "schema": "ResponseFormatJsonSchema",
+      "parent": "ResponseFormat",
+      "excluded_properties": ["json_schema"]
+    },
+    "TextResponseFormatJsonSchema": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "JsonSchemaResponseFormat",
+      "file": "lib/src/models/common/response_format.dart",
+      "schema": "TextResponseFormatJsonSchema",
+      "parent": "ResponseFormat",
+      "tags": ["acknowledged"],
+      "note": "Shares discriminator value 'json_schema' with ResponseFormatJsonSchema. Both handled by JsonSchemaResponseFormat. TextResponseFormatJsonSchema has flat properties while ResponseFormatJsonSchema nests under json_schema key."
+    },
+    "ResponseProperties": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "ResponseProperties",
+      "tags": ["acknowledged"],
+      "note": "Spec helper schema; properties inlined on CreateResponse and Response. max_output_tokens moved to inline."
+    },
+    "ToolChoice": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "ToolChoice",
+      "file": "lib/src/models/tools/tool_choice.dart",
+      "schema": null,
+      "discriminator": {
+        "field": null,
+        "mapping": {
+          "ChatCompletionNamedToolChoice": "function",
+          "ChatCompletionAllowedToolsChoice": "allowed_tools",
+          "ChatCompletionNamedToolChoiceCustom": "custom"
+        }
+      },
+      "note": "Uses string values ('auto', 'none', 'required') or object with type field for function/allowed_tools/custom choice"
+    },
+    "ToolChoice:ToolChoiceAuto": {
+      "spec": "main",
+      "kind": "extension",
+      "dart_class": "ToolChoiceAuto",
+      "file": "lib/src/models/tools/tool_choice.dart",
+      "schema": null,
+      "parent": "ToolChoice",
+      "note": "Dart-only string variant for 'auto'"
+    },
+    "ToolChoice:ToolChoiceNone": {
+      "spec": "main",
+      "kind": "extension",
+      "dart_class": "ToolChoiceNone",
+      "file": "lib/src/models/tools/tool_choice.dart",
+      "schema": null,
+      "parent": "ToolChoice",
+      "note": "Dart-only string variant for 'none'"
+    },
+    "ToolChoice:ToolChoiceRequired": {
+      "spec": "main",
+      "kind": "extension",
+      "dart_class": "ToolChoiceRequired",
+      "file": "lib/src/models/tools/tool_choice.dart",
+      "schema": null,
+      "parent": "ToolChoice",
+      "note": "Dart-only string variant for 'required'"
+    },
+    "ChatCompletionNamedToolChoice": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "ToolChoiceFunction",
+      "file": "lib/src/models/tools/tool_choice.dart",
+      "schema": "ChatCompletionNamedToolChoice",
+      "parent": "ToolChoice",
+      "tags": ["acknowledged"],
+      "note": "toJson() returns Object instead of Map<String, dynamic> because parent sealed class uses string values for other variants. Verifier cannot inspect non-Map toJson."
+    },
+    "ChatCompletionAllowedToolsChoice": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "ToolChoiceAllowedTools",
+      "file": "lib/src/models/tools/tool_choice.dart",
+      "schema": "ChatCompletionAllowedToolsChoice",
+      "parent": "ToolChoice",
+      "tags": ["acknowledged"],
+      "note": "toJson() returns Object instead of Map<String, dynamic> because parent sealed class uses string values for other variants. Verifier cannot inspect non-Map toJson."
+    },
+    "ChatCompletionNamedToolChoiceCustom": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "ToolChoiceCustom",
+      "file": "lib/src/models/tools/tool_choice.dart",
+      "schema": "ChatCompletionNamedToolChoiceCustom",
+      "parent": "ToolChoice",
+      "tags": ["acknowledged"],
+      "note": "toJson() returns Object instead of Map<String, dynamic> because parent sealed class uses string values for other variants. Verifier cannot inspect non-Map toJson."
+    },
+    "AssistantTool": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "AssistantTool",
+      "file": "lib/src/models/assistants/assistant_tool.dart",
+      "schema": null,
+      "discriminator": {
+        "field": "type",
+        "mapping": {
+          "AssistantToolsCode": "code_interpreter",
+          "AssistantToolsFileSearch": "file_search",
+          "AssistantToolsFunction": "function"
+        }
+      },
+      "note": null
+    },
+    "AssistantToolsCode": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "CodeInterpreterTool",
+      "file": "lib/src/models/assistants/assistant_tool.dart",
+      "schema": "AssistantToolsCode",
+      "parent": "AssistantTool"
+    },
+    "AssistantToolsFileSearch": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "FileSearchTool",
+      "file": "lib/src/models/assistants/assistant_tool.dart",
+      "schema": "AssistantToolsFileSearch",
+      "parent": "AssistantTool",
+      "excluded_properties": ["file_search"]
+    },
+    "AssistantToolsFunction": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "FunctionTool",
+      "file": "lib/src/models/assistants/assistant_tool.dart",
+      "schema": "AssistantToolsFunction",
+      "parent": "AssistantTool",
+      "excluded_properties": ["function"]
+    },
+    "StepDetails": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "StepDetails",
+      "file": "lib/src/models/runs/run_step.dart",
+      "schema": null,
+      "discriminator": {
+        "field": "type",
+        "mapping": {
+          "RunStepDetailsMessageCreationObject": "message_creation",
+          "RunStepDetailsToolCallsObject": "tool_calls"
+        }
+      },
+      "note": null
+    },
+    "RunStepDetailsMessageCreationObject": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "MessageCreationDetails",
+      "file": "lib/src/models/runs/run_step.dart",
+      "schema": "RunStepDetailsMessageCreationObject",
+      "parent": "StepDetails",
+      "excluded_properties": ["message_creation"]
+    },
+    "RunStepDetailsToolCallsObject": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ToolCallsDetails",
+      "file": "lib/src/models/runs/run_step.dart",
+      "schema": "RunStepDetailsToolCallsObject",
+      "parent": "StepDetails"
+    },
+    "StepToolCall": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "StepToolCall",
+      "file": "lib/src/models/runs/run_step.dart",
+      "schema": null,
+      "discriminator": {
+        "field": "type",
+        "mapping": {
+          "RunStepDetailsToolCallsCodeObject": "code_interpreter",
+          "RunStepDetailsToolCallsFileSearchObject": "file_search",
+          "RunStepDetailsToolCallsFunctionObject": "function"
+        }
+      },
+      "note": null
+    },
+    "RunStepDetailsToolCallsCodeObject": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "CodeInterpreterStepCall",
+      "file": "lib/src/models/runs/run_step.dart",
+      "schema": "RunStepDetailsToolCallsCodeObject",
+      "parent": "StepToolCall",
+      "excluded_properties": ["code_interpreter"]
+    },
+    "RunStepDetailsToolCallsFileSearchObject": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "FileSearchStepCall",
+      "file": "lib/src/models/runs/run_step.dart",
+      "schema": "RunStepDetailsToolCallsFileSearchObject",
+      "parent": "StepToolCall"
+    },
+    "RunStepDetailsToolCallsFunctionObject": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "FunctionStepCall",
+      "file": "lib/src/models/runs/run_step.dart",
+      "schema": "RunStepDetailsToolCallsFunctionObject",
+      "parent": "StepToolCall",
+      "excluded_properties": ["function"]
+    },
+    "CodeInterpreterOutput": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "CodeInterpreterOutput",
+      "file": "lib/src/models/runs/run_step.dart",
+      "schema": null,
+      "discriminator": {
+        "field": "type",
+        "mapping": {
+          "RunStepDetailsToolCallsCodeOutputLogsObject": "logs",
+          "RunStepDetailsToolCallsCodeOutputImageObject": "image"
+        }
+      },
+      "note": null
+    },
+    "RunStepDetailsToolCallsCodeOutputLogsObject": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "LogsOutput",
+      "file": "lib/src/models/runs/run_step.dart",
+      "schema": "RunStepDetailsToolCallsCodeOutputLogsObject",
+      "parent": "CodeInterpreterOutput"
+    },
+    "RunStepDetailsToolCallsCodeOutputImageObject": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ImageOutput",
+      "file": "lib/src/models/runs/run_step.dart",
+      "schema": "RunStepDetailsToolCallsCodeOutputImageObject",
+      "parent": "CodeInterpreterOutput",
+      "excluded_properties": ["image"]
+    },
+    "MessageContent": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "MessageContent",
+      "file": "lib/src/models/threads/message.dart",
+      "schema": null,
+      "discriminator": {
+        "field": "type",
+        "mapping": {
+          "MessageContentTextObject": "text",
+          "MessageContentImageUrlObject": "image_url",
+          "MessageContentImageFileObject": "image_file",
+          "MessageContentRefusalObject": "refusal"
+        }
+      },
+      "note": "Message content for Assistants API threads (not to be confused with chat messages)"
+    },
+    "MessageContentTextObject": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "TextMessageContent",
+      "file": "lib/src/models/threads/message.dart",
+      "schema": "MessageContentTextObject",
+      "parent": "MessageContent"
+    },
+    "MessageContentImageUrlObject": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ImageUrlMessageContent",
+      "file": "lib/src/models/threads/message.dart",
+      "schema": "MessageContentImageUrlObject",
+      "parent": "MessageContent"
+    },
+    "MessageContentImageFileObject": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ImageFileMessageContent",
+      "file": "lib/src/models/threads/message.dart",
+      "schema": "MessageContentImageFileObject",
+      "parent": "MessageContent"
+    },
+    "MessageContentRefusalObject": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "RefusalMessageContent",
+      "file": "lib/src/models/threads/message.dart",
+      "schema": "MessageContentRefusalObject",
+      "parent": "MessageContent"
+    },
+    "TextAnnotation": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "TextAnnotation",
+      "file": "lib/src/models/threads/message.dart",
+      "schema": null,
+      "discriminator": {
+        "field": "type",
+        "mapping": {
+          "MessageContentTextAnnotationsFileCitationObject": "file_citation",
+          "MessageContentTextAnnotationsFilePathObject": "file_path"
+        }
+      },
+      "note": null
+    },
+    "MessageContentTextAnnotationsFileCitationObject": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "FileCitationAnnotation",
+      "file": "lib/src/models/threads/message.dart",
+      "schema": "MessageContentTextAnnotationsFileCitationObject",
+      "parent": "TextAnnotation"
+    },
+    "MessageContentTextAnnotationsFilePathObject": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "FilePathAnnotation",
+      "file": "lib/src/models/threads/message.dart",
+      "schema": "MessageContentTextAnnotationsFilePathObject",
+      "parent": "TextAnnotation"
+    },
+    "ChatModel": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "ChatModel",
+      "tags": ["acknowledged"],
+      "note": "Package uses String for model IDs, not an enum type."
+    },
+    "ClickParam": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "ClickAction",
+      "file": "lib/src/models/responses/tools/computer_action.dart",
+      "schema": "ClickParam",
+      "tags": ["acknowledged"],
+      "note": "Spec ClickParam maps to Dart ClickAction. Keys property added."
+    },
+    "ComputerCallOutputStatus": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "ItemStatus",
+      "file": "lib/src/models/responses/config/item_status.dart",
+      "schema": "ComputerCallOutputStatus",
+      "tags": ["acknowledged"],
+      "note": "Spec enum maps to existing ItemStatus enum with same values."
+    },
+    "ComputerToolCallOutputResource": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "ComputerCallOutputItem",
+      "file": "lib/src/models/responses/items/output_item.dart",
+      "schema": "ComputerToolCallOutputResource",
+      "tags": ["acknowledged"],
+      "note": "Spec resource maps to Dart ComputerCallOutputItem. createdBy added."
+    },
+    "ConversationItem": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "ConversationItem",
+      "file": "lib/src/models/conversations/conversation_item.dart",
+      "schema": null,
+      "tags": ["acknowledged"],
+      "note": "Sealed parent with different naming convention. CompactionBody variant added."
+    },
+    "CreateVideoBody": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "CreateVideoBody",
+      "tags": ["acknowledged"],
+      "note": "Removed from spec. Replaced by CreateVideoJsonBody/CreateVideoMultipartBody."
+    },
+    "CreateVideoCharacterBody": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "CreateVideoCharacterBody",
+      "tags": ["acknowledged"],
+      "note": "Multipart upload deferred; not currently implemented in VideosResource."
+    },
+    "CreateVideoEditJsonBody": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "CreateVideoEditRequest",
+      "file": "lib/src/models/videos/video_request.dart",
+      "schema": "CreateVideoEditJsonBody",
+      "tags": ["acknowledged"],
+      "note": "Spec JSON body maps to Dart CreateVideoEditRequest."
+    },
+    "CreateVideoEditMultipartBody": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "CreateVideoEditMultipartBody",
+      "tags": ["acknowledged"],
+      "note": "Multipart variant deferred; JSON variant covers primary use case."
+    },
+    "CreateVideoExtendJsonBody": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "CreateVideoExtendRequest",
+      "file": "lib/src/models/videos/video_request.dart",
+      "schema": "CreateVideoExtendJsonBody",
+      "tags": ["acknowledged"],
+      "note": "Spec JSON body maps to Dart CreateVideoExtendRequest."
+    },
+    "CreateVideoExtendMultipartBody": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "CreateVideoExtendMultipartBody",
+      "tags": ["acknowledged"],
+      "note": "Multipart variant deferred; JSON variant covers primary use case."
+    },
+    "CreateVideoJsonBody": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "CreateVideoRequest",
+      "file": "lib/src/models/videos/video_request.dart",
+      "schema": "CreateVideoJsonBody",
+      "tags": ["acknowledged"],
+      "note": "Spec JSON body maps to Dart CreateVideoRequest. inputReference added."
+    },
+    "CreateVideoMultipartBody": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "CreateVideoMultipartBody",
+      "tags": ["acknowledged"],
+      "note": "Multipart variant deferred; JSON variant covers primary use case."
+    },
+    "CustomToolCallOutputResource": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "CustomToolCallOutputItem",
+      "file": "lib/src/models/responses/items/output_item.dart",
+      "schema": "CustomToolCallOutputResource",
+      "tags": ["acknowledged"],
+      "note": "Spec resource maps to Dart CustomToolCallOutputItem."
+    },
+    "CustomToolCallResource": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "CustomToolCallItem",
+      "file": "lib/src/models/responses/items/output_item.dart",
+      "schema": "CustomToolCallResource",
+      "tags": ["acknowledged"],
+      "note": "Spec resource maps to Dart CustomToolCallItem."
+    },
+    "DoubleClickAction": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "DoubleClickAction",
+      "file": "lib/src/models/responses/tools/computer_action.dart",
+      "schema": "DoubleClickAction",
+      "tags": ["acknowledged"],
+      "note": "Keys property added."
+    },
+    "DragParam": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "DragAction",
+      "file": "lib/src/models/responses/tools/computer_action.dart",
+      "schema": "DragParam",
+      "tags": ["acknowledged"],
+      "note": "Spec DragParam maps to Dart DragAction. Keys property added."
+    },
+    "FileDetailEnum": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "FileInputDetail",
+      "file": "lib/src/models/responses/content/input_content.dart",
+      "schema": "FileDetailEnum",
+      "tags": ["acknowledged"],
+      "note": "Identical to FileInputDetail; single Dart enum serves both schemas."
+    },
+    "FileInputDetail": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "FileInputDetail",
+      "file": "lib/src/models/responses/content/input_content.dart",
+      "schema": "FileInputDetail",
+      "tags": ["acknowledged"],
+      "note": "Enum co-located in input_content.dart with InputFileContent."
+    },
+    "FunctionToolCallOutputResource": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "FunctionCallOutputItemResponse",
+      "file": "lib/src/models/responses/items/output_item.dart",
+      "schema": "FunctionToolCallOutputResource",
+      "tags": ["acknowledged"],
+      "note": "Spec resource maps to existing Dart type. createdBy added."
+    },
+    "FunctionToolCallResource": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "FunctionCallOutputItemResponse",
+      "file": "lib/src/models/responses/items/output_item.dart",
+      "schema": "FunctionToolCallResource",
+      "tags": ["acknowledged"],
+      "note": "Spec resource maps to existing function call output item. createdBy added."
+    },
+    "FunctionToolParam": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "FunctionTool",
+      "file": "lib/src/models/responses/tools/response_tool.dart",
+      "schema": "FunctionToolParam",
+      "tags": ["acknowledged"],
+      "note": "defer_loading already implemented in FunctionTool."
+    },
+    "InputFileContent": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "InputFileContent",
+      "file": "lib/src/models/responses/content/input_content.dart",
+      "schema": "InputFileContent",
+      "tags": ["acknowledged"],
+      "note": "Manual class with detail property. Serves both InputFileContent and InputFileContentParam roles."
+    },
+    "InputFileContentParam": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "InputFileContent",
+      "file": "lib/src/models/responses/content/input_content.dart",
+      "schema": "InputFileContentParam",
+      "tags": ["acknowledged"],
+      "note": "No separate Param class; InputFileContent serves both roles."
+    },
+    "ItemResource": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": "lib/src/models/responses/items/output_item.dart",
+      "schema": null,
+      "tags": ["acknowledged"],
+      "note": "Sealed parent union of output items. Custom tool variants added."
+    },
+    "MoveParam": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "MoveAction",
+      "file": "lib/src/models/responses/tools/computer_action.dart",
+      "schema": "MoveParam",
+      "tags": ["acknowledged"],
+      "note": "Spec MoveParam maps to Dart MoveAction. Keys property added."
+    },
+    "OutputItem": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "OutputItem",
+      "file": "lib/src/models/responses/items/output_item.dart",
+      "schema": null,
+      "tags": ["acknowledged"],
+      "note": "Sealed parent. Custom tool variants added."
+    },
+    "ScrollParam": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "ScrollAction",
+      "file": "lib/src/models/responses/tools/computer_action.dart",
+      "schema": "ScrollParam",
+      "tags": ["acknowledged"],
+      "note": "Spec ScrollParam maps to Dart ScrollAction. Keys property added."
+    },
+    "VideoCharacterResource": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "VideoCharacter",
+      "file": "lib/src/models/videos/video.dart",
+      "schema": "VideoCharacterResource",
+      "tags": ["acknowledged"],
+      "note": "Spec resource maps to Dart VideoCharacter."
+    },
+    "VideoReferenceInputParam": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "VideoReferenceInputParam",
+      "tags": ["acknowledged"],
+      "note": "Video ID passed as String in request types, no separate class."
+    },
+    "VoiceIdsOrCustomVoice": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "VoiceIdsOrCustomVoice",
+      "tags": ["acknowledged"],
+      "note": "Deferred. Current voice enums sufficient for known voice IDs."
+    },
+    "Message": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "Message",
+      "tags": ["acknowledged"],
+      "note": "Maps to multiple Dart classes: MessageItem (responses input), MessageOutputItem (responses output), ConversationMessageItem (conversations). Not a single verifiable object."
+    },
+    "MessagePhase-2": {
+      "spec": "main",
+      "kind": "enum",
+      "dart_class": "MessagePhase",
+      "file": "lib/src/models/responses/config/message_phase.dart",
+      "schema": "MessagePhase-2"
+    },
+    "OAuthErrorCode": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "OAuthErrorCode",
+      "tags": ["acknowledged"],
+      "note": "Orphan schema used only on OAuthError exception in Python SDK. No endpoint or request/response model references it. OAuth error handling not yet in Dart."
+    },
+    "PromptCacheRetentionEnum": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "PromptCacheRetention",
+      "file": "lib/src/models/responses/config/prompt_cache_retention.dart",
+      "schema": "PromptCacheRetentionEnum",
+      "tags": ["acknowledged"],
+      "note": "Spec inconsistency: this named enum uses 'in_memory' (underscore) but the inline ModelResponseProperties.prompt_cache_retention used by chat/responses still uses 'in-memory' (hyphen). The Dart PromptCacheRetention enum maps inMemory -> 'in-memory'; CompactResponseRequest serializes/deserializes 'in_memory' explicitly to bridge the gap. Marked skip to avoid verifier flagging the value mismatch."
+    },
+    "CompactResponseMethodPublicBody": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "CompactResponseRequest",
+      "file": "lib/src/models/responses/compact_response_request.dart",
+      "schema": "CompactResponseMethodPublicBody",
+      "tags": []
+    }
+  }
+}

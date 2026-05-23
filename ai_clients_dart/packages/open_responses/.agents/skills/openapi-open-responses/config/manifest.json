@@ -1,0 +1,871 @@
+{
+  "surface": "openapi",
+  "type_mappings": {
+    "string": "String",
+    "integer": "int",
+    "number": "double",
+    "boolean": "bool",
+    "array": "List",
+    "object": "Map"
+  },
+  "placement": {
+    "categories": {
+      "response": {
+        "patterns": [
+          "response"
+        ],
+        "directory": "response"
+      },
+      "request": {
+        "patterns": [
+          "request",
+          "create"
+        ],
+        "directory": "request"
+      },
+      "content": {
+        "patterns": [
+          "content",
+          "annotation",
+          "logprob"
+        ],
+        "directory": "content"
+      },
+      "items": {
+        "patterns": [
+          "item",
+          "message",
+          "function"
+        ],
+        "directory": "items"
+      },
+      "streaming": {
+        "patterns": [
+          "event",
+          "stream",
+          "delta"
+        ],
+        "directory": "streaming"
+      },
+      "tools": {
+        "patterns": [
+          "tool"
+        ],
+        "directory": "tools"
+      },
+      "metadata": {
+        "patterns": [
+          "status",
+          "role",
+          "usage",
+          "error",
+          "detail",
+          "tier",
+          "effort",
+          "summary",
+          "truncation",
+          "verbosity",
+          "include"
+        ],
+        "directory": "metadata"
+      }
+    },
+    "default_category": "common",
+    "parent_model_patterns": {
+      "Item": [
+        ".*Item$",
+        ".*Reference$"
+      ],
+      "OutputItem": [
+        ".*OutputItem.*"
+      ],
+      "InputContent": [
+        ".*InputContent$",
+        ".*Part$"
+      ],
+      "OutputContent": [
+        ".*OutputContent$"
+      ],
+      "Tool": [
+        ".*Tool$"
+      ],
+      "StreamingEvent": [
+        ".*Event$"
+      ]
+    }
+  },
+  "coverage": {
+    "excluded_paths": [],
+    "excluded_tags": [],
+    "priority_resources": [
+      "responses",
+      "models"
+    ],
+    "notes": {},
+    "expected_properties": {},
+    "excluded_properties": {
+      "global": []
+    },
+    "excluded_resources": []
+  },
+  "types": {
+    "ResponseResource": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "ResponseResource",
+      "file": "lib/src/models/response/response_resource.dart",
+      "schema": "ResponseResource",
+      "tags": ["acknowledged"],
+      "note": "Intentionally nullable fields for provider compatibility: many spec-required properties (created_at, model, output, tools, etc.) are nullable in Dart to handle partial responses from various providers."
+    },
+    "CreateResponseBody": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "CreateResponseRequest",
+      "file": "lib/src/models/request/create_response_request.dart",
+      "schema": "CreateResponseBody",
+      "tags": [
+        "critical"
+      ]
+    },
+    "CompactResponseMethodPublicBody": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "CompactResponseRequest",
+      "file": "lib/src/models/request/compact_response_request.dart",
+      "schema": "CompactResponseMethodPublicBody"
+    },
+    "CompactResource": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "CompactResource",
+      "file": "lib/src/models/response/compact_resource.dart",
+      "schema": "CompactResource"
+    },
+    "TextParam": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "TextConfig",
+      "file": "lib/src/models/request/text_config.dart",
+      "schema": "TextParam"
+    },
+    "ReasoningParam": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "ReasoningConfig",
+      "file": "lib/src/models/request/reasoning_config.dart",
+      "schema": "ReasoningParam"
+    },
+    "ErrorPayload": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "ErrorPayload",
+      "file": "lib/src/models/response/error_payload.dart",
+      "schema": "ErrorPayload"
+    },
+    "LogProb": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "LogProb",
+      "file": "lib/src/models/content/logprob.dart",
+      "schema": "LogProb",
+      "tags": ["acknowledged"],
+      "note": "Fields bytes and top_logprobs are intentionally nullable for defensive parsing across providers, though spec marks them required."
+    },
+    "TopLogProb": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "TopLogProb",
+      "file": "lib/src/models/content/logprob.dart",
+      "schema": "TopLogProb",
+      "tags": ["acknowledged"],
+      "note": "Field bytes is intentionally nullable for defensive parsing across providers, though spec marks it required."
+    },
+    "StreamingEvent": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "StreamingEvent",
+      "file": "lib/src/models/streaming/streaming_event.dart",
+      "schema": null,
+      "discriminator": {
+        "field": "type",
+        "mapping": {
+          "ResponseCreatedStreamingEvent": "response.created",
+          "ResponseQueuedStreamingEvent": "response.queued",
+          "ResponseInProgressStreamingEvent": "response.in_progress",
+          "ResponseCompletedStreamingEvent": "response.completed",
+          "ResponseFailedStreamingEvent": "response.failed",
+          "ResponseIncompleteStreamingEvent": "response.incomplete",
+          "ResponseOutputItemAddedStreamingEvent": "response.output_item.added",
+          "ResponseOutputItemDoneStreamingEvent": "response.output_item.done",
+          "ResponseContentPartAddedStreamingEvent": "response.content_part.added",
+          "ResponseContentPartDoneStreamingEvent": "response.content_part.done",
+          "ResponseOutputTextDeltaStreamingEvent": "response.output_text.delta",
+          "ResponseOutputTextDoneStreamingEvent": "response.output_text.done",
+          "ResponseOutputTextAnnotationAddedStreamingEvent": "response.output_text.annotation.added",
+          "ResponseRefusalDeltaStreamingEvent": "response.refusal.delta",
+          "ResponseRefusalDoneStreamingEvent": "response.refusal.done",
+          "ResponseFunctionCallArgumentsDeltaStreamingEvent": "response.function_call_arguments.delta",
+          "ResponseFunctionCallArgumentsDoneStreamingEvent": "response.function_call_arguments.done",
+          "ResponseReasoningDeltaStreamingEvent": "response.reasoning.delta",
+          "ResponseReasoningDoneStreamingEvent": "response.reasoning.done",
+          "ResponseReasoningSummaryPartAddedStreamingEvent": "response.reasoning_summary_part.added",
+          "ResponseReasoningSummaryPartDoneStreamingEvent": "response.reasoning_summary_part.done",
+          "ResponseReasoningSummaryDeltaStreamingEvent": "response.reasoning_summary.delta",
+          "ResponseReasoningSummaryDoneStreamingEvent": "response.reasoning_summary.done",
+          "ErrorStreamingEvent": "error"
+        }
+      },
+      "excluded_properties": [
+        "item_id",
+        "output_index",
+        "summary_index",
+        "part"
+      ]
+    },
+    "ResponseCreatedStreamingEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ResponseCreatedEvent",
+      "file": "lib/src/models/streaming/streaming_event.dart",
+      "schema": "ResponseCreatedStreamingEvent",
+      "parent": "StreamingEvent"
+    },
+    "ResponseQueuedStreamingEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ResponseQueuedEvent",
+      "file": "lib/src/models/streaming/streaming_event.dart",
+      "schema": "ResponseQueuedStreamingEvent",
+      "parent": "StreamingEvent"
+    },
+    "ResponseInProgressStreamingEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ResponseInProgressEvent",
+      "file": "lib/src/models/streaming/streaming_event.dart",
+      "schema": "ResponseInProgressStreamingEvent",
+      "parent": "StreamingEvent"
+    },
+    "ResponseCompletedStreamingEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ResponseCompletedEvent",
+      "file": "lib/src/models/streaming/streaming_event.dart",
+      "schema": "ResponseCompletedStreamingEvent",
+      "parent": "StreamingEvent"
+    },
+    "ResponseFailedStreamingEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ResponseFailedEvent",
+      "file": "lib/src/models/streaming/streaming_event.dart",
+      "schema": "ResponseFailedStreamingEvent",
+      "parent": "StreamingEvent"
+    },
+    "ResponseIncompleteStreamingEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ResponseIncompleteEvent",
+      "file": "lib/src/models/streaming/streaming_event.dart",
+      "schema": "ResponseIncompleteStreamingEvent",
+      "parent": "StreamingEvent"
+    },
+    "ResponseOutputItemAddedStreamingEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "OutputItemAddedEvent",
+      "file": "lib/src/models/streaming/streaming_event.dart",
+      "schema": "ResponseOutputItemAddedStreamingEvent",
+      "parent": "StreamingEvent"
+    },
+    "ResponseOutputItemDoneStreamingEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "OutputItemDoneEvent",
+      "file": "lib/src/models/streaming/streaming_event.dart",
+      "schema": "ResponseOutputItemDoneStreamingEvent",
+      "parent": "StreamingEvent"
+    },
+    "ResponseContentPartAddedStreamingEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ContentPartAddedEvent",
+      "file": "lib/src/models/streaming/streaming_event.dart",
+      "schema": "ResponseContentPartAddedStreamingEvent",
+      "parent": "StreamingEvent"
+    },
+    "ResponseContentPartDoneStreamingEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ContentPartDoneEvent",
+      "file": "lib/src/models/streaming/streaming_event.dart",
+      "schema": "ResponseContentPartDoneStreamingEvent",
+      "parent": "StreamingEvent"
+    },
+    "ResponseOutputTextDeltaStreamingEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "OutputTextDeltaEvent",
+      "file": "lib/src/models/streaming/streaming_event.dart",
+      "schema": "ResponseOutputTextDeltaStreamingEvent",
+      "parent": "StreamingEvent"
+    },
+    "ResponseOutputTextDoneStreamingEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "OutputTextDoneEvent",
+      "file": "lib/src/models/streaming/streaming_event.dart",
+      "schema": "ResponseOutputTextDoneStreamingEvent",
+      "parent": "StreamingEvent"
+    },
+    "ResponseOutputTextAnnotationAddedStreamingEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "OutputTextAnnotationAddedEvent",
+      "file": "lib/src/models/streaming/streaming_event.dart",
+      "schema": "ResponseOutputTextAnnotationAddedStreamingEvent",
+      "parent": "StreamingEvent"
+    },
+    "ResponseRefusalDeltaStreamingEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "RefusalDeltaEvent",
+      "file": "lib/src/models/streaming/streaming_event.dart",
+      "schema": "ResponseRefusalDeltaStreamingEvent",
+      "parent": "StreamingEvent"
+    },
+    "ResponseRefusalDoneStreamingEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "RefusalDoneEvent",
+      "file": "lib/src/models/streaming/streaming_event.dart",
+      "schema": "ResponseRefusalDoneStreamingEvent",
+      "parent": "StreamingEvent"
+    },
+    "ResponseFunctionCallArgumentsDeltaStreamingEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "FunctionCallArgumentsDeltaEvent",
+      "file": "lib/src/models/streaming/streaming_event.dart",
+      "schema": "ResponseFunctionCallArgumentsDeltaStreamingEvent",
+      "parent": "StreamingEvent"
+    },
+    "ResponseFunctionCallArgumentsDoneStreamingEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "FunctionCallArgumentsDoneEvent",
+      "file": "lib/src/models/streaming/streaming_event.dart",
+      "schema": "ResponseFunctionCallArgumentsDoneStreamingEvent",
+      "parent": "StreamingEvent"
+    },
+    "ResponseReasoningDeltaStreamingEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ReasoningDeltaEvent",
+      "file": "lib/src/models/streaming/streaming_event.dart",
+      "schema": "ResponseReasoningDeltaStreamingEvent",
+      "parent": "StreamingEvent"
+    },
+    "ResponseReasoningDoneStreamingEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ReasoningDoneEvent",
+      "file": "lib/src/models/streaming/streaming_event.dart",
+      "schema": "ResponseReasoningDoneStreamingEvent",
+      "parent": "StreamingEvent"
+    },
+    "ResponseReasoningSummaryPartAddedStreamingEvent": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "ReasoningSummaryPartAddedEvent",
+      "file": "lib/src/models/streaming/streaming_event.dart",
+      "schema": "ResponseReasoningSummaryPartAddedStreamingEvent",
+      "parent": "StreamingEvent",
+      "tags": ["acknowledged"],
+      "note": "Field part is intentionally nullable for provider compatibility, though spec marks it required."
+    },
+    "ResponseReasoningSummaryPartDoneStreamingEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ReasoningSummaryPartDoneEvent",
+      "file": "lib/src/models/streaming/streaming_event.dart",
+      "schema": "ResponseReasoningSummaryPartDoneStreamingEvent",
+      "parent": "StreamingEvent"
+    },
+    "ResponseReasoningSummaryDeltaStreamingEvent": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "ReasoningSummaryDeltaEvent",
+      "file": "lib/src/models/streaming/streaming_event.dart",
+      "schema": "ResponseReasoningSummaryDeltaStreamingEvent",
+      "parent": "StreamingEvent",
+      "tags": ["acknowledged"],
+      "note": "Fields item_id, output_index, summary_index are intentionally nullable for provider compatibility, though spec marks them required."
+    },
+    "ResponseReasoningSummaryDoneStreamingEvent": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "ReasoningSummaryDoneEvent",
+      "file": "lib/src/models/streaming/streaming_event.dart",
+      "schema": "ResponseReasoningSummaryDoneStreamingEvent",
+      "parent": "StreamingEvent",
+      "tags": ["acknowledged"],
+      "note": "Fields item_id, output_index, summary_index are intentionally nullable for provider compatibility, though spec marks them required."
+    },
+    "ErrorStreamingEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ErrorEvent",
+      "file": "lib/src/models/streaming/streaming_event.dart",
+      "schema": "ErrorStreamingEvent",
+      "parent": "StreamingEvent"
+    },
+    "WebSocketErrorEvent": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "WebSocketErrorEvent",
+      "file": "lib/src/models/streaming/websocket_event.dart",
+      "schema": "WebSocketErrorEvent"
+    },
+    "WebSocketResponseCreateEvent": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "WebSocketResponseCreateEvent",
+      "file": "lib/src/models/streaming/websocket_event.dart",
+      "schema": "WebSocketResponseCreateEvent",
+      "tags": ["acknowledged"],
+      "note": "Modeled as composition wrapping CreateResponseRequest (the existing CreateResponseBody mapping) rather than re-declaring all 25 allOf-inherited fields. toJson also strips the three x-openresponses-disallowed fields (background, stream, stream_options) that MUST NOT be sent in WebSocket mode."
+    },
+    "ToolChoice": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "ToolChoice",
+      "file": "lib/src/models/tools/tool_choice.dart",
+      "schema": null,
+      "discriminator": {
+        "field": "type",
+        "mapping": {
+          "SpecificFunctionParam": "function",
+          "SpecificToolChoiceParam": "function",
+          "AllowedToolsParam": "allowed_tools"
+        }
+      }
+    },
+    "ToolChoice:ToolChoiceNone": {
+      "spec": "main",
+      "kind": "extension",
+      "dart_class": "ToolChoiceNone",
+      "file": "lib/src/models/tools/tool_choice.dart",
+      "schema": null,
+      "parent": "ToolChoice"
+    },
+    "ToolChoice:ToolChoiceAuto": {
+      "spec": "main",
+      "kind": "extension",
+      "dart_class": "ToolChoiceAuto",
+      "file": "lib/src/models/tools/tool_choice.dart",
+      "schema": null,
+      "parent": "ToolChoice"
+    },
+    "ToolChoice:ToolChoiceRequired": {
+      "spec": "main",
+      "kind": "extension",
+      "dart_class": "ToolChoiceRequired",
+      "file": "lib/src/models/tools/tool_choice.dart",
+      "schema": null,
+      "parent": "ToolChoice"
+    },
+    "SpecificFunctionParam": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "ToolChoiceFunction",
+      "file": "lib/src/models/tools/tool_choice.dart",
+      "schema": "SpecificFunctionParam",
+      "parent": "ToolChoice",
+      "tags": ["acknowledged"],
+      "note": "toJson() returns Object instead of Map<String, dynamic>, which the verifier cannot inspect for serialization checks."
+    },
+    "AllowedToolsParam": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "ToolChoiceAllowedTools",
+      "file": "lib/src/models/tools/tool_choice.dart",
+      "schema": "AllowedToolsParam",
+      "parent": "ToolChoice",
+      "tags": ["acknowledged"],
+      "note": "toJson() returns Object instead of Map<String, dynamic>, which the verifier cannot inspect for serialization checks."
+    },
+    "InputContent": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "InputContent",
+      "file": "lib/src/models/content/input_content.dart",
+      "schema": null,
+      "discriminator": {
+        "field": "type",
+        "mapping": {
+          "InputTextContentParam": "input_text",
+          "InputImageContent": "input_image",
+          "InputFileContentParam": "input_file",
+          "InputVideoContent": "input_video"
+        }
+      }
+    },
+    "InputTextContentParam": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "InputTextContent",
+      "file": "lib/src/models/content/input_content.dart",
+      "schema": "InputTextContentParam",
+      "parent": "InputContent"
+    },
+    "InputImageContent": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "InputImageContent",
+      "file": "lib/src/models/content/input_content.dart",
+      "schema": "InputImageContent",
+      "parent": "InputContent",
+      "tags": ["acknowledged"],
+      "note": "Field detail is intentionally nullable for ergonomics (spec default is auto). Also has extension field fileId not in spec."
+    },
+    "InputFileContentParam": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "InputFileContent",
+      "file": "lib/src/models/content/input_content.dart",
+      "schema": "InputFileContentParam",
+      "parent": "InputContent"
+    },
+    "InputVideoContent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "InputVideoContent",
+      "file": "lib/src/models/content/input_content.dart",
+      "schema": "InputVideoContent",
+      "parent": "InputContent"
+    },
+    "OutputContent": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "OutputContent",
+      "file": "lib/src/models/content/output_content.dart",
+      "schema": null,
+      "discriminator": {
+        "field": "type",
+        "mapping": {
+          "OutputTextContent": "output_text",
+          "RefusalContent": "refusal"
+        }
+      }
+    },
+    "OutputTextContent": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "OutputTextContent",
+      "file": "lib/src/models/content/output_content.dart",
+      "schema": "OutputTextContent",
+      "parent": "OutputContent",
+      "tags": ["acknowledged"],
+      "note": "Fields annotations and logprobs are intentionally nullable for provider compatibility, though spec marks them required."
+    },
+    "OutputContent:ReasoningTextContent": {
+      "spec": "main",
+      "kind": "extension",
+      "dart_class": "ReasoningTextContent",
+      "file": "lib/src/models/content/output_content.dart",
+      "schema": null,
+      "parent": "OutputContent"
+    },
+    "RefusalContent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "RefusalContent",
+      "file": "lib/src/models/content/output_content.dart",
+      "schema": "RefusalContent",
+      "parent": "OutputContent"
+    },
+    "Tool": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "Tool",
+      "file": "lib/src/models/tools/tool.dart",
+      "schema": null,
+      "discriminator": {
+        "field": "type",
+        "mapping": {
+          "FunctionToolParam": "function"
+        }
+      }
+    },
+    "FunctionToolParam": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "FunctionTool",
+      "file": "lib/src/models/tools/tool.dart",
+      "schema": "FunctionToolParam",
+      "parent": "Tool"
+    },
+    "Tool:McpTool": {
+      "spec": "main",
+      "kind": "extension",
+      "dart_class": "McpTool",
+      "file": "lib/src/models/tools/tool.dart",
+      "schema": null,
+      "parent": "Tool"
+    },
+    "Annotation": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "Annotation",
+      "file": "lib/src/models/content/annotation.dart",
+      "schema": null,
+      "discriminator": {
+        "field": "type",
+        "mapping": {
+          "UrlCitationParam": "url_citation"
+        }
+      }
+    },
+    "UrlCitationParam": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "UrlCitation",
+      "file": "lib/src/models/content/annotation.dart",
+      "schema": "UrlCitationParam",
+      "parent": "Annotation"
+    },
+    "Annotation:FileCitation": {
+      "spec": "main",
+      "kind": "extension",
+      "dart_class": "FileCitation",
+      "file": "lib/src/models/content/annotation.dart",
+      "schema": null,
+      "parent": "Annotation"
+    },
+    "Annotation:FilePathAnnotation": {
+      "spec": "main",
+      "kind": "extension",
+      "dart_class": "FilePathAnnotation",
+      "file": "lib/src/models/content/annotation.dart",
+      "schema": null,
+      "parent": "Annotation"
+    },
+    "Item": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "Item",
+      "file": "lib/src/models/items/item.dart",
+      "schema": null,
+      "discriminator": {
+        "field": "type",
+        "mapping": {
+          "MessageItem": "message",
+          "UserMessageItemParam": "message",
+          "SystemMessageItemParam": "message",
+          "DeveloperMessageItemParam": "message",
+          "AssistantMessageItemParam": "message",
+          "ReasoningItemParam": "reasoning",
+          "FunctionCallItemParam": "function_call",
+          "FunctionCallOutputItemParam": "function_call_output",
+          "ItemReferenceParam": "item_reference",
+          "CompactionSummaryItemParam": "compaction"
+        }
+      },
+      "excluded_properties": [
+        "id",
+        "status"
+      ]
+    },
+    "MessageItem": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "MessageItem",
+      "file": "lib/src/models/items/item.dart",
+      "schema": null,
+      "parent": "Item",
+      "discriminator": {
+        "field": "role",
+        "mapping": {
+          "UserMessageItemParam": "user",
+          "SystemMessageItemParam": "system",
+          "DeveloperMessageItemParam": "developer",
+          "AssistantMessageItemParam": "assistant"
+        }
+      },
+      "excluded_properties": [
+        "content"
+      ]
+    },
+    "UserMessageItemParam": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "UserMessageItem",
+      "file": "lib/src/models/items/item.dart",
+      "schema": "UserMessageItemParam",
+      "parent": "MessageItem"
+    },
+    "SystemMessageItemParam": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "SystemMessageItem",
+      "file": "lib/src/models/items/item.dart",
+      "schema": "SystemMessageItemParam",
+      "parent": "MessageItem"
+    },
+    "DeveloperMessageItemParam": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "DeveloperMessageItem",
+      "file": "lib/src/models/items/item.dart",
+      "schema": "DeveloperMessageItemParam",
+      "parent": "MessageItem"
+    },
+    "AssistantMessageItemParam": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "AssistantMessageItem",
+      "file": "lib/src/models/items/item.dart",
+      "schema": "AssistantMessageItemParam",
+      "parent": "MessageItem",
+      "tags": ["acknowledged"],
+      "note": "Content uses broader OutputContent than spec's 2 types (output_text, refusal). Also supports ReasoningTextContent and SummaryTextContent extensions."
+    },
+    "FunctionCallItemParam": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "FunctionCallItem",
+      "file": "lib/src/models/items/item.dart",
+      "schema": "FunctionCallItemParam",
+      "parent": "Item"
+    },
+    "FunctionCallOutputItemParam": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "FunctionCallOutputItem",
+      "file": "lib/src/models/items/item.dart",
+      "schema": "FunctionCallOutputItemParam",
+      "parent": "Item"
+    },
+    "ItemReferenceParam": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ItemReference",
+      "file": "lib/src/models/items/item.dart",
+      "schema": "ItemReferenceParam",
+      "parent": "Item"
+    },
+    "ReasoningItemParam": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ReasoningInputItem",
+      "file": "lib/src/models/items/item.dart",
+      "schema": "ReasoningItemParam",
+      "parent": "Item",
+      "excluded_properties": ["content"]
+    },
+    "CompactionSummaryItemParam": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "CompactionItem",
+      "file": "lib/src/models/items/item.dart",
+      "schema": "CompactionSummaryItemParam",
+      "parent": "Item"
+    },
+    "ItemParam": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "Item",
+      "file": "lib/src/models/items/item.dart",
+      "schema": "ItemParam",
+      "discriminator": {
+        "field": "type",
+        "mapping": {}
+      }
+    },
+    "ItemField": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "OutputItem",
+      "file": "lib/src/models/items/output_item.dart",
+      "schema": "ItemField",
+      "tags": ["acknowledged"],
+      "note": "ItemField is the response-side union (Message, FunctionCall, FunctionCallOutput, ReasoningBody, CompactionBody) used by ResponseResource.output and CompactResource.output. Mapped to the OutputItem sealed hierarchy."
+    },
+    "Message": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "MessageOutputItem",
+      "file": "lib/src/models/items/output_item.dart",
+      "schema": "Message",
+      "tags": ["acknowledged"],
+      "note": "Message is the response-side message item. Mapped to the existing MessageOutputItem under OutputItem."
+    },
+    "CompactionBody": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "CompactionOutputItem",
+      "file": "lib/src/models/items/output_item.dart",
+      "schema": "CompactionBody",
+      "parent": "OutputItem",
+      "tags": ["acknowledged"],
+      "note": "Mapped as OutputItem variant. The spec 'type' property is a constant discriminator emitted by toJson, not stored as a Dart field."
+    },
+    "OutputItem:CompactionOutputItem": {
+      "spec": "main",
+      "kind": "extension",
+      "dart_class": "CompactionOutputItem",
+      "file": "lib/src/models/items/output_item.dart",
+      "schema": null,
+      "parent": "OutputItem"
+    },
+    "OutputItem:FunctionCallOutputResponseItem": {
+      "spec": "main",
+      "kind": "extension",
+      "dart_class": "FunctionCallOutputResponseItem",
+      "file": "lib/src/models/items/output_item.dart",
+      "schema": null,
+      "parent": "OutputItem"
+    },
+    "OutputItem": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "OutputItem",
+      "file": "lib/src/models/items/output_item.dart",
+      "schema": null,
+      "discriminator": {
+        "field": "type",
+        "mapping": {}
+      },
+      "note": "OutputItem is a response-side construct. The spec defines MessageItem, FunctionCallItem, and ReasoningItem as oneOf types within OutputItem but without individual schema names."
+    },
+    "OutputItem:MessageOutputItem": {
+      "spec": "main",
+      "kind": "extension",
+      "dart_class": "MessageOutputItem",
+      "file": "lib/src/models/items/output_item.dart",
+      "schema": null,
+      "parent": "OutputItem",
+      "note": "OutputItem is a response-side construct. The spec defines MessageItem, FunctionCallItem, and ReasoningItem as oneOf types within OutputItem but without individual schema names."
+    },
+    "OutputItem:FunctionCallOutputItemResponse": {
+      "spec": "main",
+      "kind": "extension",
+      "dart_class": "FunctionCallOutputItemResponse",
+      "file": "lib/src/models/items/output_item.dart",
+      "schema": null,
+      "parent": "OutputItem",
+      "note": "OutputItem is a response-side construct. The spec defines MessageItem, FunctionCallItem, and ReasoningItem as oneOf types within OutputItem but without individual schema names."
+    },
+    "OutputItem:ReasoningItem": {
+      "spec": "main",
+      "kind": "extension",
+      "dart_class": "ReasoningItem",
+      "file": "lib/src/models/items/output_item.dart",
+      "schema": null,
+      "parent": "OutputItem",
+      "note": "OutputItem is a response-side construct. The spec defines MessageItem, FunctionCallItem, and ReasoningItem as oneOf types within OutputItem but without individual schema names."
+    }
+  }
+}

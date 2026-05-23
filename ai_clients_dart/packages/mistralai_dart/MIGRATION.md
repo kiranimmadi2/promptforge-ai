@@ -1,0 +1,756 @@
+# Migration Guide
+
+This guide covers breaking changes between major versions of `mistralai_dart`.
+
+For the complete list of changes, see [CHANGELOG.md](CHANGELOG.md).
+
+---
+
+## Migrating from v2.x to v3.0.0
+
+v3.0.0 syncs with the 2026-04-22 Mistral AI spec. The only breaking change is the removal of the OCR confidence-score API surface — Mistral dropped it server-side, so the client no longer exposes the corresponding types and fields. If you do not use OCR confidence scoring, no migration is needed.
+
+### 1) OCR confidence-score types and fields removed
+
+The server no longer returns confidence data, so the following have been removed from the client:
+
+| Symbol | Notes |
+|---|---|
+| `OcrConfidenceScore` (class) | Removed upstream |
+| `OcrPageConfidenceScores` (class) | Removed upstream |
+| `OcrConfidenceScoresGranularity` (enum) | Removed upstream |
+| `OcrRequest.confidenceScoresGranularity` (field) | Removed upstream |
+| `OcrPage.confidenceScores` (field) | Removed upstream |
+| `OcrTable.wordConfidenceScores` (field) | Removed upstream |
+
+Remove any references to these symbols. There is no replacement — the data is no longer returned by the API.
+
+```dart
+// Before (v2.x)
+final request = OcrRequest.fromUrl(
+  url: 'https://example.com/doc.pdf',
+  confidenceScoresGranularity: OcrConfidenceScoresGranularity.word,
+);
+final page = response.pages.first;
+final avgConfidence = page.confidenceScores?.averagePageConfidenceScore;
+
+// After (v3.0.0)
+final request = OcrRequest.fromUrl(
+  url: 'https://example.com/doc.pdf',
+);
+final page = response.pages.first;
+// page.confidenceScores is no longer available
+```
+
+### 2) `WorkflowListResponse` removed
+
+The `GET /v1/workflows` endpoint was retired upstream and its response type has been deleted. It had no corresponding client method, so this is unlikely to affect most callers — if you were constructing or deserializing `WorkflowListResponse` manually, remove those references.
+
+---
+
+## Migrating from v1.x to v2.0.0
+
+v2.0.0 updates to the latest Mistral AI spec, replaces untyped `Object` fields with sealed union types, and adds TTS support with a minor breaking change in `AgentCompletionRequest`.
+
+### 1) `ModerationLLMV1Action` → `ModerationLLMAction`
+
+The enum is now shared between V1 and V2 moderation configs.
+
+```dart
+// Before (v1.x)
+const config = ModerationLLMV1Config(
+  action: ModerationLLMV1Action.block,
+);
+
+// After (v2.0.0)
+const config = ModerationLLMV1Config(
+  action: ModerationLLMAction.block,
+);
+```
+
+### 2) Chat Message `content` → `MessageContent` Sealed Type
+
+All `ChatMessage` variant `content` fields now use the `MessageContent` sealed type instead of `String`, `String?`, or `Object`.
+
+| Variant | Before | After |
+|---------|--------|-------|
+| `SystemMessage.content` | `String` | `MessageContent` |
+| `UserMessage.content` | `Object` | `MessageContent?` |
+| `AssistantMessage.content` | `String?` | `MessageContent?` |
+| `ToolMessage.content` | `String` | `MessageContent?` |
+
+```dart
+// Before (v1.x)
+final msg = ChatMessage.user('Hello!');
+// content was Object — required casting
+
+// After (v2.0.0)
+final msg = ChatMessage.user('Hello!');
+// content is MessageContent — pattern match:
+switch (msg.content) {
+  case MessageTextContent(:final text): print(text);
+  case MessagePartsContent(:final parts): print('${parts.length} parts');
+  case null: print('no content');
+}
+```
+
+### 3) `EmbeddingRequest.input` → `EmbedInput` Sealed Type
+
+```dart
+// Before (v1.x)
+EmbeddingRequest(model: 'model', input: 'text');  // Object
+
+// After (v2.0.0)
+EmbeddingRequest.single(model: 'model', input: 'text');
+EmbeddingRequest.batch(model: 'model', input: ['a', 'b']);
+```
+
+### 4) `ContentPart.fromJson` No Longer Throws
+
+Unknown content types now return `UnknownContentPart` instead of throwing `FormatException`.
+
+### 5) `AgentCompletionRequest.stop` → `StopSequence`
+
+```dart
+// Before (v1.x)
+AgentCompletionRequest(agentId: 'agent-1', messages: [...], stop: ['END']);
+
+// After (v2.0.0)
+AgentCompletionRequest(agentId: 'agent-1', messages: [...], stop: StopSequence.multiple(['END']));
+```
+
+---
+
+## Migrating from v0.x to v1.0.0
+
+This guide helps you migrate from the old `mistralai_dart` client (v0.x) to the new **v1.0.0** (complete rewrite with resource-based organization and comprehensive API coverage).
+
+## Overview of Changes
+
+The new client mirrors the official REST structure with **resource-based APIs**. Instead of calling methods directly on the client, you now use resource objects:
+
+* `client.chat` — Chat completions with streaming support
+* `client.embeddings` — Text embeddings generation
+* `client.models` — Model listing and management
+* `client.files` — File upload and management
+* `client.fim` — Fill-in-the-Middle code completions (Codestral)
+* `client.fineTuning` — Fine-tuning job management
+* `client.batch` — Batch job processing
+* `client.ocr` — OCR text extraction
+* `client.audio` — Audio transcription
+* `client.classifications` — Text classification
+* `client.moderations` — Content moderation
+* `client.agents` — AI agents (Beta)
+* `client.conversations` — Conversations (Beta)
+* `client.libraries` — Document libraries for RAG (Beta)
+
+## Quick Reference Table
+
+| Operation | Old API (v0.x) | New API (v1.0.0) |
+| --- | --- | --- |
+| **Initialize Client** | `MistralAIClient(apiKey: 'KEY')` | `MistralClient.withApiKey('KEY')` |
+| **Chat Completion** | `client.createChatCompletion(request: ...)` | `client.chat.create(request: ...)` |
+| **Chat Stream** | `client.createChatCompletionStream(request: ...)` | `client.chat.createStream(request: ...)` |
+| **Create Embedding** | `client.createEmbedding(request: ...)` | `client.embeddings.create(request: ...)` |
+| **List Models** | `client.listModels()` | `client.models.list()` |
+| **Close Client** | `client.endSession()` | `client.close()` |
+| **User Message** | `ChatCompletionMessage(role: ChatCompletionMessageRole.user, content: 'text')` | `ChatMessage.user('text')` |
+| **System Message** | `ChatCompletionMessage(role: ChatCompletionMessageRole.system, content: 'text')` | `ChatMessage.system('text')` |
+| **Model Identifier** | `ChatCompletionModel.model(ChatCompletionModels.mistralSmallLatest)` | `'mistral-small-latest'` (string) |
+| **Embedding Model** | `EmbeddingModel.model(EmbeddingModels.mistralEmbed)` | `'mistral-embed'` (string) |
+
+## 1) Client Initialization
+
+```dart
+import 'package:mistralai_dart/mistralai_dart.dart';
+
+// Before (v0.x)
+final old = MistralAIClient(apiKey: 'YOUR_API_KEY');
+
+// After (v1.0.0) - Simple
+final client = MistralClient.withApiKey('YOUR_API_KEY');
+
+// After (v1.0.0) - Full configuration
+final client = MistralClient(
+  config: MistralConfig(
+    authProvider: ApiKeyProvider('YOUR_API_KEY'),
+    baseUrl: 'https://api.mistral.ai', // optional
+    timeout: Duration(seconds: 60),    // optional
+    retryPolicy: RetryPolicy(maxRetries: 3), // optional
+  ),
+);
+```
+
+### Custom Base URL
+
+```dart
+// Before
+final client = MistralAIClient(
+  apiKey: 'YOUR_API_KEY',
+  baseUrl: 'https://my-proxy.com',
+);
+
+// After
+final client = MistralClient.withBaseUrl(
+  apiKey: 'YOUR_API_KEY',
+  baseUrl: 'https://my-proxy.com',
+);
+```
+
+### Closing the Client
+
+```dart
+// Before
+client.endSession();
+
+// After
+client.close();
+```
+
+## 2) Chat Completions
+
+```dart
+// Before
+final response = await client.createChatCompletion(
+  request: ChatCompletionRequest(
+    model: ChatCompletionModel.model(ChatCompletionModels.mistralSmallLatest),
+    messages: const [
+      ChatCompletionMessage(
+        role: ChatCompletionMessageRole.system,
+        content: 'You are a helpful assistant.',
+      ),
+      ChatCompletionMessage(
+        role: ChatCompletionMessageRole.user,
+        content: 'Hello!',
+      ),
+    ],
+  ),
+);
+final text = response.choices.first.message.content;
+
+// After
+final response = await client.chat.create(
+  request: ChatCompletionRequest(
+    model: 'mistral-small-latest',
+    messages: [
+      ChatMessage.system('You are a helpful assistant.'),
+      ChatMessage.user('Hello!'),
+    ],
+  ),
+);
+final text = response.text; // Convenience extension
+```
+
+**Key changes:**
+
+* Access under `client.chat`
+* Model is now a plain string instead of `ChatCompletionModel.model(...)`
+* Messages use factory constructors: `ChatMessage.user()`, `ChatMessage.system()`, etc.
+* Response extensions: `response.text`, `response.hasToolCalls`, `response.toolCalls`
+
+## 3) Streaming
+
+```dart
+// Before
+final stream = client.createChatCompletionStream(
+  request: ChatCompletionRequest(
+    model: ChatCompletionModel.model(ChatCompletionModels.mistralSmallLatest),
+    messages: const [
+      ChatCompletionMessage(
+        role: ChatCompletionMessageRole.user,
+        content: 'Tell me a story',
+      ),
+    ],
+  ),
+);
+var text = '';
+await for (final chunk in stream) {
+  final delta = chunk.choices.first.delta.content;
+  if (delta != null) {
+    text += delta;
+  }
+}
+
+// After
+final stream = client.chat.createStream(
+  request: ChatCompletionRequest(
+    model: 'mistral-small-latest',
+    messages: [ChatMessage.user('Tell me a story')],
+  ),
+);
+
+// Option 1: Manual iteration
+await for (final chunk in stream) {
+  final delta = chunk.text; // Convenience extension
+  if (delta != null) {
+    stdout.write(delta);
+  }
+}
+
+// Option 2: Stream extension to collect all text
+final text = await stream.text;
+```
+
+**Stream extensions:**
+
+* `chunk.text` — Get text content from chunk
+* `chunk.hasToolCalls` — Check if chunk has tool calls
+* `await stream.text` — Collect all text into a single string
+* `await stream.allToolCalls` — Collect all tool calls
+
+## 4) Messages
+
+### Creating Messages
+
+```dart
+// Before
+const userMessage = ChatCompletionMessage(
+  role: ChatCompletionMessageRole.user,
+  content: 'Hello!',
+);
+
+const systemMessage = ChatCompletionMessage(
+  role: ChatCompletionMessageRole.system,
+  content: 'You are a helpful assistant.',
+);
+
+const assistantMessage = ChatCompletionMessage(
+  role: ChatCompletionMessageRole.assistant,
+  content: 'How can I help?',
+);
+
+// After
+final userMessage = ChatMessage.user('Hello!');
+final systemMessage = ChatMessage.system('You are a helpful assistant.');
+final assistantMessage = ChatMessage.assistant('How can I help?');
+```
+
+### Multimodal Messages (Images)
+
+```dart
+// After (new feature)
+final message = ChatMessage.userMultimodal([
+  ContentPart.text('What is in this image?'),
+  ContentPart.imageUrl('https://example.com/image.jpg'),
+]);
+```
+
+> **Breaking change**: `TextContentPart` and `ImageUrlContentPart` constructors
+> changed from **named** parameters to **positional** parameters:
+> ```dart
+> // Before (v0.x)
+> TextContentPart(text: 'Hello')
+> ImageUrlContentPart(url: 'https://example.com/image.jpg')
+>
+> // After (v1.0.0)
+> TextContentPart('Hello')
+> ImageUrlContentPart('https://example.com/image.jpg')
+> ```
+> If you use `ContentPart.text(...)` / `ContentPart.imageUrl(...)` factory
+> constructors, no changes are needed.
+
+### Tool Messages
+
+```dart
+// Before - Tool result message was part of ChatCompletionMessage
+// with role: ChatCompletionMessageRole.tool
+
+// After
+final toolMessage = ChatMessage.tool(
+  toolCallId: 'call_123',
+  content: '{"temperature": 22, "unit": "celsius"}',
+  name: 'get_weather', // optional
+);
+```
+
+## 5) Model Specification
+
+The new API uses plain strings for model identifiers instead of union types:
+
+```dart
+// Before - Using enum
+ChatCompletionModel.model(ChatCompletionModels.mistralSmallLatest)
+ChatCompletionModel.model(ChatCompletionModels.mistralLargeLatest)
+EmbeddingModel.model(EmbeddingModels.mistralEmbed)
+
+// Before - Using custom model ID
+ChatCompletionModel.modelId('my-fine-tuned-model')
+
+// After - Just strings
+'mistral-small-latest'
+'mistral-large-latest'
+'mistral-embed'
+'my-fine-tuned-model'
+```
+
+## 6) Embeddings
+
+```dart
+// Before
+final response = await client.createEmbedding(
+  request: EmbeddingRequest(
+    model: EmbeddingModel.model(EmbeddingModels.mistralEmbed),
+    input: ['Hello', 'World'],
+    outputDtype: EmbeddingOutputDtype.float,
+    encodingFormat: EmbeddingEncodingFormat.float,
+  ),
+);
+
+// After
+final response = await client.embeddings.create(
+  request: EmbeddingRequest.batch(
+    model: 'mistral-embed',
+    input: ['Hello', 'World'],
+    outputDtype: EmbeddingDtype.float,
+    encodingFormat: 'float', // Now a string
+  ),
+);
+
+// Or for single input
+final response = await client.embeddings.create(
+  request: EmbeddingRequest.single(
+    model: 'mistral-embed',
+    input: 'Hello, world!',
+  ),
+);
+```
+
+**Key changes:**
+
+* Access under `client.embeddings`
+* Factory constructors: `EmbeddingRequest.single()` and `EmbeddingRequest.batch()`
+* `EmbeddingOutputDtype` → `EmbeddingDtype`
+* `EmbeddingEncodingFormat` → plain string (`'float'` or `'base64'`)
+
+## 7) Tools and Function Calling
+
+### Defining Tools
+
+```dart
+// Before
+const tool = Tool(
+  type: ToolType.function,
+  function: FunctionDefinition(
+    name: 'get_weather',
+    description: 'Get the current weather',
+    parameters: {
+      'type': 'object',
+      'properties': {
+        'location': {'type': 'string', 'description': 'The city name'},
+      },
+      'required': ['location'],
+    },
+  ),
+);
+
+// After
+final tool = Tool.function(
+  name: 'get_weather',
+  description: 'Get the current weather',
+  parameters: {
+    'type': 'object',
+    'properties': {
+      'location': {'type': 'string', 'description': 'The city name'},
+    },
+    'required': ['location'],
+  },
+);
+```
+
+### Built-in Tools (New Feature)
+
+The new API supports Mistral's built-in tools:
+
+```dart
+// Web search
+final webSearch = Tool.webSearch();
+
+// Premium web search (with news agencies)
+final webSearchPremium = Tool.webSearchPremium();
+
+// Code interpreter
+final codeInterpreter = Tool.codeInterpreter();
+
+// Image generation
+final imageGen = Tool.imageGeneration();
+
+// Document library for RAG
+final docLib = Tool.documentLibrary(libraryIds: ['lib-123']);
+```
+
+### Tool Choice
+
+```dart
+// Before
+toolChoice: ChatCompletionToolChoice.enumeration(
+  ChatCompletionToolChoiceOption.auto,
+)
+toolChoice: ChatCompletionToolChoice.enumeration(
+  ChatCompletionToolChoiceOption.any,
+)
+toolChoice: ChatCompletionToolChoice.toolChoiceTool(
+  ToolChoiceTool(
+    type: ToolChoiceToolType.function,
+    function: ToolChoiceToolFunction(name: 'get_weather'),
+  ),
+)
+
+// After - Using constants
+toolChoice: ToolChoice.auto
+toolChoice: ToolChoice.any
+toolChoice: ToolChoice.none
+toolChoice: ToolChoice.required
+
+// After - Specific function
+toolChoice: ToolChoice.function('get_weather')
+
+// After - Using classes directly
+toolChoice: const ToolChoiceAuto()
+toolChoice: const ToolChoiceAny()
+toolChoice: ToolChoiceFunction(name: 'get_weather')
+```
+
+### Handling Tool Calls
+
+```dart
+// Before
+final toolCalls = response.choices.first.message.toolCalls;
+if (toolCalls != null && toolCalls.isNotEmpty) {
+  for (final call in toolCalls) {
+    final name = call.function?.name;
+    final args = call.function?.arguments;
+    // ...
+  }
+}
+
+// After - Using extensions
+if (response.hasToolCalls) {
+  for (final call in response.toolCalls) {
+    final name = call.function.name;  // Never null
+    final args = call.function.arguments;  // Never null
+    // ...
+  }
+}
+```
+
+**Key changes:**
+
+* `ToolCall.id`, `ToolCall.function` are now required fields (with sensible defaults)
+* Use `response.hasToolCalls` and `response.toolCalls` extensions
+* `ToolCallType` enum removed; `type` is now just a string
+
+## 8) Response Format
+
+```dart
+// Before
+responseFormat: ResponseFormat(type: ResponseFormatType.jsonObject)
+
+responseFormat: ResponseFormat(
+  type: ResponseFormatType.jsonSchema,
+  jsonSchema: JsonSchema(
+    name: 'person',
+    schema: {'type': 'object', 'properties': {...}},
+  ),
+)
+
+// After
+responseFormat: ResponseFormat.jsonObject
+
+responseFormat: ResponseFormat.text
+
+responseFormat: ResponseFormat.jsonSchema(
+  name: 'person',
+  schema: {'type': 'object', 'properties': {...}},
+  description: 'A person object',  // optional
+  strict: true,  // optional
+)
+```
+
+## 9) Exception Handling
+
+```dart
+// Before
+try {
+  await client.createChatCompletion(request: request);
+} on MistralAIClientException catch (e) {
+  print('Error: ${e.message}');
+  print('Status code: ${e.code}');
+}
+
+// After
+try {
+  await client.chat.create(request: request);
+} on RateLimitException catch (e) {
+  // 429 - Rate limited
+  print('Rate limited, retry after: ${e.retryAfter}');
+} on ValidationException catch (e) {
+  // 400 - Bad request
+  print('Validation error: ${e.message}');
+} on AuthenticationException catch (e) {
+  // 401 - Invalid API key
+  print('Auth error: ${e.message}');
+} on ApiException catch (e) {
+  // Other API errors
+  print('API error: ${e.statusCode} - ${e.message}');
+}
+```
+
+## 10) New Features in v1.0.0
+
+### Fill-in-the-Middle (FIM) Code Completions
+
+```dart
+final response = await client.fim.create(
+  request: FimCompletionRequest(
+    model: 'codestral-latest',
+    prompt: 'def fibonacci(n):',
+    suffix: '\n    return result',
+  ),
+);
+```
+
+### Fine-tuning
+
+```dart
+// Create a fine-tuning job
+final job = await client.fineTuning.jobs.create(
+  request: CreateFineTuningJobRequest(
+    model: 'mistral-small-latest',
+    trainingFiles: [TrainingFile(fileId: 'file-123')],
+    hyperparameters: Hyperparameters(epochs: 3),
+  ),
+);
+
+// List jobs
+final jobs = await client.fineTuning.jobs.list();
+
+// Manage models
+await client.fineTuning.models.archive(modelId: 'ft:model-123');
+await client.fineTuning.models.unarchive(modelId: 'ft:model-123');
+```
+
+### Batch Processing
+
+```dart
+final job = await client.batch.jobs.create(
+  request: CreateBatchJobRequest(
+    inputFileId: 'file-123',
+    model: 'mistral-small-latest',
+    endpoint: '/v1/chat/completions',
+  ),
+);
+```
+
+### OCR
+
+```dart
+final response = await client.ocr.process(
+  request: OcrRequest(
+    model: 'mistral-ocr-latest',
+    document: OcrDocument.fromUrl('https://example.com/document.pdf'),
+  ),
+);
+```
+
+### Audio Transcription
+
+```dart
+final response = await client.audio.transcriptions.create(
+  request: TranscriptionRequest(
+    model: 'mistral-audio-latest',
+    file: audioFileId, // ID from client.files.upload()
+  ),
+);
+```
+
+### Agents (Beta)
+
+```dart
+final response = await client.agents.complete(
+  request: AgentCompletionRequest(
+    agentId: 'agent-123',
+    messages: [ChatMessage.user('Hello!')],
+  ),
+);
+```
+
+### Libraries (Beta)
+
+```dart
+// Create a document library
+final library = await client.libraries.create(name: 'My Knowledge Base');
+
+// Add a document (file must be uploaded first via client.files.upload())
+final doc = await client.libraries.documents.create(
+  libraryId: library.id,
+  fileId: fileId, // ID from client.files.upload()
+);
+
+// Use in chat with document_library tool
+final response = await client.chat.create(
+  request: ChatCompletionRequest(
+    model: 'mistral-large-latest',
+    messages: [ChatMessage.user('What does the document say about X?')],
+    tools: [Tool.documentLibrary(libraryIds: [library.id])],
+  ),
+);
+```
+
+### Prediction (Speculative Decoding)
+
+```dart
+final response = await client.chat.create(
+  request: ChatCompletionRequest(
+    model: 'mistral-large-2411',
+    messages: [ChatMessage.user('Complete this code...')],
+    prediction: Prediction(
+      type: 'content',
+      content: 'Expected output content here...',
+    ),
+  ),
+);
+```
+
+### Prompt Mode (Reasoning)
+
+```dart
+final response = await client.chat.create(
+  request: ChatCompletionRequest(
+    model: 'mistral-large-latest',
+    messages: [ChatMessage.user('Solve this problem step by step...')],
+    promptMode: MistralPromptMode.reasoning,
+  ),
+);
+```
+
+## Common Pitfalls & Notes
+
+* **Model strings are case-sensitive**: Use `'mistral-small-latest'`, not `'Mistral-Small-Latest'`
+* **ToolCall fields are no longer nullable**: Access `toolCall.id` and `toolCall.function.name` directly without null checks
+* **Stream extensions collect the entire stream**: `await stream.text` consumes the stream; you can't iterate it again
+* **Factory constructors for sealed classes**: Use `ChatMessage.user()` instead of constructing `UserMessage` directly
+* **Encoding format changed**: `EmbeddingEncodingFormat.float` is now just the string `'float'`
+
+## Type Mapping Summary
+
+| Old Type | New Type |
+| --- | --- |
+| `MistralAIClient` | `MistralClient` |
+| `MistralAIClientException` | `ApiException`, `RateLimitException`, etc. |
+| `ChatCompletionMessage` | `ChatMessage` (sealed class) |
+| `ChatCompletionMessageRole` | Factory constructors on `ChatMessage` |
+| `ChatCompletionModel` | `String` |
+| `ChatCompletionModels` | Plain strings |
+| `EmbeddingModel` | `String` |
+| `EmbeddingModels` | Plain strings |
+| `EmbeddingOutputDtype` | `EmbeddingDtype` |
+| `EmbeddingEncodingFormat` | `String` |
+| `ChatCompletionToolChoice` | `ToolChoice` (sealed class) |
+| `ChatCompletionToolChoiceOption` | `ToolChoiceNone`, `ToolChoiceAuto`, etc. |
+| `ResponseFormat` | `ResponseFormat` (sealed class) |
+| `ResponseFormatType` | Factory constructors on `ResponseFormat` |
+| `ToolCallType` | `String` |
+| `AssistantMessageRole` | Removed (assistant message has role built-in) |
+| `ChatCompletionFinishReason` | `FinishReason` |
+| `ChatCompletionStreamResponse` | `ChatCompletionStreamResponse` |
+| `ChatCompletionStreamDelta` | `DeltaContent` |

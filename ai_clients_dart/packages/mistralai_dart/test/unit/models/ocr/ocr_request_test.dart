@@ -1,0 +1,462 @@
+import 'package:mistralai_dart/mistralai_dart.dart';
+import 'package:test/test.dart';
+
+void main() {
+  group('OcrRequest', () {
+    group('constructor', () {
+      test('creates request with required fields', () {
+        const request = OcrRequest(
+          document: UrlDocument('https://example.com/doc.pdf'),
+        );
+
+        expect(request.model, 'mistral-ocr-latest');
+        expect(request.document, isA<UrlDocument>());
+        expect(request.id, isNull);
+        expect(request.pages, isNull);
+        expect(request.includeImageBase64, isNull);
+        expect(request.tableFormat, isNull);
+        expect(request.extractHeader, isNull);
+        expect(request.extractFooter, isNull);
+        expect(request.bboxAnnotationFormat, isNull);
+        expect(request.documentAnnotationFormat, isNull);
+      });
+
+      test('creates request with all fields', () {
+        final request = OcrRequest(
+          model: 'custom-ocr-model',
+          document: const FileDocument('file-123'),
+          id: 'req-001',
+          pages: const [0, 1, 2],
+          includeImageBase64: true,
+          imageLimit: 10,
+          imageMinSize: 100,
+          documentAnnotationPrompt: 'Annotate tables and charts',
+          tableFormat: OcrTableFormat.html,
+          extractHeader: true,
+          extractFooter: true,
+          bboxAnnotationFormat: ResponseFormat.jsonSchema(
+            name: 'bbox',
+            schema: {'type': 'object'},
+          ),
+          documentAnnotationFormat: ResponseFormat.jsonSchema(
+            name: 'doc',
+            schema: {'type': 'object'},
+          ),
+        );
+
+        expect(request.model, 'custom-ocr-model');
+        expect(request.document, isA<FileDocument>());
+        expect(request.id, 'req-001');
+        expect(request.pages, [0, 1, 2]);
+        expect(request.includeImageBase64, isTrue);
+        expect(request.imageLimit, 10);
+        expect(request.imageMinSize, 100);
+        expect(request.documentAnnotationPrompt, 'Annotate tables and charts');
+        expect(request.tableFormat, OcrTableFormat.html);
+        expect(request.extractHeader, isTrue);
+        expect(request.extractFooter, isTrue);
+        expect(request.bboxAnnotationFormat, isA<ResponseFormatJsonSchema>());
+        expect(
+          request.documentAnnotationFormat,
+          isA<ResponseFormatJsonSchema>(),
+        );
+      });
+    });
+
+    group('factory constructors', () {
+      test('fromUrl creates URL document', () {
+        final request = OcrRequest.fromUrl(url: 'https://example.com/doc.pdf');
+
+        expect(request.document, isA<UrlDocument>());
+        expect(
+          (request.document as UrlDocument).url,
+          'https://example.com/doc.pdf',
+        );
+      });
+
+      test('fromFile creates file document', () {
+        final request = OcrRequest.fromFile(
+          fileId: 'file-456',
+          pages: const [0],
+        );
+
+        expect(request.document, isA<FileDocument>());
+        expect((request.document as FileDocument).fileId, 'file-456');
+        expect(request.pages, [0]);
+      });
+
+      test('fromBase64 creates base64 document', () {
+        final request = OcrRequest.fromBase64(
+          data: 'base64data',
+          mimeType: 'application/pdf',
+        );
+
+        expect(request.document, isA<Base64Document>());
+        expect((request.document as Base64Document).data, 'base64data');
+        expect(
+          (request.document as Base64Document).mimeType,
+          'application/pdf',
+        );
+      });
+    });
+
+    group('toJson', () {
+      test('serializes minimal request', () {
+        const request = OcrRequest(
+          document: UrlDocument('https://example.com/doc.pdf'),
+        );
+
+        final json = request.toJson();
+
+        expect(json['model'], 'mistral-ocr-latest');
+        expect(json['document'], isA<Map<String, dynamic>>());
+        final document = json['document'] as Map<String, dynamic>;
+        expect(document['document_url'], 'https://example.com/doc.pdf');
+        expect(json.containsKey('id'), isFalse);
+        expect(json.containsKey('pages'), isFalse);
+        expect(json.containsKey('document_annotation_prompt'), isFalse);
+        expect(json.containsKey('table_format'), isFalse);
+        expect(json.containsKey('extract_header'), isFalse);
+        expect(json.containsKey('extract_footer'), isFalse);
+        expect(json.containsKey('bbox_annotation_format'), isFalse);
+        expect(json.containsKey('document_annotation_format'), isFalse);
+      });
+
+      test('serializes full request', () {
+        const request = OcrRequest(
+          model: 'custom-model',
+          document: FileDocument('file-123'),
+          id: 'req-001',
+          pages: [1, 2, 3],
+          includeImageBase64: true,
+          imageLimit: 5,
+          imageMinSize: 50,
+          documentAnnotationPrompt: 'Annotate everything',
+          tableFormat: OcrTableFormat.markdown,
+          extractHeader: true,
+          extractFooter: false,
+        );
+
+        final json = request.toJson();
+
+        expect(json['model'], 'custom-model');
+        final document = json['document'] as Map<String, dynamic>;
+        expect(document['file_id'], 'file-123');
+        expect(json['id'], 'req-001');
+        expect(json['pages'], [1, 2, 3]);
+        expect(json['include_image_base64'], true);
+        expect(json['image_limit'], 5);
+        expect(json['image_min_size'], 50);
+        expect(json['document_annotation_prompt'], 'Annotate everything');
+        expect(json['table_format'], 'markdown');
+        expect(json['extract_header'], true);
+        expect(json['extract_footer'], false);
+      });
+
+      test('serializes annotation formats', () {
+        final request = OcrRequest(
+          document: const UrlDocument('https://example.com/doc.pdf'),
+          bboxAnnotationFormat: ResponseFormat.jsonSchema(
+            name: 'bbox',
+            schema: const {'type': 'object'},
+          ),
+          documentAnnotationFormat: ResponseFormat.jsonSchema(
+            name: 'doc',
+            schema: const {'type': 'object'},
+          ),
+        );
+
+        final json = request.toJson();
+
+        expect(json['bbox_annotation_format'], isA<Map<String, dynamic>>());
+        final bbox = json['bbox_annotation_format'] as Map<String, dynamic>;
+        expect(bbox['type'], 'json_schema');
+
+        expect(json['document_annotation_format'], isA<Map<String, dynamic>>());
+      });
+    });
+
+    group('fromJson', () {
+      test('parses request', () {
+        final json = {
+          'model': 'mistral-ocr-latest',
+          'document': {
+            'type': 'document_url',
+            'document_url': 'https://example.com/doc.pdf',
+          },
+          'id': 'req-123',
+          'pages': [0, 1],
+          'include_image_base64': true,
+        };
+
+        final request = OcrRequest.fromJson(json);
+
+        expect(request.model, 'mistral-ocr-latest');
+        expect(request.document, isA<UrlDocument>());
+        expect(request.id, 'req-123');
+        expect(request.pages, [0, 1]);
+        expect(request.includeImageBase64, isTrue);
+        expect(request.documentAnnotationPrompt, isNull);
+        expect(request.tableFormat, isNull);
+      });
+
+      test('parses request with documentAnnotationPrompt', () {
+        final json = {
+          'model': 'mistral-ocr-latest',
+          'document': {
+            'type': 'document_url',
+            'document_url': 'https://example.com/doc.pdf',
+          },
+          'document_annotation_prompt': 'Annotate tables',
+        };
+
+        final request = OcrRequest.fromJson(json);
+
+        expect(request.documentAnnotationPrompt, 'Annotate tables');
+      });
+
+      test('parses request with table format and header/footer flags', () {
+        final json = {
+          'model': 'mistral-ocr-latest',
+          'document': {
+            'type': 'document_url',
+            'document_url': 'https://example.com/doc.pdf',
+          },
+          'table_format': 'html',
+          'extract_header': true,
+          'extract_footer': false,
+        };
+
+        final request = OcrRequest.fromJson(json);
+
+        expect(request.tableFormat, OcrTableFormat.html);
+        expect(request.extractHeader, isTrue);
+        expect(request.extractFooter, isFalse);
+      });
+
+      test('parses request with annotation formats', () {
+        final json = {
+          'model': 'mistral-ocr-latest',
+          'document': {
+            'type': 'document_url',
+            'document_url': 'https://example.com/doc.pdf',
+          },
+          'bbox_annotation_format': {
+            'type': 'json_schema',
+            'json_schema': {
+              'name': 'bbox',
+              'schema': {'type': 'object'},
+            },
+          },
+          'document_annotation_format': {
+            'type': 'json_schema',
+            'json_schema': {
+              'name': 'doc',
+              'schema': {'type': 'object'},
+            },
+          },
+        };
+
+        final request = OcrRequest.fromJson(json);
+
+        expect(request.bboxAnnotationFormat, isA<ResponseFormatJsonSchema>());
+        expect(
+          request.documentAnnotationFormat,
+          isA<ResponseFormatJsonSchema>(),
+        );
+      });
+    });
+
+    group('copyWith', () {
+      test('copies with new values', () {
+        const original = OcrRequest(
+          document: UrlDocument('https://example.com/doc.pdf'),
+        );
+
+        final copy = original.copyWith(
+          model: 'new-model',
+          pages: [1, 2],
+          tableFormat: OcrTableFormat.html,
+        );
+
+        expect(copy.model, 'new-model');
+        expect(copy.document, equals(original.document));
+        expect(copy.pages, [1, 2]);
+        expect(copy.tableFormat, OcrTableFormat.html);
+      });
+
+      test('preserves values when not specified', () {
+        const original = OcrRequest(
+          model: 'custom-model',
+          document: FileDocument('file-123'),
+          id: 'req-001',
+          pages: [0],
+          includeImageBase64: true,
+          documentAnnotationPrompt: 'Annotate all',
+          tableFormat: OcrTableFormat.markdown,
+          extractHeader: true,
+          extractFooter: false,
+        );
+
+        final copy = original.copyWith();
+
+        expect(copy.model, 'custom-model');
+        expect(copy.id, 'req-001');
+        expect(copy.pages, [0]);
+        expect(copy.includeImageBase64, isTrue);
+        expect(copy.documentAnnotationPrompt, 'Annotate all');
+        expect(copy.tableFormat, OcrTableFormat.markdown);
+        expect(copy.extractHeader, isTrue);
+        expect(copy.extractFooter, isFalse);
+      });
+
+      test('copies with new documentAnnotationPrompt', () {
+        const original = OcrRequest(
+          document: UrlDocument('https://example.com/doc.pdf'),
+        );
+
+        final copy = original.copyWith(
+          documentAnnotationPrompt: 'Focus on tables',
+        );
+
+        expect(copy.documentAnnotationPrompt, 'Focus on tables');
+        expect(copy.document, equals(original.document));
+      });
+    });
+
+    group('equality', () {
+      test('requests with same fields are equal', () {
+        const request1 = OcrRequest(
+          document: UrlDocument('https://example.com/doc.pdf'),
+          pages: [0, 1],
+        );
+        const request2 = OcrRequest(
+          document: UrlDocument('https://example.com/doc.pdf'),
+          pages: [0, 1],
+        );
+
+        expect(request1, equals(request2));
+        expect(request1.hashCode, equals(request2.hashCode));
+      });
+
+      test('requests with different documents are not equal', () {
+        const request1 = OcrRequest(
+          document: UrlDocument('https://example.com/doc1.pdf'),
+        );
+        const request2 = OcrRequest(
+          document: UrlDocument('https://example.com/doc2.pdf'),
+        );
+
+        expect(request1, isNot(equals(request2)));
+      });
+    });
+
+    group('confidenceScoresGranularity', () {
+      test('omitted from JSON when null', () {
+        const request = OcrRequest(
+          document: UrlDocument('https://example.com/doc.pdf'),
+        );
+
+        final json = request.toJson();
+
+        expect(json.containsKey('confidence_scores_granularity'), isFalse);
+      });
+
+      test('serializes as "word"', () {
+        const request = OcrRequest(
+          document: UrlDocument('https://example.com/doc.pdf'),
+          confidenceScoresGranularity: OcrConfidenceScoresGranularity.word,
+        );
+
+        expect(request.toJson()['confidence_scores_granularity'], 'word');
+      });
+
+      test('serializes as "page"', () {
+        const request = OcrRequest(
+          document: UrlDocument('https://example.com/doc.pdf'),
+          confidenceScoresGranularity: OcrConfidenceScoresGranularity.page,
+        );
+
+        expect(request.toJson()['confidence_scores_granularity'], 'page');
+      });
+
+      test('round-trips word granularity', () {
+        const original = OcrRequest(
+          document: UrlDocument('https://example.com/doc.pdf'),
+          confidenceScoresGranularity: OcrConfidenceScoresGranularity.word,
+        );
+
+        final roundTripped = OcrRequest.fromJson(original.toJson());
+
+        expect(
+          roundTripped.confidenceScoresGranularity,
+          OcrConfidenceScoresGranularity.word,
+        );
+      });
+
+      test('round-trips page granularity', () {
+        const original = OcrRequest(
+          document: UrlDocument('https://example.com/doc.pdf'),
+          confidenceScoresGranularity: OcrConfidenceScoresGranularity.page,
+        );
+
+        final roundTripped = OcrRequest.fromJson(original.toJson());
+
+        expect(
+          roundTripped.confidenceScoresGranularity,
+          OcrConfidenceScoresGranularity.page,
+        );
+      });
+
+      test('fromJson maps unknown granularity value to unknown sentinel', () {
+        final request = OcrRequest.fromJson(const {
+          'document': {
+            'type': 'document_url',
+            'document_url': 'https://example.com/doc.pdf',
+          },
+          'confidence_scores_granularity': 'sentence',
+        });
+
+        expect(
+          request.confidenceScoresGranularity,
+          OcrConfidenceScoresGranularity.unknown,
+        );
+      });
+
+      test('copyWith clears with explicit null', () {
+        const original = OcrRequest(
+          document: UrlDocument('https://example.com/doc.pdf'),
+          confidenceScoresGranularity: OcrConfidenceScoresGranularity.word,
+        );
+
+        final cleared = original.copyWith(confidenceScoresGranularity: null);
+
+        expect(cleared.confidenceScoresGranularity, isNull);
+      });
+    });
+
+    group('OcrConfidenceScoresGranularity.fromString', () {
+      test('parses known values', () {
+        expect(
+          OcrConfidenceScoresGranularity.fromString('word'),
+          OcrConfidenceScoresGranularity.word,
+        );
+        expect(
+          OcrConfidenceScoresGranularity.fromString('page'),
+          OcrConfidenceScoresGranularity.page,
+        );
+      });
+
+      test('returns null for null input', () {
+        expect(OcrConfidenceScoresGranularity.fromString(null), isNull);
+      });
+
+      test('returns unknown for unrecognized values', () {
+        expect(
+          OcrConfidenceScoresGranularity.fromString('character'),
+          OcrConfidenceScoresGranularity.unknown,
+        );
+      });
+    });
+  });
+}

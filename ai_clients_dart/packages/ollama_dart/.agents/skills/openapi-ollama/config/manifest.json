@@ -1,0 +1,312 @@
+{
+  "surface": "openapi",
+  "type_mappings": {
+    "string": "String",
+    "integer": "int",
+    "number": "double",
+    "boolean": "bool",
+    "array": "List",
+    "object": "Map"
+  },
+  "placement": {
+    "categories": {
+      "chat": {
+        "patterns": [
+          "chat",
+          "message"
+        ],
+        "directory": "chat"
+      },
+      "completions": {
+        "patterns": [
+          "completion",
+          "generate"
+        ],
+        "directory": "completions"
+      },
+      "embeddings": {
+        "patterns": [
+          "embed"
+        ],
+        "directory": "embeddings"
+      },
+      "models": {
+        "patterns": [
+          "model",
+          "process",
+          "pull",
+          "push",
+          "create"
+        ],
+        "directory": "models"
+      },
+      "tools": {
+        "patterns": [
+          "tool",
+          "function"
+        ],
+        "directory": "tools"
+      },
+      "metadata": {
+        "patterns": [
+          "version",
+          "option",
+          "format",
+          "tensor",
+          "capability"
+        ],
+        "directory": "metadata"
+      }
+    },
+    "default_category": "common",
+    "parent_model_patterns": {
+      "ChatMessage": [
+        ".*Content$"
+      ],
+      "ToolDefinition": [
+        ".*Function$",
+        ".*Call$"
+      ],
+      "ChatRequest": [
+        ".*Message$",
+        ".*Tool$"
+      ],
+      "GenerateRequest": [
+        ".*Options$"
+      ]
+    }
+  },
+  "coverage": {
+    "excluded_paths": [],
+    "excluded_tags": [],
+    "priority_resources": [
+      "chat",
+      "generate",
+      "embed",
+      "models"
+    ],
+    "notes": {},
+    "expected_properties": {
+      "ModelOptions": [
+        "seed",
+        "temperature",
+        "top_k",
+        "top_p",
+        "min_p",
+        "tfs_z",
+        "typical_p",
+        "repeat_last_n",
+        "repeat_penalty",
+        "presence_penalty",
+        "frequency_penalty",
+        "mirostat",
+        "mirostat_tau",
+        "mirostat_eta",
+        "penalize_newline",
+        "stop",
+        "num_ctx",
+        "num_predict",
+        "num_keep",
+        "numa",
+        "num_batch",
+        "num_gpu",
+        "main_gpu",
+        "low_vram",
+        "num_thread",
+        "f16_kv",
+        "logits_all",
+        "vocab_only",
+        "use_mmap",
+        "use_mlock"
+      ],
+      "GenerateRequest": [
+        "model",
+        "prompt",
+        "suffix",
+        "system",
+        "template",
+        "context",
+        "stream",
+        "raw",
+        "format",
+        "images",
+        "keep_alive",
+        "options",
+        "think",
+        "logprobs",
+        "top_logprobs"
+      ],
+      "GenerateResponse": [
+        "model",
+        "created_at",
+        "response",
+        "thinking",
+        "done",
+        "done_reason",
+        "context",
+        "total_duration",
+        "load_duration",
+        "prompt_eval_count",
+        "prompt_eval_duration",
+        "eval_count",
+        "eval_duration",
+        "logprobs"
+      ],
+      "ChatRequest": [
+        "model",
+        "messages",
+        "stream",
+        "format",
+        "keep_alive",
+        "options",
+        "tools",
+        "think",
+        "logprobs",
+        "top_logprobs"
+      ],
+      "ChatResponse": [
+        "model",
+        "created_at",
+        "message",
+        "done",
+        "done_reason",
+        "total_duration",
+        "load_duration",
+        "prompt_eval_count",
+        "prompt_eval_duration",
+        "eval_count",
+        "eval_duration",
+        "logprobs"
+      ],
+      "EmbedRequest": [
+        "model",
+        "input",
+        "truncate",
+        "keep_alive",
+        "options"
+      ],
+      "EmbedResponse": [
+        "model",
+        "embeddings",
+        "total_duration",
+        "load_duration",
+        "prompt_eval_count"
+      ]
+    },
+    "excluded_properties": {
+      "global": []
+    },
+    "resource_aliases": {
+      "copy": "models",
+      "create": "models",
+      "delete": "models",
+      "ps": "models",
+      "pull": "models",
+      "push": "models",
+      "show": "models",
+      "tags": "models",
+      "generate": "completions",
+      "embed": "embeddings"
+    },
+    "excluded_resources": []
+  },
+  "types": {
+    "ChatMessage": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "ChatMessage",
+      "file": "lib/src/models/chat/chat_message.dart",
+      "schema": "ChatMessage",
+      "tags": []
+    },
+    "ChatRequest": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "ChatRequest",
+      "file": "lib/src/models/chat/chat_request.dart",
+      "schema": "ChatRequest",
+      "tags": []
+    },
+    "ChatResponse": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "ChatResponse",
+      "file": "lib/src/models/chat/chat_response.dart",
+      "schema": "ChatResponse",
+      "tags": []
+    },
+    "GenerateRequest": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "GenerateRequest",
+      "file": "lib/src/models/completions/generate_request.dart",
+      "schema": "GenerateRequest",
+      "tags": []
+    },
+    "GenerateResponse": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "GenerateResponse",
+      "file": "lib/src/models/completions/generate_response.dart",
+      "schema": "GenerateResponse",
+      "tags": []
+    },
+    "EmbedRequest": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "EmbedRequest",
+      "file": "lib/src/models/embeddings/embed_request.dart",
+      "schema": "EmbedRequest",
+      "tags": []
+    },
+    "EmbedResponse": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "EmbedResponse",
+      "file": "lib/src/models/embeddings/embed_response.dart",
+      "schema": "EmbedResponse",
+      "tags": []
+    },
+    "ToolDefinition": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "ToolDefinition",
+      "file": "lib/src/models/tools/tool_definition.dart",
+      "schema": "ToolDefinition",
+      "tags": []
+    },
+    "ModelSummary": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "ModelSummary",
+      "file": "lib/src/models/models/model_summary.dart",
+      "schema": "ModelSummary",
+      "tags": []
+    },
+    "Ps": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "RunningModel",
+      "file": "lib/src/models/models/running_model.dart",
+      "schema": "Ps",
+      "tags": []
+    },
+    "ShowResponse": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "ShowResponse",
+      "file": "lib/src/models/models/show_response.dart",
+      "schema": "ShowResponse",
+      "tags": []
+    },
+    "ModelOptions": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "ModelOptions",
+      "file": "lib/src/models/metadata/model_options.dart",
+      "schema": "ModelOptions",
+      "tags": ["acknowledged"],
+      "note": "Spec has additionalProperties: true with only 8 fields; Dart class intentionally declares 30 typed fields covering all known Ollama options for type safety"
+    }
+  }
+}

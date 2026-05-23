@@ -1,0 +1,222 @@
+{
+  "surface": "openapi",
+  "type_mappings": {
+    "string": "String",
+    "integer": "int",
+    "number": "double",
+    "boolean": "bool",
+    "array": "List",
+    "object": "Map"
+  },
+  "placement": {
+    "categories": {
+      "auth": {
+        "patterns": [
+          "identity",
+          "auth"
+        ],
+        "directory": "auth"
+      },
+      "collections": {
+        "patterns": [
+          "collection",
+          "configuration"
+        ],
+        "directory": "collections"
+      },
+      "databases": {
+        "patterns": [
+          "database"
+        ],
+        "directory": "databases"
+      },
+      "tenants": {
+        "patterns": [
+          "tenant"
+        ],
+        "directory": "tenants"
+      },
+      "records": {
+        "patterns": [
+          "add",
+          "get",
+          "query",
+          "search",
+          "delete",
+          "upsert",
+          "update",
+          "record"
+        ],
+        "directory": "records"
+      },
+      "metadata": {
+        "patterns": [
+          "heartbeat",
+          "version",
+          "health",
+          "error",
+          "include"
+        ],
+        "directory": "metadata"
+      }
+    },
+    "default_category": "common",
+    "parent_model_patterns": {
+      "Collection": [
+        ".*Configuration$"
+      ],
+      "Request": [
+        ".*Payload$"
+      ]
+    }
+  },
+  "coverage": {
+    "excluded_paths": [],
+    "excluded_tags": [],
+    "priority_resources": [
+      "collections",
+      "tenants",
+      "databases"
+    ],
+    "notes": {},
+    "expected_properties": {},
+    "excluded_properties": {
+      "global": [],
+      "GetResponse": ["data"],
+      "QueryResponse": ["data"]
+    },
+    "resource_aliases": {
+      "healthcheck": "health",
+      "heartbeat": "health",
+      "pre_flight_checks": "health",
+      "reset": "health",
+      "version": "health"
+    },
+    "excluded_resources": []
+  },
+  "types": {
+    "Collection": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "Collection",
+      "file": "lib/src/models/collections/collection.dart",
+      "schema": "Collection",
+      "tags": [],
+      "excluded_properties": ["id", "metadata", "schema"],
+      "note": "Type-comparison exclusions: 'id' (spec ref CollectionUuid is a {type: string, format: uuid} alias — Dart uses bare String, no typedef wrapper); 'metadata' (spec ref HashMap is an open dict {type: object, additionalProperties: oneOf[...]} — Dart uses idiomatic Map<String, dynamic>); 'schema' (Dart class renamed to CollectionSchema to avoid name conflict with the generic 'Schema' identifier per the API Design naming guideline)."
+    },
+    "QueryResponse": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "QueryResponse",
+      "file": "lib/src/models/records/query_response.dart",
+      "schema": "QueryResponse",
+      "tags": [],
+      "excluded_properties": ["documents", "metadatas", "uris"],
+      "note": "Type-comparison exclusions: 'documents'/'uris' items are spec'd as {type: [string, null]} so Dart correctly uses List<List<String?>>; 'metadatas' items are oneOf[null, HashMap] so Dart uses List<List<Map<String, dynamic>?>>. The verifier doesn't propagate item-level nullability (or the HashMap → Map<String, dynamic> alias) into expected types, producing spurious mismatches."
+    },
+    "GetResponse": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "GetResponse",
+      "file": "lib/src/models/records/get_response.dart",
+      "schema": "GetResponse",
+      "tags": [],
+      "excluded_properties": ["documents", "metadatas", "uris"],
+      "note": "Type-comparison exclusions: 'documents'/'uris' items are spec'd as {type: [string, null]} so Dart correctly uses List<String?>; 'metadatas' items are oneOf[null, HashMap] so Dart uses List<Map<String, dynamic>?>. The verifier doesn't propagate item-level nullability (or the HashMap → Map<String, dynamic> alias) into expected types, producing spurious mismatches."
+    },
+    "DeleteCollectionRecordsPayload": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "DeleteCollectionRecordsPayload",
+      "tags": ["acknowledged"],
+      "note": "Request payload constructed inline in RecordsResource.deleteRecords — no standalone Dart model."
+    },
+    "DeleteCollectionRecordsResponse": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "DeleteCollectionRecordsResponse",
+      "file": "lib/src/models/records/delete_collection_records_response.dart",
+      "schema": "DeleteCollectionRecordsResponse",
+      "tags": []
+    },
+    "IndexStatusResponse": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "IndexStatusResponse",
+      "file": "lib/src/models/records/index_status_response.dart",
+      "schema": "IndexStatusResponse",
+      "tags": []
+    },
+    "Quantization": {
+      "spec": "main",
+      "kind": "enum",
+      "dart_class": "Quantization",
+      "file": "lib/src/models/collections/quantization.dart",
+      "schema": "Quantization",
+      "tags": []
+    },
+    "ReadLevel": {
+      "spec": "main",
+      "kind": "enum",
+      "dart_class": "ReadLevel",
+      "file": "lib/src/models/records/read_level.dart",
+      "schema": "ReadLevel",
+      "tags": []
+    },
+    "SearchRequestPayload": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "SearchRequestPayload",
+      "tags": ["acknowledged"],
+      "note": "Request payload constructed inline in RecordsResource.search — no standalone Dart model."
+    },
+    "SpannIndexConfig": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "SpannIndexConfig",
+      "file": "lib/src/models/collections/spann_index_config.dart",
+      "schema": "SpannIndexConfig",
+      "tags": []
+    },
+    "DeleteCollectionResponse": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "DeleteCollectionResponse",
+      "tags": ["acknowledged"],
+      "note": "Empty response object — deleteByName() returns Future<void>, no Dart model needed."
+    },
+    "ForkCountResponse": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "ForkCountResponse",
+      "file": "lib/src/models/collections/fork_count_response.dart",
+      "schema": "ForkCountResponse",
+      "tags": []
+    },
+    "SparseIndexAlgorithm": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "SparseIndexAlgorithm",
+      "tags": ["acknowledged"],
+      "note": "Sparse index algorithm enum nested inside CollectionSchema — schema stored as Map<String, dynamic>, no dedicated Dart model needed."
+    },
+    "SparseVectorIndexConfig": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "SparseVectorIndexConfig",
+      "tags": ["acknowledged"],
+      "note": "Sparse vector index config nested inside CollectionSchema — schema stored as Map<String, dynamic>, no dedicated Dart model needed."
+    }
+  }
+}

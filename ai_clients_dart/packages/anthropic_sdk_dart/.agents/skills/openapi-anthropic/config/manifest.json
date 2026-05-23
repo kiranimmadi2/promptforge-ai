@@ -1,0 +1,3273 @@
+{
+  "surface": "openapi",
+  "type_mappings": {
+    "string": "String",
+    "integer": "int",
+    "number": "double",
+    "boolean": "bool",
+    "array": "List",
+    "object": "Map"
+  },
+  "placement": {
+    "categories": {
+      "messages": {
+        "patterns": [
+          "message",
+          "content",
+          "block"
+        ],
+        "directory": "messages"
+      },
+      "models": {
+        "patterns": [
+          "model"
+        ],
+        "directory": "models"
+      },
+      "batches": {
+        "patterns": [
+          "batch"
+        ],
+        "directory": "batches"
+      },
+      "tools": {
+        "patterns": [
+          "tool",
+          "function"
+        ],
+        "directory": "tools"
+      },
+      "metadata": {
+        "patterns": [
+          "usage",
+          "stop",
+          "reason",
+          "error"
+        ],
+        "directory": "metadata"
+      }
+    },
+    "default_category": "common",
+    "parent_model_patterns": {
+      "Message": [
+        ".*Block$",
+        ".*Content$"
+      ],
+      "Tool": [
+        ".*Input$",
+        ".*Result$"
+      ]
+    }
+  },
+  "coverage": {
+    "excluded_paths": [],
+    "excluded_tags": [],
+    "priority_resources": [
+      "messages",
+      "models",
+      "message_batches"
+    ],
+    "notes": {},
+    "expected_properties": {},
+    "excluded_properties": {
+      "global": []
+    },
+    "resource_aliases": {},
+    "excluded_resources": [
+      "complete",
+      "environments"
+    ]
+  },
+  "types": {
+    "Message": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "Message",
+      "file": "lib/src/models/messages/message.dart",
+      "schema": "Message",
+      "tags": [
+        "critical"
+      ]
+    },
+    "CreateMessageRequest": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "MessageCreateRequest",
+      "file": "lib/src/models/messages/message_create_request.dart",
+      "schema": "CreateMessageParams",
+      "tags": []
+    },
+    "Tool": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "CustomToolDefinition",
+      "file": "lib/src/models/tools/tool_definition.dart",
+      "schema": "Tool",
+      "parent": "ToolDefinition",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Wrapper class \u2014 CustomToolDefinition wraps the spec Tool schema with additional routing logic."
+    },
+    "Usage": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "Usage",
+      "file": "lib/src/models/metadata/usage.dart",
+      "schema": "Usage"
+    },
+    "CacheControlEphemeral": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "CacheControlEphemeral",
+      "file": "lib/src/models/metadata/cache_control.dart",
+      "schema": "CacheControlEphemeral"
+    },
+    "InputSchema": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "InputSchema",
+      "file": "lib/src/models/tools/input_schema.dart",
+      "schema": "InputSchema"
+    },
+    "RequestCounts": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "RequestCounts",
+      "file": "lib/src/models/batches/message_batch.dart",
+      "schema": "BetaRequestCounts"
+    },
+    "MessageBatchIndividualResponse": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "BatchIndividualResponse",
+      "file": "lib/src/models/batches/message_batch.dart",
+      "schema": "BetaMessageBatchIndividualResponse"
+    },
+    "MessageBatch": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "MessageBatch",
+      "file": "lib/src/models/batches/message_batch.dart",
+      "schema": "MessageBatch"
+    },
+    "ContentBlock": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "ContentBlock",
+      "file": "lib/src/models/content/content_block.dart",
+      "schema": null,
+      "discriminator": {
+        "field": "type",
+        "mapping": {
+          "TextBlock": "text",
+          "ThinkingBlock": "thinking",
+          "RedactedThinkingBlock": "redacted_thinking",
+          "ToolUseBlock": "tool_use",
+          "ServerToolUseBlock": "server_tool_use",
+          "ResponseWebSearchToolResultBlock": "web_search_tool_result",
+          "ResponseWebFetchToolResultBlock": "web_fetch_tool_result",
+          "ResponseCodeExecutionToolResultBlock": "code_execution_tool_result",
+          "ResponseBashCodeExecutionToolResultBlock": "bash_code_execution_tool_result",
+          "ResponseTextEditorCodeExecutionToolResultBlock": "text_editor_code_execution_tool_result",
+          "ResponseToolSearchToolResultBlock": "tool_search_tool_result",
+          "ResponseContainerUploadBlock": "container_upload",
+          "ResponseCompactionBlock": "compaction",
+          "BetaResponseAdvisorToolResultBlock": "advisor_tool_result"
+        }
+      },
+      "note": null,
+      "excluded_properties": [
+        "content"
+      ]
+    },
+    "TextBlock": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "BetaManagedAgentsTextBlock",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Content block / API wrapper - used as Map<String, dynamic>"
+    },
+    "ThinkingBlock": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ThinkingBlock",
+      "file": "lib/src/models/content/content_block.dart",
+      "schema": "ResponseThinkingBlock",
+      "parent": "ContentBlock"
+    },
+    "RedactedThinkingBlock": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "RedactedThinkingBlock",
+      "file": "lib/src/models/content/content_block.dart",
+      "schema": "ResponseRedactedThinkingBlock",
+      "parent": "ContentBlock"
+    },
+    "ToolUseBlock": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ToolUseBlock",
+      "file": "lib/src/models/content/content_block.dart",
+      "schema": "ResponseToolUseBlock",
+      "parent": "ContentBlock",
+      "excluded_properties": [
+        "caller"
+      ]
+    },
+    "ServerToolUseBlock": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ServerToolUseBlock",
+      "file": "lib/src/models/content/content_block.dart",
+      "schema": "ResponseServerToolUseBlock",
+      "parent": "ContentBlock",
+      "excluded_properties": [
+        "caller"
+      ]
+    },
+    "ResponseWebSearchToolResultBlock": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "WebSearchToolResultBlock",
+      "file": "lib/src/models/content/content_block.dart",
+      "schema": "ResponseWebSearchToolResultBlock",
+      "parent": "ContentBlock",
+      "excluded_properties": [
+        "caller"
+      ]
+    },
+    "ResponseWebFetchToolResultBlock": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "WebFetchToolResultBlock",
+      "file": "lib/src/models/content/content_block.dart",
+      "schema": "ResponseWebFetchToolResultBlock",
+      "parent": "ContentBlock",
+      "excluded_properties": [
+        "caller"
+      ]
+    },
+    "ResponseCodeExecutionToolResultBlock": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "CodeExecutionToolResultBlock",
+      "file": "lib/src/models/content/content_block.dart",
+      "schema": "ResponseCodeExecutionToolResultBlock",
+      "parent": "ContentBlock"
+    },
+    "ResponseBashCodeExecutionToolResultBlock": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "BashCodeExecutionToolResultBlock",
+      "file": "lib/src/models/content/content_block.dart",
+      "schema": "ResponseBashCodeExecutionToolResultBlock",
+      "parent": "ContentBlock"
+    },
+    "ResponseTextEditorCodeExecutionToolResultBlock": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "TextEditorCodeExecutionToolResultBlock",
+      "file": "lib/src/models/content/content_block.dart",
+      "schema": "ResponseTextEditorCodeExecutionToolResultBlock",
+      "parent": "ContentBlock"
+    },
+    "ResponseToolSearchToolResultBlock": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ToolSearchToolResultBlock",
+      "file": "lib/src/models/content/content_block.dart",
+      "schema": "ResponseToolSearchToolResultBlock",
+      "parent": "ContentBlock"
+    },
+    "ResponseContainerUploadBlock": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ContainerUploadBlock",
+      "file": "lib/src/models/content/content_block.dart",
+      "schema": "ResponseContainerUploadBlock",
+      "parent": "ContentBlock"
+    },
+    "ResponseCompactionBlock": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "CompactionBlock",
+      "file": "lib/src/models/content/content_block.dart",
+      "schema": "BetaResponseCompactionBlock",
+      "parent": "ContentBlock"
+    },
+    "InputContentBlock": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "InputContentBlock",
+      "file": "lib/src/models/content/input_content_block.dart",
+      "schema": null,
+      "discriminator": {
+        "field": "type",
+        "mapping": {
+          "TextBlockParam": "text",
+          "ImageBlockParam": "image",
+          "DocumentBlockParam": "document",
+          "ToolUseBlockParam": "tool_use",
+          "ToolResultBlockParam": "tool_result",
+          "ServerToolUseBlockParam": "server_tool_use",
+          "RequestWebSearchToolResultBlockParam": "web_search_tool_result",
+          "RequestWebFetchToolResultBlockParam": "web_fetch_tool_result",
+          "RequestCodeExecutionToolResultBlockParam": "code_execution_tool_result",
+          "RequestBashCodeExecutionToolResultBlockParam": "bash_code_execution_tool_result",
+          "RequestTextEditorCodeExecutionToolResultBlockParam": "text_editor_code_execution_tool_result",
+          "RequestToolSearchToolResultBlockParam": "tool_search_tool_result",
+          "RequestContainerUploadBlockParam": "container_upload",
+          "RequestCompactionBlockParam": "compaction",
+          "RequestToolReferenceBlockParam": "tool_reference",
+          "RequestAdvisorToolResultBlockParam": "advisor_tool_result"
+        }
+      },
+      "note": null,
+      "excluded_properties": [
+        "content",
+        "source"
+      ]
+    },
+    "TextBlockParam": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "TextInputBlock",
+      "file": "lib/src/models/content/input_content_block.dart",
+      "schema": "RequestTextBlock",
+      "parent": "InputContentBlock",
+      "excluded_properties": [
+        "citations"
+      ]
+    },
+    "ImageBlockParam": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ImageInputBlock",
+      "file": "lib/src/models/content/input_content_block.dart",
+      "schema": "RequestImageBlock",
+      "parent": "InputContentBlock"
+    },
+    "DocumentBlockParam": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "DocumentInputBlock",
+      "file": "lib/src/models/content/input_content_block.dart",
+      "schema": "RequestDocumentBlock",
+      "parent": "InputContentBlock",
+      "excluded_properties": [
+        "citations",
+        "context"
+      ]
+    },
+    "ToolUseBlockParam": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ToolUseInputBlock",
+      "file": "lib/src/models/content/input_content_block.dart",
+      "schema": "RequestToolUseBlock",
+      "parent": "InputContentBlock"
+    },
+    "ToolResultBlockParam": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ToolResultInputBlock",
+      "file": "lib/src/models/content/input_content_block.dart",
+      "schema": "RequestToolResultBlock",
+      "parent": "InputContentBlock"
+    },
+    "ServerToolUseBlockParam": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ServerToolUseInputBlock",
+      "file": "lib/src/models/content/input_content_block.dart",
+      "schema": "RequestServerToolUseBlock",
+      "parent": "InputContentBlock"
+    },
+    "RequestWebSearchToolResultBlockParam": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "WebSearchToolResultInputBlock",
+      "file": "lib/src/models/content/input_content_block.dart",
+      "schema": "RequestWebSearchToolResultBlock",
+      "parent": "InputContentBlock"
+    },
+    "RequestWebFetchToolResultBlockParam": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "WebFetchToolResultInputBlock",
+      "file": "lib/src/models/content/input_content_block.dart",
+      "schema": "RequestWebFetchToolResultBlock",
+      "parent": "InputContentBlock"
+    },
+    "RequestCodeExecutionToolResultBlockParam": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "CodeExecutionToolResultInputBlock",
+      "file": "lib/src/models/content/input_content_block.dart",
+      "schema": "RequestCodeExecutionToolResultBlock",
+      "parent": "InputContentBlock"
+    },
+    "RequestBashCodeExecutionToolResultBlockParam": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "BashCodeExecutionToolResultInputBlock",
+      "file": "lib/src/models/content/input_content_block.dart",
+      "schema": "RequestBashCodeExecutionToolResultBlock",
+      "parent": "InputContentBlock"
+    },
+    "RequestTextEditorCodeExecutionToolResultBlockParam": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "TextEditorCodeExecutionToolResultInputBlock",
+      "file": "lib/src/models/content/input_content_block.dart",
+      "schema": "RequestTextEditorCodeExecutionToolResultBlock",
+      "parent": "InputContentBlock"
+    },
+    "RequestToolSearchToolResultBlockParam": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ToolSearchToolResultInputBlock",
+      "file": "lib/src/models/content/input_content_block.dart",
+      "schema": "RequestToolSearchToolResultBlock",
+      "parent": "InputContentBlock"
+    },
+    "RequestContainerUploadBlockParam": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ContainerUploadInputBlock",
+      "file": "lib/src/models/content/input_content_block.dart",
+      "schema": "RequestContainerUploadBlock",
+      "parent": "InputContentBlock"
+    },
+    "RequestCompactionBlockParam": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "CompactionInputBlock",
+      "file": "lib/src/models/content/input_content_block.dart",
+      "schema": "BetaRequestCompactionBlock",
+      "parent": "InputContentBlock"
+    },
+    "RequestToolReferenceBlockParam": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ToolReferenceInputBlock",
+      "file": "lib/src/models/content/input_content_block.dart",
+      "schema": "RequestToolReferenceBlock",
+      "parent": "InputContentBlock"
+    },
+    "ToolResultContent": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "ToolResultContent",
+      "file": "lib/src/models/content/input_content_block.dart",
+      "schema": null,
+      "discriminator": {
+        "field": "type",
+        "mapping": {
+          "ToolResultBlockParamContentVariant0": "text",
+          "ToolResultBlockParamContentVariant1": "image"
+        }
+      },
+      "note": null
+    },
+    "ToolResultBlockParamContentVariant0": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "ToolResultTextContent",
+      "file": "lib/src/models/content/input_content_block.dart",
+      "schema": "ToolResultBlockParamContentVariant0",
+      "parent": "ToolResultContent",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Anonymous spec variant \u2014 not a named schema, represents text content within tool results."
+    },
+    "ToolResultBlockParamContentVariant1": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "ToolResultImageContent",
+      "file": "lib/src/models/content/input_content_block.dart",
+      "schema": "ToolResultBlockParamContentVariant1",
+      "parent": "ToolResultContent",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Anonymous spec variant \u2014 not a named schema, represents image/document content within tool results."
+    },
+    "Citation": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "Citation",
+      "file": "lib/src/models/content/content_block.dart",
+      "schema": null,
+      "discriminator": {
+        "field": "type",
+        "mapping": {
+          "CitationCharLocation": "char_location",
+          "CitationPageLocation": "page_location",
+          "CitationContentBlockLocation": "content_block_location",
+          "CitationWebSearchResultLocation": "web_search_result_location"
+        }
+      },
+      "note": null
+    },
+    "CitationCharLocation": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "CharLocationCitation",
+      "file": "lib/src/models/content/content_block.dart",
+      "schema": "BetaResponseCharLocationCitation",
+      "parent": "Citation",
+      "excluded_properties": [
+        "file_id"
+      ]
+    },
+    "CitationPageLocation": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "PageLocationCitation",
+      "file": "lib/src/models/content/content_block.dart",
+      "schema": "BetaResponsePageLocationCitation",
+      "parent": "Citation",
+      "excluded_properties": [
+        "file_id"
+      ]
+    },
+    "CitationContentBlockLocation": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ContentBlockLocationCitation",
+      "file": "lib/src/models/content/content_block.dart",
+      "schema": "BetaResponseContentBlockLocationCitation",
+      "parent": "Citation",
+      "excluded_properties": [
+        "file_id"
+      ]
+    },
+    "CitationWebSearchResultLocation": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "WebSearchResultLocationCitation",
+      "file": "lib/src/models/content/content_block.dart",
+      "schema": "BetaResponseWebSearchResultLocationCitation",
+      "parent": "Citation",
+      "excluded_properties": [
+        "url"
+      ]
+    },
+    "WebSearchResult": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "WebSearchResult",
+      "file": "lib/src/models/content/content_block.dart",
+      "schema": null,
+      "discriminator": {
+        "field": "anyOf_runtime_type",
+        "mapping": {
+          "array of ResponseWebSearchResultBlock": "List",
+          "ResponseWebSearchToolResultError": "web_search_tool_result_error"
+        }
+      },
+      "note": "content is anyOf: List<WebSearchResultItem> (success) or Map with type=web_search_tool_result_error (error). fromJson accepts Object, not Map."
+    },
+    "array of ResponseWebSearchResultBlock": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "WebSearchResultSuccess",
+      "file": "lib/src/models/content/content_block.dart",
+      "schema": "array of ResponseWebSearchResultBlock",
+      "parent": "WebSearchResult",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "content is anyOf: List<WebSearchResultItem> (success) or Map with type=web_search_tool_result_error (error). fromJson accepts Object, not Map."
+    },
+    "ResponseWebSearchToolResultError": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "WebSearchResultError",
+      "file": "lib/src/models/content/content_block.dart",
+      "schema": "ResponseWebSearchToolResultError",
+      "parent": "WebSearchResult",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "content is anyOf: List<WebSearchResultItem> (success) or Map with type=web_search_tool_result_error (error). fromJson accepts Object, not Map."
+    },
+    "ImageSource": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "BetaManagedAgentsImageSource",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Content block / API wrapper - used as Map<String, dynamic>"
+    },
+    "Base64ImageSource": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "BetaManagedAgentsBase64ImageSource",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Content block / API wrapper - used as Map<String, dynamic>"
+    },
+    "URLImageSource": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "BetaManagedAgentsURLImageSource",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Content block / API wrapper - used as Map<String, dynamic>"
+    },
+    "DocumentSource": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "BetaManagedAgentsDocumentSource",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Content block / API wrapper - used as Map<String, dynamic>"
+    },
+    "Base64PDFSource": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "Base64PdfSource",
+      "file": "lib/src/models/sources/document_source.dart",
+      "schema": "Base64PDFSource",
+      "parent": "DocumentSource"
+    },
+    "PlainTextSource": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "PlainTextSource",
+      "file": "lib/src/models/sources/document_source.dart",
+      "schema": "PlainTextSource",
+      "parent": "DocumentSource"
+    },
+    "URLPDFSource": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "UrlPdfSource",
+      "file": "lib/src/models/sources/document_source.dart",
+      "schema": "URLPDFSource",
+      "parent": "DocumentSource"
+    },
+    "MessageStreamEvent": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "MessageStreamEvent",
+      "file": "lib/src/models/streaming/message_stream_event.dart",
+      "schema": null,
+      "discriminator": {
+        "field": "type",
+        "mapping": {
+          "MessageStartEvent": "message_start",
+          "MessageDeltaEvent": "message_delta",
+          "MessageStopEvent": "message_stop",
+          "ContentBlockStartEvent": "content_block_start",
+          "ContentBlockDeltaEvent": "content_block_delta",
+          "ContentBlockStopEvent": "content_block_stop",
+          "PingEvent": "ping",
+          "ErrorEvent": "error"
+        }
+      },
+      "note": null,
+      "excluded_properties": [
+        "delta",
+        "message"
+      ]
+    },
+    "MessageStartEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "MessageStartEvent",
+      "file": "lib/src/models/streaming/message_stream_event.dart",
+      "schema": "MessageStartEvent",
+      "parent": "MessageStreamEvent"
+    },
+    "MessageDeltaEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "MessageDeltaEvent",
+      "file": "lib/src/models/streaming/message_stream_event.dart",
+      "schema": "MessageDeltaEvent",
+      "parent": "MessageStreamEvent"
+    },
+    "MessageStopEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "MessageStopEvent",
+      "file": "lib/src/models/streaming/message_stream_event.dart",
+      "schema": "MessageStopEvent",
+      "parent": "MessageStreamEvent"
+    },
+    "ContentBlockStartEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ContentBlockStartEvent",
+      "file": "lib/src/models/streaming/message_stream_event.dart",
+      "schema": "ContentBlockStartEvent",
+      "parent": "MessageStreamEvent"
+    },
+    "ContentBlockDeltaEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ContentBlockDeltaEvent",
+      "file": "lib/src/models/streaming/message_stream_event.dart",
+      "schema": "ContentBlockDeltaEvent",
+      "parent": "MessageStreamEvent"
+    },
+    "ContentBlockStopEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ContentBlockStopEvent",
+      "file": "lib/src/models/streaming/message_stream_event.dart",
+      "schema": "ContentBlockStopEvent",
+      "parent": "MessageStreamEvent"
+    },
+    "PingEvent": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "PingEvent",
+      "file": "lib/src/models/streaming/message_stream_event.dart",
+      "schema": "PingEvent",
+      "parent": "MessageStreamEvent",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "No named schema in spec \u2014 the ping event has no dedicated schema definition."
+    },
+    "ErrorEvent": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "ErrorEvent",
+      "file": "lib/src/models/streaming/message_stream_event.dart",
+      "schema": "ErrorEvent",
+      "parent": "MessageStreamEvent",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "No named schema in spec \u2014 the error event uses a non-standard nested error object structure."
+    },
+    "ContentBlockDelta": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "ContentBlockDelta",
+      "file": "lib/src/models/streaming/content_block_delta.dart",
+      "schema": null,
+      "discriminator": {
+        "field": "type",
+        "mapping": {
+          "TextDelta": "text_delta",
+          "InputJSONDelta": "input_json_delta",
+          "ThinkingDelta": "thinking_delta",
+          "SignatureDelta": "signature_delta",
+          "CitationsDelta": "citations_delta",
+          "CompactionDelta": "compaction_delta"
+        }
+      },
+      "note": null
+    },
+    "TextDelta": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "TextDelta",
+      "file": "lib/src/models/streaming/content_block_delta.dart",
+      "schema": "TextContentBlockDelta",
+      "parent": "ContentBlockDelta"
+    },
+    "InputJSONDelta": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "InputJsonDelta",
+      "file": "lib/src/models/streaming/content_block_delta.dart",
+      "schema": "InputJsonContentBlockDelta",
+      "parent": "ContentBlockDelta"
+    },
+    "ThinkingDelta": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ThinkingDelta",
+      "file": "lib/src/models/streaming/content_block_delta.dart",
+      "schema": "ThinkingContentBlockDelta",
+      "parent": "ContentBlockDelta"
+    },
+    "SignatureDelta": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "SignatureDelta",
+      "file": "lib/src/models/streaming/content_block_delta.dart",
+      "schema": "SignatureContentBlockDelta",
+      "parent": "ContentBlockDelta"
+    },
+    "CitationsDelta": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "CitationsDelta",
+      "file": "lib/src/models/streaming/content_block_delta.dart",
+      "schema": "CitationsDelta",
+      "parent": "ContentBlockDelta"
+    },
+    "CompactionDelta": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "CompactionDelta",
+      "file": "lib/src/models/streaming/content_block_delta.dart",
+      "schema": "BetaCompactionContentBlockDelta",
+      "parent": "ContentBlockDelta"
+    },
+    "ThinkingConfig": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "ThinkingConfig",
+      "file": "lib/src/models/messages/thinking_config.dart",
+      "schema": null,
+      "discriminator": {
+        "field": "type",
+        "mapping": {
+          "ThinkingConfigEnabled": "enabled",
+          "ThinkingConfigDisabled": "disabled",
+          "ThinkingConfigAdaptive": "adaptive"
+        }
+      },
+      "note": null
+    },
+    "ThinkingConfigEnabled": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ThinkingEnabled",
+      "file": "lib/src/models/messages/thinking_config.dart",
+      "schema": "ThinkingConfigEnabled",
+      "parent": "ThinkingConfig"
+    },
+    "ThinkingConfigDisabled": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ThinkingDisabled",
+      "file": "lib/src/models/messages/thinking_config.dart",
+      "schema": "ThinkingConfigDisabled",
+      "parent": "ThinkingConfig"
+    },
+    "ThinkingConfigAdaptive": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ThinkingAdaptive",
+      "file": "lib/src/models/messages/thinking_config.dart",
+      "schema": "ThinkingConfigAdaptive",
+      "parent": "ThinkingConfig"
+    },
+    "ThinkingDisplayMode": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "ThinkingDisplayMode",
+      "file": "lib/src/models/messages/thinking_config.dart",
+      "schema": "ThinkingDisplayMode",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Enum for thinking display mode \u2014 used as optional field on ThinkingConfigEnabled and ThinkingConfigAdaptive"
+    },
+    "CapabilitySupport": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "CapabilitySupport",
+      "file": "lib/src/models/models/model_capabilities.dart",
+      "schema": "CapabilitySupport",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Simple helper type used within ModelCapabilities"
+    },
+    "ModelCapabilities": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "ModelCapabilities",
+      "file": "lib/src/models/models/model_capabilities.dart",
+      "schema": "ModelCapabilities",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Model capability information returned on ModelInfo"
+    },
+    "ContextManagementCapability": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "ContextManagementCapability",
+      "file": "lib/src/models/models/model_capabilities.dart",
+      "schema": "ContextManagementCapability",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Context management strategies within ModelCapabilities"
+    },
+    "EffortCapability": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "EffortCapability",
+      "file": "lib/src/models/models/model_capabilities.dart",
+      "schema": "EffortCapability",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Effort level support within ModelCapabilities"
+    },
+    "ThinkingCapability": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "ThinkingCapability",
+      "file": "lib/src/models/models/model_capabilities.dart",
+      "schema": "ThinkingCapability",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Thinking capability details within ModelCapabilities"
+    },
+    "ThinkingTypes": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "ThinkingTypes",
+      "file": "lib/src/models/models/model_capabilities.dart",
+      "schema": "ThinkingTypes",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Thinking type configurations within ThinkingCapability"
+    },
+    "ToolChoice": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "ToolChoice",
+      "file": "lib/src/models/tools/tool_choice.dart",
+      "schema": null,
+      "discriminator": {
+        "field": "type",
+        "mapping": {
+          "ToolChoiceAuto": "auto",
+          "ToolChoiceAny": "any",
+          "ToolChoiceTool": "tool",
+          "ToolChoiceNone": "none"
+        }
+      },
+      "note": null
+    },
+    "ToolChoiceAuto": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ToolChoiceAuto",
+      "file": "lib/src/models/tools/tool_choice.dart",
+      "schema": "ToolChoiceAuto",
+      "parent": "ToolChoice"
+    },
+    "ToolChoiceAny": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ToolChoiceAny",
+      "file": "lib/src/models/tools/tool_choice.dart",
+      "schema": "ToolChoiceAny",
+      "parent": "ToolChoice"
+    },
+    "ToolChoiceTool": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ToolChoiceTool",
+      "file": "lib/src/models/tools/tool_choice.dart",
+      "schema": "ToolChoiceTool",
+      "parent": "ToolChoice"
+    },
+    "ToolChoiceNone": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ToolChoiceNone",
+      "file": "lib/src/models/tools/tool_choice.dart",
+      "schema": "ToolChoiceNone",
+      "parent": "ToolChoice"
+    },
+    "ToolCaller": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "ToolCaller",
+      "file": "lib/src/models/tools/tool_caller.dart",
+      "schema": null,
+      "discriminator": {
+        "field": "type",
+        "mapping": {
+          "DirectToolCaller": "direct"
+        }
+      },
+      "note": "ServerToolCaller is a catch-all for non-direct types (versioned tool callers). DirectToolCaller is the default when type is absent."
+    },
+    "DirectToolCaller": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "DirectToolCaller",
+      "file": "lib/src/models/tools/tool_caller.dart",
+      "schema": "DirectToolCaller",
+      "parent": "ToolCaller",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "No named schema in spec \u2014 DirectToolCaller is the default when type is absent."
+    },
+    "ServerToolCaller": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ServerToolCaller",
+      "file": "lib/src/models/tools/tool_caller.dart",
+      "schema": "ServerToolCaller",
+      "parent": "ToolCaller",
+      "note": "Defaults to 'direct' when type is absent."
+    },
+    "ToolDefinition": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "ToolDefinition",
+      "file": "lib/src/models/tools/tool_definition.dart",
+      "schema": null,
+      "discriminator": {
+        "field": "type_prefix",
+        "mapping": {
+          "Tool": "custom or absent",
+          "various built-in tool schemas": "versioned prefix"
+        }
+      },
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Non-standard type_prefix discriminator \u2014 detects built-in vs custom by checking if type starts with known prefixes (bash_, web_search_, etc.)."
+    },
+    "various built-in tool schemas": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "BuiltInToolDefinition",
+      "file": "lib/src/models/tools/tool_definition.dart",
+      "schema": "various built-in tool schemas",
+      "parent": "ToolDefinition",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Virtual grouping entry \u2014 individual built-in tool types are mapped separately."
+    },
+    "BuiltInTool": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "BuiltInTool",
+      "file": "lib/src/models/tools/built_in_tools.dart",
+      "schema": null,
+      "discriminator": {
+        "field": "type",
+        "mapping": {
+          "BashTool20250124": "bash_20250124",
+          "TextEditor20250124": "text_editor_20250124",
+          "TextEditor20250429": "text_editor_20250429",
+          "TextEditor20250728": "text_editor_20250728",
+          "WebSearchTool20250305": "web_search_20250305, web_search_20260209",
+          "WebFetchTool20250910": "web_fetch_20250910, web_fetch_20260209, web_fetch_20260309",
+          "MemoryTool20250818": "memory_20250818",
+          "ToolSearchToolBm25": "tool_search_tool_bm25, tool_search_tool_bm25_20251119",
+          "ToolSearchToolRegex": "tool_search_tool_regex, tool_search_tool_regex_20251119",
+          "CodeExecutionTool20250522": "code_execution_20250522, code_execution_20250825, code_execution_20260120",
+          "ComputerUseTool (beta)": "computer_* prefix",
+          "McpToolset (beta)": "mcp_* prefix",
+          "AdvisorTool (beta)": "advisor_* prefix"
+        }
+      },
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Parent sealed class not a named schema in spec \u2014 built-in tools use versioned type strings as discriminators."
+    },
+    "BashTool20250124": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "BashTool",
+      "file": "lib/src/models/tools/built_in_tools.dart",
+      "schema": "BashTool_20250124",
+      "parent": "BuiltInTool",
+      "excluded_properties": [
+        "name"
+      ]
+    },
+    "TextEditor20250124": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "TextEditorTool20250124",
+      "file": "lib/src/models/tools/built_in_tools.dart",
+      "schema": "BetaTextEditor_20250124",
+      "parent": "BuiltInTool",
+      "excluded_properties": [
+        "name"
+      ]
+    },
+    "TextEditor20250429": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "TextEditorTool20250429",
+      "file": "lib/src/models/tools/built_in_tools.dart",
+      "schema": "BetaTextEditor_20250429",
+      "parent": "BuiltInTool",
+      "excluded_properties": [
+        "name"
+      ]
+    },
+    "TextEditor20250728": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "TextEditorTool",
+      "file": "lib/src/models/tools/built_in_tools.dart",
+      "schema": "BetaTextEditor_20250728",
+      "parent": "BuiltInTool",
+      "excluded_properties": [
+        "name"
+      ]
+    },
+    "WebSearchTool20250305": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "WebSearchTool",
+      "file": "lib/src/models/tools/built_in_tools.dart",
+      "schema": "BetaWebSearchTool_20250305",
+      "parent": "BuiltInTool",
+      "excluded_properties": [
+        "name"
+      ]
+    },
+    "WebFetchTool20250910": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "WebFetchTool",
+      "file": "lib/src/models/tools/built_in_tools.dart",
+      "schema": "WebFetchTool_20260309",
+      "parent": "BuiltInTool",
+      "excluded_properties": [
+        "name"
+      ]
+    },
+    "MemoryTool20250818": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "MemoryTool",
+      "file": "lib/src/models/tools/built_in_tools.dart",
+      "schema": "BetaMemoryTool_20250818",
+      "parent": "BuiltInTool",
+      "excluded_properties": [
+        "name"
+      ]
+    },
+    "ToolSearchToolBm25": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ToolSearchToolBm25",
+      "file": "lib/src/models/tools/built_in_tools.dart",
+      "schema": "BetaToolSearchToolBM25_20251119",
+      "parent": "BuiltInTool",
+      "excluded_properties": [
+        "name"
+      ]
+    },
+    "ToolSearchToolRegex": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ToolSearchToolRegex",
+      "file": "lib/src/models/tools/built_in_tools.dart",
+      "schema": "BetaToolSearchToolRegex_20251119",
+      "parent": "BuiltInTool",
+      "excluded_properties": [
+        "name"
+      ]
+    },
+    "CodeExecutionTool20250522": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "CodeExecutionBuiltInTool",
+      "file": "lib/src/models/tools/built_in_tools.dart",
+      "schema": "BetaCodeExecutionTool_20250522",
+      "parent": "BuiltInTool",
+      "excluded_properties": [
+        "name"
+      ]
+    },
+    "ComputerUseTool (beta)": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ComputerUseTool",
+      "file": "lib/src/models/beta/tools/computer_use_tool.dart",
+      "schema": "BetaComputerUseTool_20251124",
+      "parent": "BuiltInTool",
+      "excluded_properties": [
+        "allowed_callers",
+        "defer_loading",
+        "enable_zoom",
+        "input_examples",
+        "name",
+        "strict"
+      ]
+    },
+    "McpToolset (beta)": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "McpToolset",
+      "file": "lib/src/models/beta/tools/mcp_toolset.dart",
+      "schema": "BetaMCPToolset",
+      "parent": "BuiltInTool",
+      "excluded_properties": [
+        "configs",
+        "default_config",
+        "mcp_server_name"
+      ]
+    },
+    "AdvisorTool (beta)": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "AdvisorTool",
+      "file": "lib/src/models/beta/tools/advisor_tool.dart",
+      "schema": "BetaAdvisorTool_20260301",
+      "parent": "BuiltInTool",
+      "excluded_properties": [
+        "allowed_callers",
+        "defer_loading",
+        "name",
+        "strict"
+      ]
+    },
+    "BetaResponseAdvisorToolResultBlock": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "AdvisorToolResultBlock",
+      "file": "lib/src/models/content/content_block.dart",
+      "schema": "BetaResponseAdvisorToolResultBlock",
+      "parent": "ContentBlock"
+    },
+    "RequestAdvisorToolResultBlockParam": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "AdvisorToolResultInputBlock",
+      "file": "lib/src/models/content/input_content_block.dart",
+      "schema": "BetaRequestAdvisorToolResultBlock",
+      "parent": "InputContentBlock"
+    },
+    "AdvisorToolResultContent": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "AdvisorToolResultContent",
+      "file": "lib/src/models/content/content_block.dart",
+      "schema": null,
+      "discriminator": {
+        "field": "type",
+        "mapping": {
+          "BetaResponseAdvisorResultBlock": "advisor_result",
+          "BetaResponseAdvisorRedactedResultBlock": "advisor_redacted_result",
+          "BetaResponseAdvisorToolResultError": "advisor_tool_result_error"
+        }
+      },
+      "note": "Discriminated union for advisor tool result content"
+    },
+    "BetaResponseAdvisorResultBlock": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "AdvisorResult",
+      "file": "lib/src/models/content/content_block.dart",
+      "schema": "BetaResponseAdvisorResultBlock",
+      "parent": "AdvisorToolResultContent"
+    },
+    "BetaResponseAdvisorRedactedResultBlock": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "AdvisorRedactedResult",
+      "file": "lib/src/models/content/content_block.dart",
+      "schema": "BetaResponseAdvisorRedactedResultBlock",
+      "parent": "AdvisorToolResultContent"
+    },
+    "BetaResponseAdvisorToolResultError": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "AdvisorToolResultError",
+      "file": "lib/src/models/content/content_block.dart",
+      "schema": "BetaResponseAdvisorToolResultError",
+      "parent": "AdvisorToolResultContent"
+    },
+    "BetaRequestAdvisorResultBlock": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "AdvisorResult",
+      "file": "lib/src/models/content/content_block.dart",
+      "schema": "BetaRequestAdvisorResultBlock",
+      "parent": "AdvisorToolResultContent",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Request variant maps to same Dart class as Response variant"
+    },
+    "BetaRequestAdvisorRedactedResultBlock": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "AdvisorRedactedResult",
+      "file": "lib/src/models/content/content_block.dart",
+      "schema": "BetaRequestAdvisorRedactedResultBlock",
+      "parent": "AdvisorToolResultContent",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Request variant maps to same Dart class as Response variant"
+    },
+    "BetaRequestAdvisorToolResultError": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "AdvisorToolResultError",
+      "file": "lib/src/models/content/content_block.dart",
+      "schema": "BetaRequestAdvisorToolResultError",
+      "parent": "AdvisorToolResultContent",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Request variant maps to same Dart class as Response variant"
+    },
+    "BetaAdvisorToolResultErrorCode": {
+      "spec": "main",
+      "kind": "enum",
+      "dart_class": "AdvisorToolResultErrorCode",
+      "file": "lib/src/models/content/content_block.dart",
+      "schema": "BetaAdvisorToolResultErrorCode"
+    },
+    "BetaAdvisorMessageIterationUsage": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "IterationUsage",
+      "file": "lib/src/models/metadata/usage.dart",
+      "schema": "BetaAdvisorMessageIterationUsage",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Modeled as IterationUsage with optional model field; type discriminator 'advisor_message' is a string value, not a separate class"
+    },
+    "BatchResult": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "BatchResult",
+      "file": "lib/src/models/batches/message_batch.dart",
+      "schema": null,
+      "discriminator": {
+        "field": "type",
+        "mapping": {
+          "SucceededResult": "succeeded",
+          "ErroredResult": "errored",
+          "CanceledResult": "canceled",
+          "ExpiredResult": "expired"
+        }
+      },
+      "note": null
+    },
+    "SucceededResult": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "BatchResultSucceeded",
+      "file": "lib/src/models/batches/message_batch.dart",
+      "schema": "SucceededResult",
+      "parent": "BatchResult"
+    },
+    "ErroredResult": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "BatchResultErrored",
+      "file": "lib/src/models/batches/message_batch.dart",
+      "schema": "ErroredResult",
+      "parent": "BatchResult"
+    },
+    "CanceledResult": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "BatchResultCanceled",
+      "file": "lib/src/models/batches/message_batch.dart",
+      "schema": "CanceledResult",
+      "parent": "BatchResult"
+    },
+    "ExpiredResult": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "BatchResultExpired",
+      "file": "lib/src/models/batches/message_batch.dart",
+      "schema": "ExpiredResult",
+      "parent": "BatchResult"
+    },
+    "MessageContent": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "MessageContent",
+      "file": "lib/src/models/messages/input_message.dart",
+      "schema": null,
+      "discriminator": {
+        "field": "runtime_type",
+        "mapping": {}
+      },
+      "note": "fromJson accepts dynamic: String \u2192 TextMessageContent, List \u2192 BlocksMessageContent."
+    },
+    "MessageContent:TextMessageContent": {
+      "spec": "main",
+      "kind": "extension",
+      "dart_class": "TextMessageContent",
+      "file": "lib/src/models/messages/input_message.dart",
+      "schema": null,
+      "parent": "MessageContent",
+      "note": "fromJson accepts dynamic: String \u2192 TextMessageContent, List \u2192 BlocksMessageContent."
+    },
+    "MessageContent:BlocksMessageContent": {
+      "spec": "main",
+      "kind": "extension",
+      "dart_class": "BlocksMessageContent",
+      "file": "lib/src/models/messages/input_message.dart",
+      "schema": null,
+      "parent": "MessageContent",
+      "note": "fromJson accepts dynamic: String \u2192 TextMessageContent, List \u2192 BlocksMessageContent."
+    },
+    "SystemPrompt": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "SystemPrompt",
+      "file": "lib/src/models/messages/message_create_request.dart",
+      "schema": null,
+      "discriminator": {
+        "field": "runtime_type",
+        "mapping": {}
+      },
+      "note": "fromJson accepts dynamic: String \u2192 TextSystemPrompt, List \u2192 BlocksSystemPrompt."
+    },
+    "SystemPrompt:TextSystemPrompt": {
+      "spec": "main",
+      "kind": "extension",
+      "dart_class": "TextSystemPrompt",
+      "file": "lib/src/models/messages/message_create_request.dart",
+      "schema": null,
+      "parent": "SystemPrompt",
+      "note": "fromJson accepts dynamic: String \u2192 TextSystemPrompt, List \u2192 BlocksSystemPrompt."
+    },
+    "SystemPrompt:BlocksSystemPrompt": {
+      "spec": "main",
+      "kind": "extension",
+      "dart_class": "BlocksSystemPrompt",
+      "file": "lib/src/models/messages/message_create_request.dart",
+      "schema": null,
+      "parent": "SystemPrompt",
+      "note": "fromJson accepts dynamic: String \u2192 TextSystemPrompt, List \u2192 BlocksSystemPrompt."
+    },
+    "RefusalStopDetails": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "RefusalStopDetails",
+      "file": "lib/src/models/metadata/stop_reason.dart",
+      "schema": "RefusalStopDetails"
+    },
+    "BetaRefusalStopDetails": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "RefusalStopDetails",
+      "file": "lib/src/models/metadata/stop_reason.dart",
+      "schema": "BetaRefusalStopDetails",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Unified with non-beta RefusalStopDetails \u2014 identical schema."
+    },
+    "FileScope": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "FileScope",
+      "file": "lib/src/models/files/file_metadata.dart",
+      "schema": "BetaFileScope"
+    },
+    "BetaFileMetadataSchema": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "FileMetadata",
+      "file": "lib/src/models/files/file_metadata.dart",
+      "schema": "BetaFileMetadataSchema",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Unified with FileMetadata \u2014 scope field added."
+    },
+    "AddSessionResource": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "BetaManagedAgentsAddSessionResource",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Content block / API wrapper - used as Map<String, dynamic>"
+    },
+    "AddSessionResourceParams": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "BetaManagedAgentsAddSessionResourceParams",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Content block / API wrapper - used as Map<String, dynamic>"
+    },
+    "Agent": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "Agent",
+      "file": "lib/src/models/managed_agents/agents/agent.dart",
+      "schema": "BetaManagedAgentsAgent",
+      "excluded_properties": [
+        "archived_at",
+        "description",
+        "system",
+        "metadata"
+      ]
+    },
+    "AgentEvaluatedPermission": {
+      "spec": "main",
+      "kind": "enum",
+      "dart_class": "AgentEvaluatedPermission",
+      "file": "lib/src/models/managed_agents/config/agent_tool.dart",
+      "schema": "BetaManagedAgentsAgentEvaluatedPermission"
+    },
+    "AgentParams": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "AgentParamsObject",
+      "file": "lib/src/models/managed_agents/sessions/create_session_params.dart",
+      "schema": "BetaManagedAgentsAgentParams",
+      "parent": "AgentParams"
+    },
+    "AgentTool": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "AgentTool",
+      "file": "lib/src/models/managed_agents/config/agent_tool.dart",
+      "schema": "BetaManagedAgentsAgentTool"
+    },
+    "AgentToolConfig": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "AgentToolConfig",
+      "file": "lib/src/models/managed_agents/config/agent_tool.dart",
+      "schema": "BetaManagedAgentsAgentToolConfig"
+    },
+    "AgentToolConfigParams": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "AgentToolConfigParams",
+      "file": "lib/src/models/managed_agents/config/agent_tool.dart",
+      "schema": "BetaManagedAgentsAgentToolConfigParams"
+    },
+    "AgentToolName": {
+      "spec": "main",
+      "kind": "enum",
+      "dart_class": "AgentToolName",
+      "file": "lib/src/models/managed_agents/config/agent_tool.dart",
+      "schema": "BetaManagedAgentsAgentToolName"
+    },
+    "AgentToolParams": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "AgentToolParams",
+      "file": "lib/src/models/managed_agents/config/agent_tool.dart",
+      "schema": "BetaManagedAgentsAgentToolParams"
+    },
+    "AgentToolset20260401": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "AgentToolset20260401",
+      "file": "lib/src/models/managed_agents/config/agent_tool.dart",
+      "schema": "BetaManagedAgentsAgentToolset20260401",
+      "parent": "AgentTool"
+    },
+    "AgentToolset20260401Params": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "AgentToolset20260401Params",
+      "file": "lib/src/models/managed_agents/config/agent_tool.dart",
+      "schema": "BetaManagedAgentsAgentToolset20260401Params",
+      "parent": "AgentToolParams"
+    },
+    "AgentToolsetDefaultConfig": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "AgentToolsetDefaultConfig",
+      "file": "lib/src/models/managed_agents/config/agent_tool.dart",
+      "schema": "BetaManagedAgentsAgentToolsetDefaultConfig"
+    },
+    "AgentToolsetDefaultConfigParams": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "AgentToolsetDefaultConfigParams",
+      "file": "lib/src/models/managed_agents/config/agent_tool.dart",
+      "schema": "BetaManagedAgentsAgentToolsetDefaultConfigParams"
+    },
+    "AgentUnionParams": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "AgentParams",
+      "file": "lib/src/models/managed_agents/sessions/create_session_params.dart",
+      "schema": "BetaManagedAgentsAgentUnionParams"
+    },
+    "AlwaysAllowPolicy": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "AlwaysAllowPolicy",
+      "file": "lib/src/models/managed_agents/config/permission_policy.dart",
+      "schema": "BetaManagedAgentsAlwaysAllowPolicy",
+      "parent": "PermissionPolicy"
+    },
+    "AlwaysAskPolicy": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "AlwaysAskPolicy",
+      "file": "lib/src/models/managed_agents/config/permission_policy.dart",
+      "schema": "BetaManagedAgentsAlwaysAskPolicy",
+      "parent": "PermissionPolicy"
+    },
+    "AnthropicSkill": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "AnthropicSkill",
+      "file": "lib/src/models/managed_agents/config/agent_skill.dart",
+      "schema": "BetaManagedAgentsAnthropicSkill",
+      "parent": "AgentSkill"
+    },
+    "AnthropicSkillParams": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "AnthropicSkillParams",
+      "file": "lib/src/models/managed_agents/config/agent_skill.dart",
+      "schema": "BetaManagedAgentsAnthropicSkillParams",
+      "parent": "AgentSkillParams"
+    },
+    "Base64DocumentSource": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "BetaManagedAgentsBase64DocumentSource",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Content block / API wrapper - used as Map<String, dynamic>"
+    },
+    "BillingError": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "BillingError",
+      "file": "lib/src/models/managed_agents/errors/managed_agent_error.dart",
+      "schema": "BetaManagedAgentsBillingError"
+    },
+    "BranchCheckout": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "BranchCheckout",
+      "file": "lib/src/models/managed_agents/resources/session_resource_params.dart",
+      "schema": "BetaManagedAgentsBranchCheckout",
+      "parent": "RepositoryCheckout"
+    },
+    "CacheCreationUsage": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "CacheCreationUsage",
+      "file": "lib/src/models/managed_agents/events/telemetry.dart",
+      "schema": "BetaManagedAgentsCacheCreationUsage"
+    },
+    "CommitCheckout": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "CommitCheckout",
+      "file": "lib/src/models/managed_agents/resources/session_resource_params.dart",
+      "schema": "BetaManagedAgentsCommitCheckout",
+      "parent": "RepositoryCheckout"
+    },
+    "CreateAgentParams": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "CreateAgentParams",
+      "file": "lib/src/models/managed_agents/agents/create_agent_params.dart",
+      "schema": "BetaManagedAgentsCreateAgentParams"
+    },
+    "CreateCredentialRequestBody": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "CreateCredentialParams",
+      "file": "lib/src/models/managed_agents/credentials/create_credential_params.dart",
+      "schema": "BetaManagedAgentsCreateCredentialRequestBody"
+    },
+    "CreateSessionParams": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "CreateSessionParams",
+      "file": "lib/src/models/managed_agents/sessions/create_session_params.dart",
+      "schema": "BetaManagedAgentsCreateSessionParams"
+    },
+    "CreateVaultRequest": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "CreateVaultParams",
+      "file": "lib/src/models/managed_agents/vaults/create_vault_params.dart",
+      "schema": "BetaManagedAgentsCreateVaultRequest"
+    },
+    "Credential": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "Credential",
+      "file": "lib/src/models/managed_agents/credentials/credential.dart",
+      "schema": "BetaManagedAgentsCredential",
+      "excluded_properties": [
+        "archived_at",
+        "display_name"
+      ]
+    },
+    "CredentialAuth": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "CredentialAuth",
+      "file": "lib/src/models/managed_agents/credentials/credential_auth.dart",
+      "schema": "BetaManagedAgentsCredentialAuth"
+    },
+    "CredentialCreateAuth": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "CredentialCreateAuth",
+      "file": "lib/src/models/managed_agents/credentials/credential_auth.dart",
+      "schema": "BetaManagedAgentsCredentialCreateAuth"
+    },
+    "CredentialUpdateAuth": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "CredentialUpdateAuth",
+      "file": "lib/src/models/managed_agents/credentials/credential_auth.dart",
+      "schema": "BetaManagedAgentsCredentialUpdateAuth"
+    },
+    "CustomSkill": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "CustomSkill",
+      "file": "lib/src/models/managed_agents/config/agent_skill.dart",
+      "schema": "BetaManagedAgentsCustomSkill",
+      "parent": "AgentSkill"
+    },
+    "CustomSkillParams": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "CustomSkillParams",
+      "file": "lib/src/models/managed_agents/config/agent_skill.dart",
+      "schema": "BetaManagedAgentsCustomSkillParams",
+      "parent": "AgentSkillParams"
+    },
+    "CustomTool": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "CustomTool",
+      "file": "lib/src/models/managed_agents/config/agent_tool.dart",
+      "schema": "BetaManagedAgentsCustomTool",
+      "parent": "AgentTool"
+    },
+    "CustomToolInputSchema": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "CustomToolInputSchema",
+      "file": "lib/src/models/managed_agents/config/agent_tool.dart",
+      "schema": "BetaManagedAgentsCustomToolInputSchema"
+    },
+    "CustomToolParams": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "CustomToolParams",
+      "file": "lib/src/models/managed_agents/config/agent_tool.dart",
+      "schema": "BetaManagedAgentsCustomToolParams",
+      "parent": "AgentToolParams"
+    },
+    "DeleteSessionResource": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "DeletedSessionResource",
+      "file": "lib/src/models/managed_agents/resources/session_resource.dart",
+      "schema": "BetaManagedAgentsDeleteSessionResource"
+    },
+    "DeletedCredential": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "DeletedCredential",
+      "file": "lib/src/models/managed_agents/credentials/credential.dart",
+      "schema": "BetaManagedAgentsDeletedCredential"
+    },
+    "DeletedSession": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "DeletedSession",
+      "file": "lib/src/models/managed_agents/sessions/session.dart",
+      "schema": "BetaManagedAgentsDeletedSession"
+    },
+    "DeletedVault": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "DeletedVault",
+      "file": "lib/src/models/managed_agents/vaults/vault.dart",
+      "schema": "BetaManagedAgentsDeletedVault"
+    },
+    "DocumentBlock": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "BetaManagedAgentsDocumentBlock",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Content block / API wrapper - used as Map<String, dynamic>"
+    },
+    "EventParams": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "EventParams",
+      "file": "lib/src/models/managed_agents/events/send_event_params.dart",
+      "schema": "BetaManagedAgentsEventParams"
+    },
+    "FileDocumentSource": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "BetaManagedAgentsFileDocumentSource",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Content block / API wrapper - used as Map<String, dynamic>"
+    },
+    "FileImageSource": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "BetaManagedAgentsFileImageSource",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Content block / API wrapper - used as Map<String, dynamic>"
+    },
+    "FileResource": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "FileResource",
+      "file": "lib/src/models/managed_agents/resources/session_resource.dart",
+      "schema": "BetaManagedAgentsFileResource",
+      "parent": "SessionResource"
+    },
+    "FileResourceParams": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "FileResourceParams",
+      "file": "lib/src/models/managed_agents/resources/session_resource_params.dart",
+      "schema": "BetaManagedAgentsFileResourceParams",
+      "parent": "SessionResourceParams"
+    },
+    "GetSessionResource": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "BetaManagedAgentsGetSessionResource",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Content block / API wrapper - used as Map<String, dynamic>"
+    },
+    "GitHubRepositoryResource": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "GitHubRepositoryResource",
+      "file": "lib/src/models/managed_agents/resources/session_resource.dart",
+      "schema": "BetaManagedAgentsGitHubRepositoryResource",
+      "parent": "SessionResource"
+    },
+    "GitHubRepositoryResourceParams": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "GitHubRepositoryResourceParams",
+      "file": "lib/src/models/managed_agents/resources/session_resource_params.dart",
+      "schema": "BetaManagedAgentsGitHubRepositoryResourceParams",
+      "parent": "SessionResourceParams"
+    },
+    "ImageBlock": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "BetaManagedAgentsImageBlock",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Content block / API wrapper - used as Map<String, dynamic>"
+    },
+    "InputEvent": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "BetaManagedAgentsInputEvent",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Content block / API wrapper - used as Map<String, dynamic>"
+    },
+    "ListAgentVersions": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "ListAgentVersionsResponse",
+      "file": "lib/src/models/managed_agents/agents/agent_list_response.dart",
+      "schema": "BetaManagedAgentsListAgentVersions"
+    },
+    "ListAgents": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "ListAgentsResponse",
+      "file": "lib/src/models/managed_agents/agents/agent_list_response.dart",
+      "schema": "BetaManagedAgentsListAgents"
+    },
+    "ListCredentialsResponse": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "ListCredentialsResponse",
+      "file": "lib/src/models/managed_agents/credentials/credential_list_response.dart",
+      "schema": "BetaManagedAgentsListCredentialsResponse"
+    },
+    "ListOrder": {
+      "spec": "main",
+      "kind": "enum",
+      "dart_class": "ListOrder",
+      "file": "lib/src/models/managed_agents/common/list_order.dart",
+      "schema": "BetaManagedAgentsListOrder"
+    },
+    "ListSessionEvents": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "ListSessionEventsResponse",
+      "file": "lib/src/models/managed_agents/events/session_event_list_response.dart",
+      "schema": "BetaManagedAgentsListSessionEvents"
+    },
+    "ListSessionResources": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "ListSessionResourcesResponse",
+      "file": "lib/src/models/managed_agents/resources/session_resource.dart",
+      "schema": "BetaManagedAgentsListSessionResources",
+      "excluded_properties": [
+        "data"
+      ]
+    },
+    "ListSessionThreads": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "ListSessionThreadsResponse",
+      "file": "lib/src/models/managed_agents/sessions/session_thread_list_response.dart",
+      "schema": "BetaManagedAgentsListSessionThreads"
+    },
+    "ListSessions": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "ListSessionsResponse",
+      "file": "lib/src/models/managed_agents/sessions/session_list_response.dart",
+      "schema": "BetaManagedAgentsListSessions"
+    },
+    "ListVaultsResponse": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "ListVaultsResponse",
+      "file": "lib/src/models/managed_agents/vaults/vault_list_response.dart",
+      "schema": "BetaManagedAgentsListVaultsResponse"
+    },
+    "MCPServer": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "MCPServer",
+      "file": "lib/src/models/managed_agents/config/mcp_server.dart",
+      "schema": "BetaManagedAgentsMCPServer"
+    },
+    "MCPServerParams": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "MCPServerParams",
+      "file": "lib/src/models/managed_agents/config/mcp_server.dart",
+      "schema": "BetaManagedAgentsMCPServerParams"
+    },
+    "MCPServerURLDefinition": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "MCPServerURLDefinition",
+      "file": "lib/src/models/managed_agents/config/mcp_server.dart",
+      "schema": "BetaManagedAgentsMCPServerURLDefinition",
+      "parent": "MCPServer"
+    },
+    "MCPToolConfig": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "MCPToolConfig",
+      "file": "lib/src/models/managed_agents/config/agent_tool.dart",
+      "schema": "BetaManagedAgentsMCPToolConfig"
+    },
+    "MCPToolConfigParams": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "MCPToolConfigParams",
+      "file": "lib/src/models/managed_agents/config/agent_tool.dart",
+      "schema": "BetaManagedAgentsMCPToolConfigParams"
+    },
+    "MCPToolset": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "MCPToolset",
+      "file": "lib/src/models/managed_agents/config/agent_tool.dart",
+      "schema": "BetaManagedAgentsMCPToolset",
+      "parent": "AgentTool"
+    },
+    "MCPToolsetDefaultConfig": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "MCPToolsetDefaultConfig",
+      "file": "lib/src/models/managed_agents/config/agent_tool.dart",
+      "schema": "BetaManagedAgentsMCPToolsetDefaultConfig"
+    },
+    "MCPToolsetDefaultConfigParams": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "MCPToolsetDefaultConfigParams",
+      "file": "lib/src/models/managed_agents/config/agent_tool.dart",
+      "schema": "BetaManagedAgentsMCPToolsetDefaultConfigParams"
+    },
+    "MCPToolsetParams": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "MCPToolsetParams",
+      "file": "lib/src/models/managed_agents/config/agent_tool.dart",
+      "schema": "BetaManagedAgentsMCPToolsetParams",
+      "parent": "AgentToolParams"
+    },
+    "McpAuthenticationFailedError": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "McpAuthenticationFailedError",
+      "file": "lib/src/models/managed_agents/errors/managed_agent_error.dart",
+      "schema": "BetaManagedAgentsMcpAuthenticationFailedError"
+    },
+    "McpConnectionFailedError": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "McpConnectionFailedError",
+      "file": "lib/src/models/managed_agents/errors/managed_agent_error.dart",
+      "schema": "BetaManagedAgentsMcpConnectionFailedError"
+    },
+    "McpOauthAuthResponse": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "McpOauthAuthResponse",
+      "file": "lib/src/models/managed_agents/credentials/credential_auth.dart",
+      "schema": "BetaManagedAgentsMcpOauthAuthResponse",
+      "parent": "CredentialAuth"
+    },
+    "McpOauthCreateParams": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "McpOauthCreateParams",
+      "file": "lib/src/models/managed_agents/credentials/credential_auth.dart",
+      "schema": "BetaManagedAgentsMcpOauthCreateParams",
+      "parent": "CredentialCreateAuth"
+    },
+    "McpOauthRefreshParams": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "McpOauthRefreshParams",
+      "file": "lib/src/models/managed_agents/credentials/credential_auth.dart",
+      "schema": "BetaManagedAgentsMcpOauthRefreshParams"
+    },
+    "McpOauthRefreshResponse": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "McpOauthRefreshResponse",
+      "file": "lib/src/models/managed_agents/credentials/credential_auth.dart",
+      "schema": "BetaManagedAgentsMcpOauthRefreshResponse"
+    },
+    "McpOauthRefreshUpdateParams": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "McpOauthRefreshUpdateParams",
+      "file": "lib/src/models/managed_agents/credentials/credential_auth.dart",
+      "schema": "BetaManagedAgentsMcpOauthRefreshUpdateParams"
+    },
+    "McpOauthUpdateParams": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "McpOauthUpdateParams",
+      "file": "lib/src/models/managed_agents/credentials/credential_auth.dart",
+      "schema": "BetaManagedAgentsMcpOauthUpdateParams",
+      "parent": "CredentialUpdateAuth"
+    },
+    "Model": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "BetaManagedAgentsModel",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Content block / API wrapper - used as Map<String, dynamic>"
+    },
+    "ModelConfig": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "ModelConfig",
+      "file": "lib/src/models/managed_agents/config/model_config.dart",
+      "schema": "BetaManagedAgentsModelConfig"
+    },
+    "ModelConfigParams": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "BetaManagedAgentsModelConfigParams",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Content block / API wrapper - used as Map<String, dynamic>"
+    },
+    "ModelOverloadedError": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "ModelOverloadedError",
+      "file": "lib/src/models/managed_agents/errors/managed_agent_error.dart",
+      "schema": "BetaManagedAgentsModelOverloadedError"
+    },
+    "ModelParams": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "ModelParams",
+      "file": "lib/src/models/managed_agents/config/model_config.dart",
+      "schema": "BetaManagedAgentsModelParams"
+    },
+    "ModelRateLimitedError": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "ModelRateLimitedError",
+      "file": "lib/src/models/managed_agents/errors/managed_agent_error.dart",
+      "schema": "BetaManagedAgentsModelRateLimitedError"
+    },
+    "ModelRequestFailedError": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "ModelRequestFailedError",
+      "file": "lib/src/models/managed_agents/errors/managed_agent_error.dart",
+      "schema": "BetaManagedAgentsModelRequestFailedError"
+    },
+    "PermissionPolicy": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "PermissionPolicy",
+      "file": "lib/src/models/managed_agents/config/permission_policy.dart",
+      "schema": "BetaManagedAgentsPermissionPolicy"
+    },
+    "PlainTextDocumentSource": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "BetaManagedAgentsPlainTextDocumentSource",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Content block / API wrapper - used as Map<String, dynamic>"
+    },
+    "RepositoryCheckout": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "RepositoryCheckout",
+      "file": "lib/src/models/managed_agents/resources/session_resource_params.dart",
+      "schema": "BetaManagedAgentsRepositoryCheckout"
+    },
+    "RetryStatus": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "RetryStatus",
+      "file": "lib/src/models/managed_agents/events/telemetry.dart",
+      "schema": "BetaManagedAgentsRetryStatus"
+    },
+    "RetryStatusExhausted": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "RetryStatusExhausted",
+      "file": "lib/src/models/managed_agents/events/telemetry.dart",
+      "schema": "BetaManagedAgentsRetryStatusExhausted",
+      "parent": "RetryStatus"
+    },
+    "RetryStatusRetrying": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "RetryStatusRetrying",
+      "file": "lib/src/models/managed_agents/events/telemetry.dart",
+      "schema": "BetaManagedAgentsRetryStatusRetrying",
+      "parent": "RetryStatus"
+    },
+    "RetryStatusTerminal": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "RetryStatusTerminal",
+      "file": "lib/src/models/managed_agents/events/telemetry.dart",
+      "schema": "BetaManagedAgentsRetryStatusTerminal",
+      "parent": "RetryStatus"
+    },
+    "SendSessionEvents": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "SendSessionEventsResponse",
+      "file": "lib/src/models/managed_agents/events/session_event_list_response.dart",
+      "schema": "BetaManagedAgentsSendSessionEvents"
+    },
+    "SendSessionEventsParams": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "SendSessionEventsParams",
+      "file": "lib/src/models/managed_agents/events/send_event_params.dart",
+      "schema": "BetaManagedAgentsSendSessionEventsParams"
+    },
+    "Session": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "Session",
+      "file": "lib/src/models/managed_agents/sessions/session.dart",
+      "schema": "BetaManagedAgentsSession",
+      "excluded_properties": [
+        "archived_at"
+      ]
+    },
+    "SessionAgent": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "SessionAgent",
+      "file": "lib/src/models/managed_agents/sessions/session.dart",
+      "schema": "BetaManagedAgentsSessionAgent",
+      "excluded_properties": [
+        "description",
+        "system"
+      ]
+    },
+    "SessionEndTurn": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "SessionEndTurn",
+      "file": "lib/src/models/managed_agents/events/session_event.dart",
+      "schema": "BetaManagedAgentsSessionEndTurn",
+      "parent": "SessionStopReason"
+    },
+    "SessionEvent": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "SessionEvent",
+      "file": "lib/src/models/managed_agents/events/session_event.dart",
+      "schema": "BetaManagedAgentsSessionEvent"
+    },
+    "SessionRequiresAction": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "SessionRequiresAction",
+      "file": "lib/src/models/managed_agents/events/session_event.dart",
+      "schema": "BetaManagedAgentsSessionRequiresAction",
+      "parent": "SessionStopReason"
+    },
+    "SessionResource": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "SessionResource",
+      "file": "lib/src/models/managed_agents/resources/session_resource.dart",
+      "schema": "BetaManagedAgentsSessionResource"
+    },
+    "SessionResourceParams": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "SessionResourceParams",
+      "file": "lib/src/models/managed_agents/resources/session_resource_params.dart",
+      "schema": "BetaManagedAgentsSessionResourceParams"
+    },
+    "SessionRetriesExhausted": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "SessionRetriesExhausted",
+      "file": "lib/src/models/managed_agents/events/session_event.dart",
+      "schema": "BetaManagedAgentsSessionRetriesExhausted",
+      "parent": "SessionStopReason"
+    },
+    "SessionStats": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "SessionStats",
+      "file": "lib/src/models/managed_agents/sessions/session.dart",
+      "schema": "BetaManagedAgentsSessionStats"
+    },
+    "SessionStatus": {
+      "spec": "main",
+      "kind": "enum",
+      "dart_class": "SessionStatus",
+      "file": "lib/src/models/managed_agents/sessions/session.dart",
+      "schema": "BetaManagedAgentsSessionStatus"
+    },
+    "SessionThread": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "SessionThread",
+      "file": "lib/src/models/managed_agents/sessions/session_thread.dart",
+      "schema": "BetaManagedAgentsSessionThread",
+      "excluded_properties": [
+        "agent",
+        "status",
+        "archived_at",
+        "parent_thread_id",
+        "stats",
+        "usage"
+      ]
+    },
+    "SessionThreadStats": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "SessionThreadStats",
+      "file": "lib/src/models/managed_agents/sessions/session_thread.dart",
+      "schema": "BetaManagedAgentsSessionThreadStats"
+    },
+    "SessionThreadUsage": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "SessionThreadUsage",
+      "file": "lib/src/models/managed_agents/sessions/session_thread.dart",
+      "schema": "BetaManagedAgentsSessionThreadUsage"
+    },
+    "SessionUsage": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "SessionUsage",
+      "file": "lib/src/models/managed_agents/sessions/session.dart",
+      "schema": "BetaManagedAgentsSessionUsage"
+    },
+    "Skill": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "AgentSkill",
+      "file": "lib/src/models/managed_agents/config/agent_skill.dart",
+      "schema": "BetaManagedAgentsSkill"
+    },
+    "SkillParams": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "AgentSkillParams",
+      "file": "lib/src/models/managed_agents/config/agent_skill.dart",
+      "schema": "BetaManagedAgentsSkillParams"
+    },
+    "SpanModelUsage": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "SpanModelUsage",
+      "file": "lib/src/models/managed_agents/events/telemetry.dart",
+      "schema": "BetaManagedAgentsSpanModelUsage"
+    },
+    "Speed": {
+      "spec": "main",
+      "kind": "enum",
+      "dart_class": "AgentSpeed",
+      "file": "lib/src/models/managed_agents/config/model_config.dart",
+      "schema": "BetaManagedAgentsSpeed"
+    },
+    "StaticBearerAuthResponse": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "StaticBearerAuthResponse",
+      "file": "lib/src/models/managed_agents/credentials/credential_auth.dart",
+      "schema": "BetaManagedAgentsStaticBearerAuthResponse",
+      "parent": "CredentialAuth"
+    },
+    "StaticBearerCreateParams": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "StaticBearerCreateParams",
+      "file": "lib/src/models/managed_agents/credentials/credential_auth.dart",
+      "schema": "BetaManagedAgentsStaticBearerCreateParams",
+      "parent": "CredentialCreateAuth"
+    },
+    "StaticBearerUpdateParams": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "StaticBearerUpdateParams",
+      "file": "lib/src/models/managed_agents/credentials/credential_auth.dart",
+      "schema": "BetaManagedAgentsStaticBearerUpdateParams",
+      "parent": "CredentialUpdateAuth"
+    },
+    "StreamSessionEvents": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "SessionEvent",
+      "file": "lib/src/models/managed_agents/events/session_event.dart",
+      "schema": "BetaManagedAgentsStreamSessionEvents"
+    },
+    "StreamSessionThreadEvents": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "SessionEvent",
+      "file": "lib/src/models/managed_agents/events/session_event.dart",
+      "schema": "BetaManagedAgentsStreamSessionThreadEvents"
+    },
+    "Struct": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "BetaManagedAgentsStruct",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Content block / API wrapper - used as Map<String, dynamic>"
+    },
+    "TokenEndpointAuthBasicParam": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "TokenEndpointAuthBasicParam",
+      "file": "lib/src/models/managed_agents/credentials/credential_auth.dart",
+      "schema": "BetaManagedAgentsTokenEndpointAuthBasicParam",
+      "parent": "TokenEndpointAuthParam"
+    },
+    "TokenEndpointAuthBasicResponse": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "TokenEndpointAuthBasicResponse",
+      "file": "lib/src/models/managed_agents/credentials/credential_auth.dart",
+      "schema": "BetaManagedAgentsTokenEndpointAuthBasicResponse",
+      "parent": "TokenEndpointAuthResponse"
+    },
+    "TokenEndpointAuthNoneParam": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "TokenEndpointAuthNoneParam",
+      "file": "lib/src/models/managed_agents/credentials/credential_auth.dart",
+      "schema": "BetaManagedAgentsTokenEndpointAuthNoneParam",
+      "parent": "TokenEndpointAuthParam"
+    },
+    "TokenEndpointAuthNoneResponse": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "TokenEndpointAuthNoneResponse",
+      "file": "lib/src/models/managed_agents/credentials/credential_auth.dart",
+      "schema": "BetaManagedAgentsTokenEndpointAuthNoneResponse",
+      "parent": "TokenEndpointAuthResponse"
+    },
+    "TokenEndpointAuthPostParam": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "TokenEndpointAuthPostParam",
+      "file": "lib/src/models/managed_agents/credentials/credential_auth.dart",
+      "schema": "BetaManagedAgentsTokenEndpointAuthPostParam",
+      "parent": "TokenEndpointAuthParam"
+    },
+    "TokenEndpointAuthPostResponse": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "TokenEndpointAuthPostResponse",
+      "file": "lib/src/models/managed_agents/credentials/credential_auth.dart",
+      "schema": "BetaManagedAgentsTokenEndpointAuthPostResponse",
+      "parent": "TokenEndpointAuthResponse"
+    },
+    "ToolResultContentBlock": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "BetaManagedAgentsToolResultContentBlock",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Content block / API wrapper - used as Map<String, dynamic>"
+    },
+    "URLDocumentSource": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "BetaManagedAgentsURLDocumentSource",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Content block / API wrapper - used as Map<String, dynamic>"
+    },
+    "URLMCPServerParams": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "URLMCPServerParams",
+      "file": "lib/src/models/managed_agents/config/mcp_server.dart",
+      "schema": "BetaManagedAgentsURLMCPServerParams",
+      "parent": "MCPServerParams"
+    },
+    "UnknownError": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "UnknownManagedAgentError",
+      "file": "lib/src/models/managed_agents/errors/managed_agent_error.dart",
+      "schema": "BetaManagedAgentsUnknownError"
+    },
+    "UpdateAgentParams": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "UpdateAgentParams",
+      "file": "lib/src/models/managed_agents/agents/update_agent_params.dart",
+      "schema": "BetaManagedAgentsUpdateAgentParams"
+    },
+    "UpdateCredentialRequestBody": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "UpdateCredentialParams",
+      "file": "lib/src/models/managed_agents/credentials/update_credential_params.dart",
+      "schema": "BetaManagedAgentsUpdateCredentialRequestBody"
+    },
+    "UpdateSessionParams": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "UpdateSessionParams",
+      "file": "lib/src/models/managed_agents/sessions/update_session_params.dart",
+      "schema": "BetaManagedAgentsUpdateSessionParams"
+    },
+    "UpdateSessionResource": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "BetaManagedAgentsUpdateSessionResource",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Content block / API wrapper - used as Map<String, dynamic>"
+    },
+    "UpdateSessionResourceParams": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "UpdateSessionResourceParams",
+      "file": "lib/src/models/managed_agents/resources/session_resource_params.dart",
+      "schema": "BetaManagedAgentsUpdateSessionResourceParams"
+    },
+    "UpdateVaultRequestBody": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "UpdateVaultParams",
+      "file": "lib/src/models/managed_agents/vaults/update_vault_params.dart",
+      "schema": "BetaManagedAgentsUpdateVaultRequestBody"
+    },
+    "UserContentBlock": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "BetaManagedAgentsUserContentBlock",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Content block / API wrapper - used as Map<String, dynamic>"
+    },
+    "UserProfile": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "UserProfile",
+      "file": "lib/src/models/user_profiles/user_profile.dart",
+      "schema": "BetaUserProfile"
+    },
+    "UserProfileTrustGrant": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "UserProfileTrustGrant",
+      "file": "lib/src/models/user_profiles/user_profile_trust_grant.dart",
+      "schema": "BetaUserProfileTrustGrant"
+    },
+    "UserProfileListOrder": {
+      "spec": "main",
+      "kind": "enum",
+      "dart_class": "UserProfileListOrder",
+      "file": "lib/src/models/user_profiles/user_profile_list_order.dart",
+      "schema": "BetaUserProfileListOrder"
+    },
+    "BetaUserProfileRelationship": {
+      "spec": "main",
+      "kind": "enum",
+      "dart_class": "BetaUserProfileRelationship",
+      "file": "lib/src/models/user_profiles/user_profile_relationship.dart",
+      "schema": "BetaUserProfileRelationship"
+    },
+    "EnrollmentUrl": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "EnrollmentUrl",
+      "file": "lib/src/models/user_profiles/enrollment_url.dart",
+      "schema": "BetaEnrollmentUrl"
+    },
+    "CreateUserProfileRequest": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "CreateUserProfileRequest",
+      "file": "lib/src/models/user_profiles/create_user_profile_request.dart",
+      "schema": "BetaCreateUserProfileRequest"
+    },
+    "UpdateUserProfileRequest": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "UpdateUserProfileRequest",
+      "file": "lib/src/models/user_profiles/update_user_profile_request.dart",
+      "schema": "BetaUpdateUserProfileRequestBody"
+    },
+    "ListUserProfilesResponse": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "ListUserProfilesResponse",
+      "file": "lib/src/models/user_profiles/list_user_profiles_response.dart",
+      "schema": "BetaListUserProfilesResponse"
+    },
+    "Vault": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "Vault",
+      "file": "lib/src/models/managed_agents/vaults/vault.dart",
+      "schema": "BetaManagedAgentsVault",
+      "excluded_properties": [
+        "archived_at"
+      ]
+    },
+    "AgentCustomToolUseEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "AgentCustomToolUseEvent",
+      "file": "lib/src/models/managed_agents/events/session_event.dart",
+      "schema": "BetaManagedAgentsAgentCustomToolUseEvent",
+      "parent": "SessionEvent"
+    },
+    "AgentMcpToolResultEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "AgentMcpToolResultEvent",
+      "file": "lib/src/models/managed_agents/events/session_event.dart",
+      "schema": "BetaManagedAgentsAgentMcpToolResultEvent",
+      "parent": "SessionEvent"
+    },
+    "AgentMcpToolUseEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "AgentMcpToolUseEvent",
+      "file": "lib/src/models/managed_agents/events/session_event.dart",
+      "schema": "BetaManagedAgentsAgentMcpToolUseEvent",
+      "parent": "SessionEvent"
+    },
+    "AgentMessageEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "AgentMessageEvent",
+      "file": "lib/src/models/managed_agents/events/session_event.dart",
+      "schema": "BetaManagedAgentsAgentMessageEvent",
+      "parent": "SessionEvent"
+    },
+    "AgentThinkingEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "AgentThinkingEvent",
+      "file": "lib/src/models/managed_agents/events/session_event.dart",
+      "schema": "BetaManagedAgentsAgentThinkingEvent",
+      "parent": "SessionEvent"
+    },
+    "AgentThreadContextCompactedEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "AgentThreadContextCompactedEvent",
+      "file": "lib/src/models/managed_agents/events/session_event.dart",
+      "schema": "BetaManagedAgentsAgentThreadContextCompactedEvent",
+      "parent": "SessionEvent"
+    },
+    "AgentThreadMessageReceivedEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "AgentThreadMessageReceivedEvent",
+      "file": "lib/src/models/managed_agents/events/session_event.dart",
+      "schema": "BetaManagedAgentsAgentThreadMessageReceivedEvent",
+      "parent": "SessionEvent"
+    },
+    "AgentThreadMessageSentEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "AgentThreadMessageSentEvent",
+      "file": "lib/src/models/managed_agents/events/session_event.dart",
+      "schema": "BetaManagedAgentsAgentThreadMessageSentEvent",
+      "parent": "SessionEvent"
+    },
+    "AgentToolResultEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "AgentToolResultEvent",
+      "file": "lib/src/models/managed_agents/events/session_event.dart",
+      "schema": "BetaManagedAgentsAgentToolResultEvent",
+      "parent": "SessionEvent"
+    },
+    "AgentToolUseEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "AgentToolUseEvent",
+      "file": "lib/src/models/managed_agents/events/session_event.dart",
+      "schema": "BetaManagedAgentsAgentToolUseEvent",
+      "parent": "SessionEvent"
+    },
+    "SessionDeletedEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "SessionDeletedEvent",
+      "file": "lib/src/models/managed_agents/events/session_event.dart",
+      "schema": "BetaManagedAgentsSessionDeletedEvent",
+      "parent": "SessionEvent"
+    },
+    "SessionErrorEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "SessionErrorEvent",
+      "file": "lib/src/models/managed_agents/events/session_event.dart",
+      "schema": "BetaManagedAgentsSessionErrorEvent",
+      "parent": "SessionEvent"
+    },
+    "SessionStatusIdleEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "SessionStatusIdleEvent",
+      "file": "lib/src/models/managed_agents/events/session_event.dart",
+      "schema": "BetaManagedAgentsSessionStatusIdleEvent",
+      "parent": "SessionEvent"
+    },
+    "SessionStatusRescheduledEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "SessionStatusRescheduledEvent",
+      "file": "lib/src/models/managed_agents/events/session_event.dart",
+      "schema": "BetaManagedAgentsSessionStatusRescheduledEvent",
+      "parent": "SessionEvent"
+    },
+    "SessionStatusRunningEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "SessionStatusRunningEvent",
+      "file": "lib/src/models/managed_agents/events/session_event.dart",
+      "schema": "BetaManagedAgentsSessionStatusRunningEvent",
+      "parent": "SessionEvent"
+    },
+    "SessionStatusTerminatedEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "SessionStatusTerminatedEvent",
+      "file": "lib/src/models/managed_agents/events/session_event.dart",
+      "schema": "BetaManagedAgentsSessionStatusTerminatedEvent",
+      "parent": "SessionEvent"
+    },
+    "SessionThreadCreatedEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "SessionThreadCreatedEvent",
+      "file": "lib/src/models/managed_agents/events/session_event.dart",
+      "schema": "BetaManagedAgentsSessionThreadCreatedEvent",
+      "parent": "SessionEvent"
+    },
+    "SessionThreadStatusIdleEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "SessionThreadStatusIdleEvent",
+      "file": "lib/src/models/managed_agents/events/session_event.dart",
+      "schema": "BetaManagedAgentsSessionThreadStatusIdleEvent",
+      "parent": "SessionEvent"
+    },
+    "SessionThreadStatusRescheduledEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "SessionThreadStatusRescheduledEvent",
+      "file": "lib/src/models/managed_agents/events/session_event.dart",
+      "schema": "BetaManagedAgentsSessionThreadStatusRescheduledEvent",
+      "parent": "SessionEvent"
+    },
+    "SessionThreadStatusRunningEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "SessionThreadStatusRunningEvent",
+      "file": "lib/src/models/managed_agents/events/session_event.dart",
+      "schema": "BetaManagedAgentsSessionThreadStatusRunningEvent",
+      "parent": "SessionEvent"
+    },
+    "SessionThreadStatusTerminatedEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "SessionThreadStatusTerminatedEvent",
+      "file": "lib/src/models/managed_agents/events/session_event.dart",
+      "schema": "BetaManagedAgentsSessionThreadStatusTerminatedEvent",
+      "parent": "SessionEvent"
+    },
+    "SpanModelRequestEndEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "SpanModelRequestEndEvent",
+      "file": "lib/src/models/managed_agents/events/session_event.dart",
+      "schema": "BetaManagedAgentsSpanModelRequestEndEvent",
+      "parent": "SessionEvent",
+      "excluded_properties": [
+        "model_usage"
+      ]
+    },
+    "SpanModelRequestStartEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "SpanModelRequestStartEvent",
+      "file": "lib/src/models/managed_agents/events/session_event.dart",
+      "schema": "BetaManagedAgentsSpanModelRequestStartEvent",
+      "parent": "SessionEvent"
+    },
+    "TokenEndpointAuthBasicUpdateParam": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "TokenEndpointAuthBasicUpdateParam",
+      "file": "lib/src/models/managed_agents/credentials/credential_auth.dart",
+      "schema": "BetaManagedAgentsTokenEndpointAuthBasicUpdateParam",
+      "parent": "TokenEndpointAuthUpdateParam"
+    },
+    "TokenEndpointAuthPostUpdateParam": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "TokenEndpointAuthPostUpdateParam",
+      "file": "lib/src/models/managed_agents/credentials/credential_auth.dart",
+      "schema": "BetaManagedAgentsTokenEndpointAuthPostUpdateParam",
+      "parent": "TokenEndpointAuthUpdateParam"
+    },
+    "UserCustomToolResultEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "UserCustomToolResultEvent",
+      "file": "lib/src/models/managed_agents/events/session_event.dart",
+      "schema": "BetaManagedAgentsUserCustomToolResultEvent",
+      "parent": "SessionEvent"
+    },
+    "UserCustomToolResultEventParams": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "UserCustomToolResultEventParams",
+      "file": "lib/src/models/managed_agents/events/send_event_params.dart",
+      "schema": "BetaManagedAgentsUserCustomToolResultEventParams",
+      "parent": "EventParams"
+    },
+    "UserInterruptEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "UserInterruptEvent",
+      "file": "lib/src/models/managed_agents/events/session_event.dart",
+      "schema": "BetaManagedAgentsUserInterruptEvent",
+      "parent": "SessionEvent"
+    },
+    "UserInterruptEventParams": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "UserInterruptEventParams",
+      "file": "lib/src/models/managed_agents/events/send_event_params.dart",
+      "schema": "BetaManagedAgentsUserInterruptEventParams",
+      "parent": "EventParams"
+    },
+    "UserMessageEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "UserMessageEvent",
+      "file": "lib/src/models/managed_agents/events/session_event.dart",
+      "schema": "BetaManagedAgentsUserMessageEvent",
+      "parent": "SessionEvent"
+    },
+    "UserMessageEventParams": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "UserMessageEventParams",
+      "file": "lib/src/models/managed_agents/events/send_event_params.dart",
+      "schema": "BetaManagedAgentsUserMessageEventParams",
+      "parent": "EventParams"
+    },
+    "UserToolConfirmationEvent": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "UserToolConfirmationEvent",
+      "file": "lib/src/models/managed_agents/events/session_event.dart",
+      "schema": "BetaManagedAgentsUserToolConfirmationEvent",
+      "parent": "SessionEvent"
+    },
+    "UserToolConfirmationEventParams": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "UserToolConfirmationEventParams",
+      "file": "lib/src/models/managed_agents/events/send_event_params.dart",
+      "schema": "BetaManagedAgentsUserToolConfirmationEventParams",
+      "parent": "EventParams"
+    },
+    "UserToolConfirmationResult": {
+      "spec": "main",
+      "kind": "enum",
+      "dart_class": "UserToolConfirmationResult",
+      "file": "lib/src/models/managed_agents/events/session_event.dart",
+      "schema": "BetaManagedAgentsUserToolConfirmationResult"
+    },
+    "BetaCreateMessageParams": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "MessageCreateRequest",
+      "file": "lib/src/models/messages/message_create_request.dart",
+      "schema": "BetaCreateMessageParams",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Beta variant of CreateMessageParams; MessageCreateRequest covers the shared surface. Beta-only fields (context_management, mcp_servers, output_format) are not yet implemented."
+    },
+    "OutputConfig": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "OutputConfig",
+      "file": "lib/src/models/beta/config/output_config.dart",
+      "schema": "OutputConfig"
+    },
+    "BetaOutputConfig": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "OutputConfig",
+      "file": "lib/src/models/beta/config/output_config.dart",
+      "schema": "BetaOutputConfig",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Beta variant of OutputConfig; same Dart class covers both surfaces."
+    },
+    "TokenTaskBudget": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "TokenTaskBudget",
+      "file": "lib/src/models/beta/config/token_task_budget.dart",
+      "schema": "BetaTokenTaskBudget"
+    },
+    "EffortLevel": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "EffortLevel",
+      "file": "lib/src/models/beta/config/output_config.dart",
+      "schema": "EffortLevel",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "EffortLevel enum uses strict fromJson (FormatException on unknown values) matching the convention of ServiceTier/Speed enums in this package."
+    },
+    "BetaEffortLevel": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "EffortLevel",
+      "file": "lib/src/models/beta/config/output_config.dart",
+      "schema": "BetaEffortLevel",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Beta variant of EffortLevel enum; same Dart enum covers both surfaces."
+    },
+    "BetaEffortCapability": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": "EffortCapability",
+      "file": "lib/src/models/models/model_capabilities.dart",
+      "schema": "BetaEffortCapability",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Beta variant of EffortCapability within ModelCapabilities; same Dart class covers both surfaces."
+    },
+    "ManagedAgentActor": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "ManagedAgentActor",
+      "file": "lib/src/models/managed_agents/common/managed_agent_actor.dart",
+      "schema": "BetaManagedAgentsActor"
+    },
+    "SessionActor": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "SessionActor",
+      "file": "lib/src/models/managed_agents/common/managed_agent_actor.dart",
+      "schema": "BetaManagedAgentsSessionActor",
+      "parent": "ManagedAgentActor"
+    },
+    "ApiActor": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ApiActor",
+      "file": "lib/src/models/managed_agents/common/managed_agent_actor.dart",
+      "schema": "BetaManagedAgentsApiActor",
+      "parent": "ManagedAgentActor"
+    },
+    "UserActor": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "UserActor",
+      "file": "lib/src/models/managed_agents/common/managed_agent_actor.dart",
+      "schema": "BetaManagedAgentsUserActor",
+      "parent": "ManagedAgentActor"
+    },
+    "MountMode": {
+      "spec": "main",
+      "kind": "enum",
+      "dart_class": "MountMode",
+      "file": "lib/src/models/managed_agents/memory_stores/mount_mode.dart",
+      "schema": "BetaManagedAgentsMountMode"
+    },
+    "MemoryView": {
+      "spec": "main",
+      "kind": "enum",
+      "dart_class": "MemoryView",
+      "file": "lib/src/models/managed_agents/memory_stores/memory_view.dart",
+      "schema": "BetaManagedAgentsMemoryView"
+    },
+    "MemoryVersionOperation": {
+      "spec": "main",
+      "kind": "enum",
+      "dart_class": "MemoryVersionOperation",
+      "file": "lib/src/models/managed_agents/memory_stores/memory_version.dart",
+      "schema": "BetaManagedAgentsMemoryVersionOperation"
+    },
+    "MemoryStore": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "MemoryStore",
+      "file": "lib/src/models/managed_agents/memory_stores/memory_store.dart",
+      "schema": "BetaManagedAgentsMemoryStore"
+    },
+    "DeletedMemoryStore": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "DeletedMemoryStore",
+      "file": "lib/src/models/managed_agents/memory_stores/memory_store.dart",
+      "schema": "BetaManagedAgentsDeletedMemoryStore"
+    },
+    "CreateMemoryStoreParams": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "CreateMemoryStoreParams",
+      "file": "lib/src/models/managed_agents/memory_stores/create_memory_store_params.dart",
+      "schema": "BetaManagedAgentsCreateMemoryStoreRequest"
+    },
+    "UpdateMemoryStoreParams": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "UpdateMemoryStoreParams",
+      "file": "lib/src/models/managed_agents/memory_stores/update_memory_store_params.dart",
+      "schema": "BetaManagedAgentsUpdateMemoryStoreRequestBody"
+    },
+    "MemoryStoreListResponse": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "MemoryStoreListResponse",
+      "file": "lib/src/models/managed_agents/memory_stores/memory_store_list_response.dart",
+      "schema": "BetaManagedAgentsListMemoryStoresResponse"
+    },
+    "MemoryListItem": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "MemoryListItem",
+      "file": "lib/src/models/managed_agents/memory_stores/memory.dart",
+      "schema": "BetaManagedAgentsMemoryListItem"
+    },
+    "Memory": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "Memory",
+      "file": "lib/src/models/managed_agents/memory_stores/memory.dart",
+      "schema": "BetaManagedAgentsMemory",
+      "parent": "MemoryListItem"
+    },
+    "MemoryPrefix": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "MemoryPrefix",
+      "file": "lib/src/models/managed_agents/memory_stores/memory.dart",
+      "schema": "BetaManagedAgentsMemoryPrefix",
+      "parent": "MemoryListItem"
+    },
+    "DeletedMemory": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "DeletedMemory",
+      "file": "lib/src/models/managed_agents/memory_stores/memory.dart",
+      "schema": "BetaManagedAgentsDeletedMemory"
+    },
+    "MemoryListResponse": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "MemoryListResponse",
+      "file": "lib/src/models/managed_agents/memory_stores/memory_list_response.dart",
+      "schema": "BetaManagedAgentsListMemoriesResult"
+    },
+    "MemoryVersion": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "MemoryVersion",
+      "file": "lib/src/models/managed_agents/memory_stores/memory_version.dart",
+      "schema": "BetaManagedAgentsMemoryVersion"
+    },
+    "MemoryVersionListResponse": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "MemoryVersionListResponse",
+      "file": "lib/src/models/managed_agents/memory_stores/memory_version_list_response.dart",
+      "schema": "BetaManagedAgentsListMemoryVersionsResult"
+    },
+    "CreateMemoryParams": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "CreateMemoryParams",
+      "file": "lib/src/models/managed_agents/memory_stores/create_memory_params.dart",
+      "schema": "BetaManagedAgentsCreateMemoryParams"
+    },
+    "UpdateMemoryParams": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "UpdateMemoryParams",
+      "file": "lib/src/models/managed_agents/memory_stores/update_memory_params.dart",
+      "schema": "BetaManagedAgentsUpdateMemoryParams"
+    },
+    "MemoryPrecondition": {
+      "spec": "main",
+      "kind": "sealed_parent",
+      "dart_class": "MemoryPrecondition",
+      "file": "lib/src/models/managed_agents/memory_stores/update_memory_params.dart",
+      "schema": "BetaManagedAgentsPrecondition"
+    },
+    "ContentSha256Precondition": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "ContentSha256Precondition",
+      "file": "lib/src/models/managed_agents/memory_stores/update_memory_params.dart",
+      "schema": "BetaManagedAgentsContentSha256Precondition",
+      "parent": "MemoryPrecondition"
+    },
+    "MemoryStoreSessionResource": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "MemoryStoreSessionResource",
+      "file": "lib/src/models/managed_agents/resources/session_resource.dart",
+      "schema": "BetaManagedAgentsMemoryStoreResource",
+      "parent": "SessionResource"
+    },
+    "MemoryStoreSessionResourceParams": {
+      "spec": "main",
+      "kind": "sealed_variant",
+      "dart_class": "MemoryStoreSessionResourceParams",
+      "file": "lib/src/models/managed_agents/resources/session_resource_params.dart",
+      "schema": "BetaManagedAgentsMemoryStoreResourceParam",
+      "parent": "SessionResourceParams"
+    },
+    "MemoryConflictError": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "MemoryConflictError",
+      "file": "lib/src/models/managed_agents/errors/managed_agent_error.dart",
+      "schema": "BetaManagedAgentsConflictError"
+    },
+    "MemoryPathConflictError": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "MemoryPathConflictError",
+      "file": "lib/src/models/managed_agents/errors/managed_agent_error.dart",
+      "schema": "BetaManagedAgentsMemoryPathConflictError"
+    },
+    "MemoryPreconditionFailedError": {
+      "spec": "main",
+      "kind": "object",
+      "dart_class": "MemoryPreconditionFailedError",
+      "file": "lib/src/models/managed_agents/errors/managed_agent_error.dart",
+      "schema": "BetaManagedAgentsMemoryPreconditionFailedError"
+    },
+    "BetaManagedAgentsCreateMemoryStoreResponse": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "BetaManagedAgentsCreateMemoryStoreResponse",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Single-variant oneOf response wrapper around BetaManagedAgentsMemoryStore — unwrapped to MemoryStore at the resource layer."
+    },
+    "BetaManagedAgentsUpdateMemoryStoreResponse": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "BetaManagedAgentsUpdateMemoryStoreResponse",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Single-variant oneOf response wrapper around BetaManagedAgentsMemoryStore — unwrapped to MemoryStore at the resource layer."
+    },
+    "BetaManagedAgentsArchiveMemoryStoreResponse": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "BetaManagedAgentsArchiveMemoryStoreResponse",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Single-variant oneOf response wrapper around BetaManagedAgentsMemoryStore — unwrapped to MemoryStore at the resource layer."
+    },
+    "BetaManagedAgentsGetMemoryStoreResponse": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "BetaManagedAgentsGetMemoryStoreResponse",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Single-variant oneOf response wrapper around BetaManagedAgentsMemoryStore — unwrapped to MemoryStore at the resource layer."
+    },
+    "BetaManagedAgentsDeleteMemoryStoreResponse": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "BetaManagedAgentsDeleteMemoryStoreResponse",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Single-variant oneOf response wrapper around BetaManagedAgentsDeletedMemoryStore — unwrapped to DeletedMemoryStore at the resource layer."
+    },
+    "BetaManagedAgentsError": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "BetaManagedAgentsError",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Error envelope union — errors are surfaced via AnthropicException by the ErrorInterceptor, not parsed from response bodies."
+    },
+    "BetaManagedAgentsErrorResponse": {
+      "spec": "main",
+      "kind": "skip",
+      "dart_class": null,
+      "file": null,
+      "schema": "BetaManagedAgentsErrorResponse",
+      "tags": [
+        "acknowledged"
+      ],
+      "note": "Error response envelope — errors are surfaced via AnthropicException by the ErrorInterceptor, not parsed from response bodies."
+    }
+  }
+}
